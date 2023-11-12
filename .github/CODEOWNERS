@@ -1,0 +1,11 @@
+# These owners will be the default owners for everything in the repo.
+#
+* @wroyca
+
+# Order is important. The last matching pattern has the most precedence.
+#
+# hello/hello.cxx @name
+
+# You can also use email addresses if you prefer.
+#
+# hello/hello.cxx name@example.com
