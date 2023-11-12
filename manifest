@@ -1,0 +1,19 @@
+: 1
+name: echo
+version: 0.1.0-a.0.z
+type: other
+language: c++
+summary: echo C++ bare
+license: GPL-3.0-or-later ; GNU General Public License v3.0 or later.
+description-file: README.md
+url: https://example.org/echo
+email: wroy@proton.me
+#build-error-email: wroy@proton.me
+depends: * build2 >= 0.16.0
+depends: * bpkg >= 0.16.0
+
+# We depend on platform-specific implementation libraries that are (currently)
+# not packaged and need to come from the system package manager. This often
+# results in friction with bdep-ci, so opt out for now.
+#
+builds: none

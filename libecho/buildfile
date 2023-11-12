@@ -1,0 +1,44 @@
+intf_libs = # Interface dependencies.
+impl_libs = # Implementation dependencies.
+
+intf_libs += libadwaita%lib{adwaita-1}
+
+lib{echo}: {hxx ixx txx cxx}{*} $impl_libs $intf_libs
+
+hxx{export}@./: cxx.importable = false
+
+# Build options.
+#
+cxx.poptions =+ "-I$out_root" "-I$src_root"
+
+{hbmia obja}{*}: cxx.poptions += -DLIBECHO_STATIC_BUILD
+{hbmis objs}{*}: cxx.poptions += -DLIBECHO_SHARED_BUILD
+
+# Export options.
+#
+lib{echo}:
+{
+  cxx.export.poptions = "-I$out_root" "-I$src_root"
+  cxx.export.libs = $intf_libs
+}
+
+liba{echo}: cxx.export.poptions += -DLIBECHO_STATIC
+libs{echo}: cxx.export.poptions += -DLIBECHO_SHARED
+
+# For pre-releases use the complete version to make sure they cannot be used
+# in place of another pre-release or the final version. See the version module
+# for details on the version.* variable values.
+#
+if $version.pre_release
+  lib{echo}: bin.lib.version = "-$version.project_id"
+else
+  lib{echo}: bin.lib.version = "-$version.major.$version.minor"
+
+# Install into the libecho/ subdirectory of, say, /usr/include/
+# recreating subdirectories.
+#
+{hxx ixx txx}{*}:
+{
+  install = include/libecho/
+  install.subdirs = true
+}
