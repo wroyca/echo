@@ -1,0 +1,13 @@
+module;
+
+#ifndef __cpp_lib_modules
+#include <string>
+#endif
+
+export module echo;
+
+namespace echo
+{
+  export __symexport void
+  say_hello (const std::string &name);
+}

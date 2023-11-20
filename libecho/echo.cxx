@@ -1,17 +1,20 @@
-#include <libecho/echo.hxx>
+module;
 
-#include <ostream>
-#include <stdexcept>
+#ifndef __cpp_lib_modules
+#include <string>
+
+#include <iostream>
+#endif
+
+module echo;
 
 using namespace std;
 
 namespace echo
 {
-  void say_hello (ostream& o, const string& n)
+  void
+  say_hello (const string &n)
   {
-    if (n.empty ())
-      throw invalid_argument ("empty name");
-
-    o << "Hello, " << n << '!' << endl;
+    cout << "Hello, " << n << '!' << endl;
   }
 }

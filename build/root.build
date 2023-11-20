@@ -3,13 +3,15 @@
 # cxx.internal.scope = current
 
 cxx.std = experimental
+
 cxx.features.modules = true
+cxx.features.symexport = true
 
 using c
 using cxx
 
-c{*}: extension = c
 h{*}: extension = h
+c{*}: extension = c
 
 hxx{*}: extension = hxx
 ixx{*}: extension = ixx

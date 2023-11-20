@@ -1,19 +1,18 @@
 : 1
 name: echo
 version: 0.1.0-a.0.z
-type: other
-language: c++
 summary: echo C++ bare
 license: GPL-3.0-or-later ; GNU General Public License v3.0 or later.
-description-file: README.md
-url: https://example.org/echo
-email: wroy@proton.me
-#build-error-email: wroy@proton.me
-depends: * build2 >= 0.16.0
-depends: * bpkg >= 0.16.0
+depends: * build2 >= 0.17.0-
+depends: * bpkg >= 0.17.0-
 
-# We depend on platform-specific implementation libraries that are (currently)
-# not packaged and need to come from the system package manager. This often
-# results in friction with bdep-ci, so opt out for now.
+# Echo depend on platform-specific implementation libraries that are
+# (currently) not packaged and need to come from the system package manager.
 #
 builds: none
+
+debian-builds: sys
+debian-build-include: linux_debian*-clang_16*
+debian-build-include: linux_ubuntu*-clang_16*
+debian-build-exclude: ** ; Requires C++ modules support.
+debian-build-config: sys:libadwaita-1

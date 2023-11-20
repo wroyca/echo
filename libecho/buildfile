@@ -1,11 +1,7 @@
 intf_libs = # Interface dependencies.
 impl_libs = # Implementation dependencies.
 
-intf_libs += libadwaita%lib{adwaita-1}
-
-lib{echo}: {hxx ixx txx cxx}{*} $impl_libs $intf_libs
-
-hxx{export}@./: cxx.importable = false
+lib{echo}: {hxx ixx txx cxx mxx}{**} $impl_libs $intf_libs
 
 # Build options.
 #
