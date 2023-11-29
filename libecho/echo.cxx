@@ -1,11 +1,3 @@
-module;
-
-#ifndef __cpp_lib_modules
-#include <string>
-
-#include <iostream>
-#endif
-
 module echo;
 
 using namespace std;
