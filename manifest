@@ -10,9 +10,3 @@ depends: * bpkg >= 0.17.0-
 # (currently) not packaged and need to come from the system package manager.
 #
 builds: none
-
-debian-builds: sys
-debian-build-include: linux_debian*-clang_16*
-debian-build-include: linux_ubuntu*-clang_16*
-debian-build-exclude: ** ; Requires C++ modules support.
-debian-build-config: sys:libadwaita-1

@@ -3,15 +3,13 @@
 # cxx.internal.scope = current
 
 cxx.std = experimental
-
 cxx.features.modules = true
 cxx.features.symexport = true
 
-using c
 using cxx
 
-h{*}: extension = h
-c{*}: extension = c
+if ($build.mode != 'skeleton')
+  assert ($cxx.id == 'clang') 'this project can only be built with clang'
 
 hxx{*}: extension = hxx
 ixx{*}: extension = ixx
