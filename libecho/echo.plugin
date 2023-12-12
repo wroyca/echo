@@ -1,0 +1,3 @@
+[Plugin]
+Module=libecho
+Name=Echo
