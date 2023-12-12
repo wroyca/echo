@@ -1,9 +1,1 @@
 export module echo;
-
-import std;
-
-export namespace echo
-{
-  __symexport void
-  say_hello (const std::string &name);
-}

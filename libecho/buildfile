@@ -1,6 +1,10 @@
 intf_libs = # Interface dependencies.
 impl_libs = # Implementation dependencies.
 
+import intf_libs += libadwaita%lib{adwaita-1}
+import intf_libs += libpanel%lib{panel-1}
+import intf_libs += libpeas%lib{peas-2}
+
 lib{echo}: {hxx ixx txx cxx mxx}{**} $impl_libs $intf_libs
 
 # Build options.
