@@ -8,6 +8,17 @@
 namespace std
 {
   template <>
+  struct default_delete <PeasPluginInfo>
+  {
+    void
+    operator() (auto p) noexcept
+    {
+      if (p != nullptr)
+        g_object_unref (p);
+    }
+  };
+
+  template <>
   struct default_delete <GAsyncQueue>
   {
     void
