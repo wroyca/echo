@@ -5,7 +5,18 @@ import intf_libs += libadwaita%lib{adwaita-1}
 import intf_libs += libpanel%lib{panel-1}
 import intf_libs += libpeas%lib{peas-2}
 
-lib{echo}: {hxx ixx txx cxx mxx}{**} $impl_libs $intf_libs
+lib{echo}: {hxx ixx txx cxx mxx}{** -echo.resource.cxx} \
+  cxx{echo.resource.cxx} $impl_libs $intf_libs
+
+cxx{echo.resource.cxx}: x{*} u{**}
+{{
+  diag glib-compile-resources ($<[0]) -> $>
+
+  # Reads resource description and creates a binary resource bundle.
+  #
+  glib-compile-resources --generate-source $path($<[0]) \
+    --sourcedir $src_base --target=($out_base[0])/$name($>).cxx
+}}
 
 # Build options.
 #

@@ -17,6 +17,12 @@ txx{*}: extension = txx
 cxx{*}: extension = cxx
 mxx{*}: extension = mxx
 
+define x: file
+define u: file
+
+x{*}: extension = xml
+u{*}: extension = ui
+
 # Assume headers are importable unless stated otherwise.
 #
 hxx{*}: cxx.importable = true
