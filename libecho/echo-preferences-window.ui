@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="EchoPreferencesWindow" parent="AdwPreferencesWindow">
+    <property name="modal">1</property>
+  </template>
+</interface>
