@@ -1,5 +1,24 @@
-#include <libecho/echo-application-window.hxx>
+// libecho/echo-application.cxx
+//
+// Copyright 2023 William Roy
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 #include <libecho/echo-application.hxx>
+#include <libecho/echo-application-window.hxx>
 
 struct _EchoApplication
 {
@@ -8,19 +27,19 @@ struct _EchoApplication
 
 G_DEFINE_FINAL_TYPE (EchoApplication, echo_application, ADW_TYPE_APPLICATION)
 
-std::unique_ptr <EchoApplication>
-echo_application_new (const char *application_id, GApplicationFlags flags)
+_echo_application
+_echo_application_new ()
 {
   const auto self (g_object_new (ECHO_TYPE_APPLICATION,
-                                 "application-id", application_id,
-                                 "flags", flags,
+                                 "application-id", "app.drey.Echo",
+                                 "flags", G_APPLICATION_DEFAULT_FLAGS,
                                  nullptr));
 
-  return std::unique_ptr <EchoApplication> (ECHO_APPLICATION (self));
+  return _echo_application (ECHO_APPLICATION (self));
 }
 
 static void
-echo_application_activate (GApplication *app)
+echo_application_activate (GApplication* app)
 {
   const auto self (ECHO_APPLICATION (app));
 
@@ -29,9 +48,7 @@ echo_application_activate (GApplication *app)
   auto window (gtk_application_get_active_window (GTK_APPLICATION (self)));
 
   if (window == nullptr)
-    window = GTK_WINDOW (g_object_new (ECHO_TYPE_APPLICATION_WINDOW,
-                                       "application", self,
-                                       nullptr));
+    window = _echo_application_window_new (self);
 
   gtk_window_present (window);
 }
@@ -41,6 +58,8 @@ echo_application_class_init (EchoApplicationClass *klass)
 {
   const auto app_class (G_APPLICATION_CLASS (klass));
 
+  // dispatch table
+  //
   app_class->activate = echo_application_activate;
 }
 

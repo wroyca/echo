@@ -19,8 +19,6 @@
             </child>
           </object>
         </child>
-        <!-- <property name="content"> -->
-        <!-- </property> -->
       </object>
     </property>
   </template>
