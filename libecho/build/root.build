@@ -3,29 +3,18 @@
 # cxx.internal.scope = current
 
 cxx.std = experimental
+
 cxx.features.modules = true
+
 cxx.features.symexport = true
 
 using cxx
-
-if ($build.mode != 'skeleton')
-  assert ($cxx.id == 'clang') 'this project can only be built with clang'
 
 hxx{*}: extension = hxx
 ixx{*}: extension = ixx
 txx{*}: extension = txx
 cxx{*}: extension = cxx
 mxx{*}: extension = mxx
-
-define x: file
-define u: file
-
-x{*}: extension = xml
-u{*}: extension = ui
-
-# Assume headers are importable unless stated otherwise.
-#
-hxx{*}: cxx.importable = true
 
 # The test target for cross-testing (running tests under Wine, etc).
 #

@@ -1,0 +1,20 @@
+# Uncomment to suppress warnings coming from external libraries.
+#
+# c.internal.scope = current
+
+c.std = c23
+
+using c
+
+h{*}: extension = h
+c{*}: extension = c
+
+define x: file
+define u: file
+
+x{*}: extension = xml
+u{*}: extension = ui
+
+# The test target for cross-testing (running tests under Wine, etc).
+#
+test.target = $c.target

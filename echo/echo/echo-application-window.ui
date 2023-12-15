@@ -10,7 +10,7 @@
         <child type="top">
           <object class="AdwHeaderBar" id="header_bar">
             <child type="end">
-              <object class="GtkMenuButton">
+              <object class="GtkMenuButton" id="primary_menu_button">
                 <property name="primary">True</property>
                 <property name="icon-name">open-menu-symbolic</property>
                 <property name="tooltip-text" translatable="yes">Menu</property>
@@ -23,6 +23,11 @@
     </property>
   </template>
   <menu id="primary_menu">
+    <section>
+      <item>
+        <attribute name="custom">style-variant</attribute>
+      </item>
+    </section>
     <section>
       <item>
         <attribute name="label" translatable="yes">_Preferences</attribute>

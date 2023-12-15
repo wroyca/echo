@@ -1,0 +1,14 @@
+export module echo;
+
+import std;
+
+namespace echo
+{
+  // Print a greeting for the specified name into the specified
+  // stream. Throw std::invalid_argument if the name is empty.
+  //
+  __symexport export void
+  say_hello (std::ostream&, const std::string& name);
+}
+
+/* LIBECHO_SYMEXPORT */

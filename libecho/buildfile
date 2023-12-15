@@ -1,55 +1,5 @@
-intf_libs = # Interface dependencies.
-impl_libs = # Implementation dependencies.
+./: {*/ -build/} doc{README.md} manifest
 
-import intf_libs += libadwaita%lib{adwaita-1}
-import intf_libs += libpanel%lib{panel-1}
-import intf_libs += libpeas%lib{peas-2}
-
-lib{echo}: {hxx ixx txx cxx mxx}{** -echo.resource.cxx} \
-  cxx{echo.resource.cxx} $impl_libs $intf_libs
-
-cxx{echo.resource.cxx}: x{*} u{**}
-{{
-  diag glib-compile-resources ($<[0]) -> $>
-
-  # Reads resource description and creates a binary resource bundle.
-  #
-  glib-compile-resources --generate-source $path($<[0]) \
-    --sourcedir $src_base --target=($out_base[0])/$name($>).cxx
-}}
-
-# Build options.
+# Don't install tests.
 #
-cxx.poptions =+ "-I$out_root" "-I$src_root"
-
-{hbmia obja}{*}: cxx.poptions += -DLIBECHO_STATIC_BUILD
-{hbmis objs}{*}: cxx.poptions += -DLIBECHO_SHARED_BUILD
-
-# Export options.
-#
-lib{echo}:
-{
-  cxx.export.poptions = "-I$out_root" "-I$src_root"
-  cxx.export.libs = $intf_libs
-}
-
-liba{echo}: cxx.export.poptions += -DLIBECHO_STATIC
-libs{echo}: cxx.export.poptions += -DLIBECHO_SHARED
-
-# For pre-releases use the complete version to make sure they cannot be used
-# in place of another pre-release or the final version. See the version module
-# for details on the version.* variable values.
-#
-if $version.pre_release
-  lib{echo}: bin.lib.version = "-$version.project_id"
-else
-  lib{echo}: bin.lib.version = "-$version.major.$version.minor"
-
-# Install into the libecho/ subdirectory of, say, /usr/include/
-# recreating subdirectories.
-#
-{hxx ixx txx}{*}:
-{
-  install = include/libecho/
-  install.subdirs = true
-}
+tests/: install = false
