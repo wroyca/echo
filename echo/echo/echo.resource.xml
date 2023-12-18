@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/app/drey/Echo">
-    <file preprocess="xml-stripblanks">echo-application-window.ui</file>
-    <file preprocess="xml-stripblanks">echo-preferences-window.ui</file>
-    <file preprocess="xml-stripblanks">echo-theme-selector.ui</file>
-    <file>style.css</file>
+    <file preprocess="xml-stripblanks">echo-window.ui</file>
   </gresource>
 </gresources>

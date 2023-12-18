@@ -20,17 +20,15 @@
 
 #pragma once
 
-#include <echo/echo.h>
-#include <echo/echo-settings.h>
+#include <adwaita.h>
 
 G_BEGIN_DECLS
 
-#define ECHO_TYPE_APPLICATION (echo_application_get_type ())
-#define ECHO_APPLICATION_DEFAULT (ECHO_APPLICATION (g_application_get_default ()))
+#define ECHO_TYPE_APPLICATION (echo_application_get_type())
 
 G_DECLARE_FINAL_TYPE (EchoApplication, echo_application, ECHO, APPLICATION, AdwApplication)
 
-EchoApplication *echo_application_new ();
-EchoSettings    *echo_application_get_settings (EchoApplication *self);
+EchoApplication *
+echo_application_new ();
 
 G_END_DECLS

@@ -1,4 +1,4 @@
-/* echo.c
+/* main.c
  *
  * Copyright 2023 William Roy
  *
@@ -20,21 +20,21 @@
 
 #include <glib/gi18n.h>
 
-#include <girepository.h>
-
 #include <echo/echo-application.h>
 
 int
 main (int   argc,
       char *argv[])
 {
-  auto ctx = g_option_context_new (nullptr);
+  g_autoptr (EchoApplication) app = NULL;
+  int ret;
 
-  g_option_context_add_group (ctx, g_irepository_get_option_group ());
-  g_option_context_parse (ctx, &argc, &argv, nullptr);
+  // bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+  // bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+  // textdomain (GETTEXT_PACKAGE);
 
-  auto app = echo_application_new ();
-  auto ret = g_application_run (G_APPLICATION (app), argc, argv);
+  app = echo_application_new ();
+  ret = g_application_run (G_APPLICATION (app), argc, argv);
 
-  return g_object_unref(app), ret;
+  return ret;
 }

@@ -1,4 +1,4 @@
-/* echo-preferences-window.c
+/* echo-window.c
  *
  * Copyright 2023 William Roy
  *
@@ -18,34 +18,46 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#include <echo/echo-preferences-window.h>
+#include <echo/echo-window.h>
 
-struct _EchoPreferencesWindow
+struct _EchoWindow
 {
-  AdwPreferencesWindow parent_instance;
+  AdwApplicationWindow  parent_instance;
+
+  /* Template widgets */
+  AdwHeaderBar         *header_bar;
+  GtkLabel             *label;
 };
 
-G_DEFINE_FINAL_TYPE (EchoPreferencesWindow, echo_preferences_window, ADW_TYPE_PREFERENCES_WINDOW)
+G_DEFINE_FINAL_TYPE (EchoWindow, echo_window, ADW_TYPE_APPLICATION_WINDOW)
 
-EchoPreferencesWindow *
-echo_preferences_window_new ()
+EchoWindow *
+echo_window_new (EchoApplication *app)
 {
-  const auto self = g_object_new (ECHO_TYPE_PREFERENCES_WINDOW, nullptr);
+  EchoWindow *self;
 
-  return ECHO_PREFERENCES_WINDOW (self);
+  self = g_object_new (ECHO_TYPE_WINDOW,
+                       "application", app,
+                       nullptr);
+
+  return ECHO_WINDOW (self);
 }
 
 static void
-echo_preferences_window_class_init (EchoPreferencesWindowClass *klass)
+echo_window_class_init (EchoWindowClass *klass)
 {
-  const auto widget_class = GTK_WIDGET_CLASS (klass);
-  const auto resource = "/app/drey/Echo/echo-preferences-window.ui";
+  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+  const char *resource = "/app/drey/Echo/echo-window.ui";
+
+  g_assert (GTK_IS_WIDGET_CLASS (widget_class));
 
   gtk_widget_class_set_template_from_resource (widget_class, resource);
+  gtk_widget_class_bind_template_child (widget_class, EchoWindow, header_bar);
+  gtk_widget_class_bind_template_child (widget_class, EchoWindow, label);
 }
 
 static void
-echo_preferences_window_init (EchoPreferencesWindow *self)
+echo_window_init (EchoWindow *self)
 {
   gtk_widget_init_template (GTK_WIDGET (self));
 }

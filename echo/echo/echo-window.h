@@ -1,4 +1,4 @@
-/* echo-application-window.h
+/* echo-window.h
  *
  * Copyright 2023 William Roy
  *
@@ -20,16 +20,17 @@
 
 #pragma once
 
-#include <echo/echo.h>
+#include <adwaita.h>
 
 G_BEGIN_DECLS
 
-#define ECHO_TYPE_APPLICATION_WINDOW (echo_application_window_get_type ())
+#define ECHO_TYPE_WINDOW (echo_window_get_type())
 
-G_DECLARE_FINAL_TYPE (EchoApplicationWindow, echo_application_window, ECHO, APPLICATION_WINDOW, AdwApplicationWindow)
+G_DECLARE_FINAL_TYPE (EchoWindow, echo_window, ECHO, WINDOW, AdwApplicationWindow)
 
 typedef struct _EchoApplication EchoApplication;
 
-EchoApplicationWindow *echo_application_window_new (EchoApplication *app);
+EchoWindow *
+echo_window_new (EchoApplication *app);
 
 G_END_DECLS

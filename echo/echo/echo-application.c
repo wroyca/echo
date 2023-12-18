@@ -19,76 +19,94 @@
  */
 
 #include <echo/echo-application.h>
-#include <echo/echo-application-window.h>
+#include <echo/echo-window.h>
 
 struct _EchoApplication
 {
   AdwApplication parent_instance;
-  EchoSettings  *settings;
 };
 
-G_DEFINE_FINAL_TYPE (EchoApplication, echo_application, ADW_TYPE_APPLICATION)
+G_DEFINE_TYPE (EchoApplication, echo_application, ADW_TYPE_APPLICATION)
+
+#define echo_application_get_active_window(x) ECHO_WINDOW (gtk_application_get_active_window (GTK_APPLICATION (x)))
+#define echo_window_present(x)                             gtk_window_present (GTK_WINDOW (x))
+#define echo_show_about_window(x, ...)                     adw_show_about_window (GTK_WINDOW (x), __VA_ARGS__)
 
 EchoApplication *
 echo_application_new ()
 {
-  const auto self = g_object_new (ECHO_TYPE_APPLICATION,
-                                  "application-id", "app.drey.Echo",
-                                  "flags", G_APPLICATION_DEFAULT_FLAGS,
-                                  nullptr);
+  EchoApplication* self;
+
+  self = g_object_new (ECHO_TYPE_APPLICATION,
+                       "application-id", "app.drey.Echo",
+                       "flags", G_APPLICATION_DEFAULT_FLAGS,
+                       nullptr);
 
   return ECHO_APPLICATION (self);
-}
-
-EchoSettings *
-echo_application_get_settings (EchoApplication *self)
-{
-  g_return_val_if_fail (ECHO_IS_APPLICATION (self), NULL);
-
-  return self->settings;
 }
 
 static void
 echo_application_activate (GApplication *app)
 {
-  const auto self = ECHO_APPLICATION (app);
+  EchoApplication *self = ECHO_APPLICATION (app);
+  EchoWindow *window;
 
   g_assert (ECHO_IS_APPLICATION (self));
 
-  auto window = gtk_application_get_active_window (GTK_APPLICATION (self));
+  window = echo_application_get_active_window (app);
 
   if (window == nullptr)
-    window = GTK_WINDOW (echo_application_window_new (self));
+    window = echo_window_new (self);
 
-  gtk_window_present (window);
-}
-
-static void
-echo_application_startup (GApplication *app)
-{
-  const auto self = ECHO_APPLICATION (app);
-
-  g_assert (ECHO_IS_APPLICATION (self));
-
-  self->settings = echo_settings_new ();
-
-  G_APPLICATION_CLASS (echo_application_parent_class)->startup (app);
-
-  g_object_bind_property (self->settings, "style-variant",
-                          adw_style_manager_get_default (), "color-scheme",
-                          G_BINDING_SYNC_CREATE | G_BINDING_BIDIRECTIONAL);
+  echo_window_present (window);
 }
 
 static void
 echo_application_class_init (EchoApplicationClass *klass)
 {
-  const auto app_class = G_APPLICATION_CLASS (klass);
+  GApplicationClass *app_class = G_APPLICATION_CLASS (klass);
+
+  g_assert (G_IS_APPLICATION_CLASS (app_class));
 
   app_class->activate = echo_application_activate;
-  app_class->startup = echo_application_startup;
 }
+
+static const char *developers[] = {
+  "William Roy", nullptr
+};
+
+static void
+echo_application_about_action (GSimpleAction *action,
+                               GVariant      *parameter,
+                               gpointer       user_data)
+{
+  EchoApplication *self = ECHO_APPLICATION (user_data);
+  EchoWindow *window;
+
+  g_assert (ECHO_IS_APPLICATION (self));
+
+  window = echo_application_get_active_window (self);
+
+  echo_show_about_window (window,
+                         "application-name", "echo",
+                         "application-icon", "app.drey.Echo",
+                         "developer-name", "William Roy",
+                         "version", "0.1.0",
+                         "developers", developers,
+                         "copyright", "© 2023 William Roy",
+                         nullptr);
+}
+
+static const GActionEntry actions[] = {
+  { "about", echo_application_about_action },
+};
 
 static void
 echo_application_init (EchoApplication *self)
 {
+  GActionMap* map = G_ACTION_MAP (self);
+
+  g_assert (G_IS_ACTION_MAP (map));
+
+  g_action_map_add_action_entries (map, actions, G_N_ELEMENTS (actions), self);
 }
