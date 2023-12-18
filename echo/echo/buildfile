@@ -1,71 +1,24 @@
 libs =
-import libs += libadwaita%lib{adwaita-1}
-import libs += libpeas%lib{peas-2}
-import libs += libgir%lib{gobject-introspection-1.0}
-
-define gen: alias
+libs += %lib{adwaita-1}
+libs += %lib{peas-2}
+libs += %lib{gobject-introspection-1.0}
 
 exe{echo}: {h c}{** -echo.resource.c} c{echo.resource.c} $libs testscript
-gen{g-ir}: file{echo.gir}
 
 # Build options.
 #
 c.poptions =+ "-I$out_root" "-I$src_root"
 
-# Resource bundle.
+# Reads resource description and creates a C source file that contains the
+# resource bundle.
 #
 c{echo.resource.c}: x{echo.resource.xml} u{**}
 {{
   diag glib-compile-resources ($<[0]) -> $>
 
-  i = $path($<[0])
-  o = $out_base/$name($>).c
+  res = $path($<[0])
+  bundle = $out_base/$name($>).c
 
-  # Reads resource description and creates a C source file that contains the
-  # resource bundle.
-  #
-  glib-compile-resources --sourcedir $src_base --generate-source $i --target=$o
-}}
-
-# GObject introspection
-file{echo.gir}:
-{{
-  diag g-ir-scanner $>
-
-  n =  $name($>)
-  N =  $n
-  echo $n | awk '{$1=toupper(substr($1,0,1))substr($1,2)}1' | set N
-  v = "$version.major.$version.minor"
-  b =  $src_base
-  r =  $src_root
-  f =  $b/($n).filelist
-  g =  $b/($N).gir
-  t =  $b/($N).typelib
-  p =  $b/($n)
-  d =  $r/doc
-  c =  $d/($n).toml
-
-  g-ir-scanner --quiet                    \
-               --symbol-prefix=$n         \
-               --identifier-prefix=$N     \
-               --namespace=$N             \
-               --nsversion=$v             \
-                                          \
-               --program=$p               \
-               --output=$g                \
-               --filelist=$f              \
-               --sources-top-dirs $b      \
-               --c-include=echo/echo.h    \
-                                          \
-               --include=Gtk-4.0          \
-               --include=Adw-1            \
-               --include=Peas-2
-
-  g-ir-compiler $g --output $t --includedir=/usr/share/gir-1.0
-
-  # TODO: move to doc/
-  #
-  gi-docgen generate $g --config=$c      \
-                        --output-dir=$d  \
-                        --content-dir=$d
+  glib-compile-resources \
+    --sourcedir $src_base --generate-source $res --target=$bundle
 }}
