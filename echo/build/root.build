@@ -9,11 +9,13 @@ using c
 h{*}: extension = h
 c{*}: extension = c
 
-define x: file
-define u: file
+define xml: file
+ define ui: file
+define css: file
 
-x{*}: extension = xml
-u{*}: extension = ui
+xml{*}: extension = xml
+ ui{*}: extension = ui
+css{*}: extension = css
 
 # The test target for cross-testing (running tests under Wine, etc).
 #

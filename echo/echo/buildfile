@@ -3,6 +3,8 @@ libs += %lib{adwaita-1}
 libs += %lib{peas-2}
 libs += %lib{gobject-introspection-1.0}
 
+import libs += libecho%lib{echo}
+
 exe{echo}: {h c}{** -echo.resource.c} c{echo.resource.c} $libs testscript
 
 # Build options.
@@ -12,7 +14,7 @@ c.poptions =+ "-I$out_root" "-I$src_root"
 # Reads resource description and creates a C source file that contains the
 # resource bundle.
 #
-c{echo.resource.c}: x{echo.resource.xml} u{**}
+c{echo.resource.c}: xml{echo.resource.xml} ui{**} css{**}
 {{
   diag glib-compile-resources ($<[0]) -> $>
 

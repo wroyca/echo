@@ -39,7 +39,7 @@ echo_application_new ()
 
   self = g_object_new (ECHO_TYPE_APPLICATION,
                        "application-id", "app.drey.Echo",
-                       "flags", G_APPLICATION_DEFAULT_FLAGS,
+                       "flags", G_APPLICATION_HANDLES_COMMAND_LINE,
                        nullptr);
 
   return ECHO_APPLICATION (self);
@@ -61,6 +61,24 @@ echo_application_activate (GApplication *app)
   echo_window_present (window);
 }
 
+static int
+echo_application_command_line (GApplication            *app,
+                               GApplicationCommandLine *cmdline)
+{
+  EchoApplication *self = ECHO_APPLICATION (app);
+  int argc;
+  g_auto (GStrv) argv = nullptr;
+
+  g_assert (ECHO_IS_APPLICATION (self));
+  g_assert (G_IS_APPLICATION_COMMAND_LINE (cmdline));
+
+  argv = g_application_command_line_get_arguments (cmdline, &argc);
+
+  g_application_activate (G_APPLICATION (self));
+
+  return G_APPLICATION_CLASS (echo_application_parent_class)->command_line (app, cmdline);
+}
+
 static void
 echo_application_class_init (EchoApplicationClass *klass)
 {
@@ -69,6 +87,7 @@ echo_application_class_init (EchoApplicationClass *klass)
   g_assert (G_IS_APPLICATION_CLASS (app_class));
 
   app_class->activate = echo_application_activate;
+  app_class->command_line = echo_application_command_line;
 }
 
 static const char *developers[] = {
