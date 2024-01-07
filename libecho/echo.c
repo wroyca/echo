@@ -18,3 +18,29 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include <libecho/echo.h>
+
+static const gchar *application_id = "app.drey.Echo";
+static GThread     *application_thread;
+
+# if defined (G_HAS_CONSTRUCTORS)
+#   ifdef G_DEFINE_CONSTRUCTOR_NEEDS_PRAGMA
+#     pragma G_DEFINE_CONSTRUCTOR_PRAGMA_ARGS (echo_init_ctor)
+#   endif
+
+G_DEFINE_CONSTRUCTOR (echo_init_ctor)
+
+# else
+#   error The `constructor` attribute is not supported on this compiler.
+# endif
+
+static void
+echo_init_ctor (void)
+{
+  application_thread = g_thread_self ();
+}
+
+GThread *
+echo_thread_self (void)
+{
+  return application_thread;
+}

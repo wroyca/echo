@@ -1,4 +1,4 @@
-// echo.c
+// echo.h
 //
 // Copyright 2024 William Roy
 //
@@ -23,3 +23,9 @@
 #include <libpeas.h>
 
 #include <libecho/export.h>
+#include <libecho/gconstructor.h>
+
+GThread *
+echo_thread_self (void);
+
+#define ECHO_IS_MAIN_THREAD() (g_thread_self () == echo_thread_self ())
