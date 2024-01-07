@@ -1,6 +1,0 @@
-$out_root/
-{
-  include libecho/
-}
-
-export $out_root/libecho/$import.target

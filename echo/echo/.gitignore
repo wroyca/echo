@@ -1,9 +1,0 @@
-echo
-
-# Testscript output directory (can be symlink).
-#
-test-echo
-
-# GObject introspection (auto-generated).
-Echo.gir
-Echo.typelib

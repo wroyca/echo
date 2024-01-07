@@ -1,0 +1,25 @@
+if ($import.target == exe{echo})
+{
+  $out_root/
+  {
+    include echo/
+  }
+
+  export $out_root/echo/exe{echo}
+}
+else
+{
+  $out_root/
+  {
+    include libecho/
+  }
+
+  d = [dir_path] $out_root/libecho/
+
+  # Assume plugins.
+  #
+  if ($name($import.target) != 'echo')
+    d += $regex.replace($name($import.target), '^echo-(.+)', '\1')
+
+  export $d/$import.target
+}

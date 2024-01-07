@@ -1,10 +1,12 @@
 CompileFlags:
   Add:
-  - "--include-directory=/home/wroy/Projects/echo/libecho"
+  - "-std=c2x"
+
   - "-DLIBGDK_PIXBUF_2_0_SHARED"
   - "-DLIBGTK_4_SHARED"
   - "-DLIBPANGOCAIRO_1_0_SHARED"
   - "-DLIBPANGO_1_0_SHARED"
+
   - "-I/usr/include/appstream"
   - "-I/usr/include/blkid"
   - "-I/usr/include/cairo"
@@ -26,10 +28,5 @@ CompileFlags:
   - "-I/usr/include/sysprof-6"
   - "-I/usr/lib64/glib-2.0/include"
   - "-I/usr/lib64/graphene-1.0/include"
-  - "-fmodule-file=std=/home/wroy/Projects/echo-clang/build/cc/build/modules/cxx/std.so.pcm"
-  - "-std=c++26"
-  - "-Xclang"
-  - "-fmodules-embed-all-files"
-  - "c++-module"
 
-
+  - "--include-directory=/home/wroy/Projects/echo"

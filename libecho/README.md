@@ -1,3 +1,0 @@
-# libecho
-
-C++ library

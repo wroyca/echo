@@ -1,5 +1,41 @@
-./: {*/ -build2/} doc{README.md} manifest
+intf_libs = # Interface dependencies.
+impl_libs = # Implementation dependencies.
+intf_libs =+ %lib{adwaita-1 peas-2}
 
-# Don't install tests.
+lib{echo}: {h c}{**} $impl_libs $intf_libs
+
+# Build options.
 #
-tests/: install = false
+c.poptions =+ "-I$out_root" "-I$src_root"
+
+{hbmia obja}{*}: c.poptions += -DLIBECHO_STATIC_BUILD
+{hbmis objs}{*}: c.poptions += -DLIBECHO_SHARED_BUILD
+
+# Export options.
+#
+lib{echo}:
+{
+  c.export.poptions = "-I$out_root" "-I$src_root"
+  c.export.libs = $intf_libs
+}
+
+liba{echo}: c.export.poptions += -DLIBECHO_STATIC
+libs{echo}: c.export.poptions += -DLIBECHO_SHARED
+
+# For pre-releases use the complete version to make sure they cannot
+# be used in place of another pre-release or the final version. See
+# the version module for details on the version.* variable values.
+#
+if $version.pre_release
+  lib{echo}: bin.lib.version = "-$version.project_id"
+else
+  lib{echo}: bin.lib.version = "-$version.major.$version.minor"
+
+# Install into the libecho/ subdirectory of, say, /usr/include/
+# recreating subdirectories.
+#
+h{*}:
+{
+  install         = include/libecho/
+  install.subdirs = true
+}

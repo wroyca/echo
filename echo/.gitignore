@@ -1,25 +1,9 @@
-# Compiler/linker output.
+echo
+
+# Testscript output directory (can be symlink).
 #
-*.d
-*.t
-*.i
-*.i.*
-*.ii
-*.ii.*
-*.o
-*.obj
-*.gcm
-*.pcm
-*.ifc
-*.so
-*.dylib
-*.dll
-*.a
-*.lib
-*.exp
-*.pdb
-*.ilk
-*.exe
-*.exe.dlls/
-*.exe.manifest
-*.pc
+test-echo
+
+# Resource bundle (automatically generated using glib-compile-resources).
+#
+echo.resource.c

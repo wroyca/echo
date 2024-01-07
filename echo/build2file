@@ -1,1 +1,21 @@
-./: {*/ -build2/} doc{README.md} manifest
+libs =
+import libs += lib{echo}
+
+exe{echo}: {h c}{** -echo.resource.c} \
+             {c}{echo.resource.c}     \
+  $libs testscript
+
+# Resource bundle.
+#
+c{echo.resource.c}: file{echo.resource.xml}
+{{
+  diag glib-compile-resources ($<[0]) -> $>
+
+  r = $path($<[0])
+  b = $out_base/$name($>).c
+
+  glib-compile-resources \
+    --sourcedir $src_base --generate-source $r --target=$b
+}}
+
+c.poptions =+ "-I$out_root" "-I$src_root"

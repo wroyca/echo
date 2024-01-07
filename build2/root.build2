@@ -9,14 +9,6 @@ using c
 h{*}: extension = h
 c{*}: extension = c
 
-define xml: file
- define ui: file
-define css: file
-
-xml{*}: extension = xml
- ui{*}: extension = ui
-css{*}: extension = css
-
 # The test target for cross-testing (running tests under Wine, etc).
 #
 test.target = $c.target
