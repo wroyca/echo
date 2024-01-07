@@ -18,6 +18,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include <echo/echo-application.h>
+#include <echo/echo-plugin.h>
 
 struct _EchoApplication
 {
@@ -37,6 +38,8 @@ echo_application_new ()
                        "application-id", ECHO_APPLICATION_ID,
                        "flags", G_APPLICATION_DEFAULT_FLAGS,
                        nullptr);
+
+  echo_plugin_init (self);
 
   return g_steal_pointer(&self);
 }

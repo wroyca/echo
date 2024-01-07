@@ -1,0 +1,55 @@
+include     ../
+impl_libs = ../lib{echo}
+
+lib{echo-ui}: {h c}{* -echo-ui.resource.c} \
+                {c}{echo-ui.resource.c}    \
+  $impl_libs $intf_libs
+
+# Resource bundle.
+#
+c{echo-ui.resource.c}: file{echo-ui.resource.xml}
+{{
+  diag glib-compile-resources ($<[0]) -> $>
+
+  r = $path($<[0])
+  b = $out_base/$name($>).c
+
+  glib-compile-resources \
+    --sourcedir $src_base --generate-source $r --target=$b
+}}
+
+# Build options.
+#
+c.poptions =+ "-I$out_root" "-I$src_root"
+
+{hbmia obja}{*}: c.poptions += -DLIBECHO_UI_STATIC_BUILD
+{hbmis objs}{*}: c.poptions += -DLIBECHO_UI_SHARED_BUILD
+
+# Export options.
+#
+lib{echo-ui}:
+{
+  c.export.poptions = "-I$out_root" "-I$src_root"
+  c.export.libs = $intf_libs
+}
+
+liba{echo-ui}: c.export.poptions += -DLIBECHO_UI_STATIC
+libs{echo-ui}: c.export.poptions += -DLIBECHO_UI_SHARED
+
+# For pre-releases use the complete version to make sure they cannot
+# be used in place of another pre-release or the final version. See
+# the version module for details on the version.* variable values.
+#
+if $version.pre_release
+  lib{echo-ui}: bin.lib.version = "-$version.project_id"
+else
+  lib{echo-ui}: bin.lib.version = "-$version.major.$version.minor"
+
+# Install into the libecho/ui/ subdirectory of, say, /usr/include/
+# recreating subdirectories.
+#
+h{*}:
+{
+  install         = include/libecho/ui/
+  install.subdirs = true
+}
