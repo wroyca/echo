@@ -4,6 +4,10 @@
 #
 .build2/local/
 
+# Local workspace files.
+#
+*.sublime-workspace
+
 # Compiler/linker output.
 #
 *.d
