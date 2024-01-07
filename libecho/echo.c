@@ -19,8 +19,7 @@
 
 #include <libecho/echo.h>
 
-static const gchar *application_id = "app.drey.Echo";
-static GThread     *application_thread;
+static GThread *echo_application_thread;
 
 # if defined (G_HAS_CONSTRUCTORS)
 #   ifdef G_DEFINE_CONSTRUCTOR_NEEDS_PRAGMA
@@ -36,11 +35,11 @@ G_DEFINE_CONSTRUCTOR (echo_init_ctor)
 static void
 echo_init_ctor (void)
 {
-  application_thread = g_thread_self ();
+  echo_application_thread = g_thread_self ();
 }
 
 GThread *
 echo_thread_self (void)
 {
-  return application_thread;
+  return echo_application_thread;
 }

@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <adwaita.h>
+#include <libecho/echo.h>
 
 G_BEGIN_DECLS
 
@@ -27,7 +27,6 @@ G_BEGIN_DECLS
 
 G_DECLARE_FINAL_TYPE (EchoApplication, echo_application, ECHO, APPLICATION, AdwApplication)
 
-EchoApplication *
-echo_application_new ();
+EchoApplication *echo_application_new ();
 
 G_END_DECLS

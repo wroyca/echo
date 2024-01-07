@@ -18,113 +18,53 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include <echo/echo-application.h>
-#include <echo/echo-window.h>
 
 struct _EchoApplication
 {
-  AdwApplication parent_instance;
+  AdwApplication  parent_instance;
+
+  GHashTable     *plugins;
 };
 
-G_DEFINE_TYPE (EchoApplication, echo_application, ADW_TYPE_APPLICATION)
-
-#define echo_application_get_active_window(x) ECHO_WINDOW (gtk_application_get_active_window (GTK_APPLICATION (x)))
-#define echo_window_present(x)                             gtk_window_present (GTK_WINDOW (x))
-#define echo_show_about_window(x, ...)                     adw_show_about_window (GTK_WINDOW (x), __VA_ARGS__)
+G_DEFINE_FINAL_TYPE (EchoApplication, echo_application, ADW_TYPE_APPLICATION)
 
 EchoApplication *
 echo_application_new ()
 {
-  EchoApplication* self;
+  g_autoptr (EchoApplication) self = nullptr;
 
   self = g_object_new (ECHO_TYPE_APPLICATION,
-                       "application-id", "app.drey.Echo",
-                       "flags", G_APPLICATION_HANDLES_COMMAND_LINE,
+                       "application-id", ECHO_APPLICATION_ID,
+                       "flags", G_APPLICATION_DEFAULT_FLAGS,
                        nullptr);
 
-  return ECHO_APPLICATION (self);
+  return g_steal_pointer(&self);
 }
 
 static void
-echo_application_activate (GApplication *app)
+echo_application_activate (GApplication* application)
 {
-  EchoApplication *self = ECHO_APPLICATION (app);
-  EchoWindow *window;
 
-  g_assert (ECHO_IS_APPLICATION (self));
-
-  window = echo_application_get_active_window (app);
-
-  if (window == nullptr)
-    window = echo_window_new (self);
-
-  echo_window_present (window);
 }
 
-static int
-echo_application_command_line (GApplication            *app,
-                               GApplicationCommandLine *cmdline)
+static void
+echo_application_constructed (GObject* object)
 {
-  EchoApplication *self = ECHO_APPLICATION (app);
-  int argc;
-  g_auto (GStrv) argv = nullptr;
 
-  g_assert (ECHO_IS_APPLICATION (self));
-  g_assert (G_IS_APPLICATION_COMMAND_LINE (cmdline));
-
-  argv = g_application_command_line_get_arguments (cmdline, &argc);
-
-  g_application_activate (G_APPLICATION (self));
-
-  return G_APPLICATION_CLASS (echo_application_parent_class)->command_line (app, cmdline);
 }
 
 static void
 echo_application_class_init (EchoApplicationClass *klass)
 {
   GApplicationClass *app_class = G_APPLICATION_CLASS (klass);
-
-  g_assert (G_IS_APPLICATION_CLASS (app_class));
+  GObjectClass *obj_class = G_OBJECT_CLASS (klass);
 
   app_class->activate = echo_application_activate;
-  app_class->command_line = echo_application_command_line;
+  obj_class->constructed = echo_application_constructed;
 }
-
-static const char *developers[] = {
-  "William Roy", nullptr
-};
-
-static void
-echo_application_about_action (GSimpleAction *action,
-                               GVariant      *parameter,
-                               gpointer       user_data)
-{
-  EchoApplication *self = ECHO_APPLICATION (user_data);
-  EchoWindow *window;
-
-  g_assert (ECHO_IS_APPLICATION (self));
-
-  window = echo_application_get_active_window (self);
-
-  echo_show_about_window (window,
-                         "application-name", "echo",
-                         "application-icon", "app.drey.Echo",
-                         "developer-name", "William Roy",
-                         "version", "0.1.0",
-                         "developers", developers,
-                         "copyright", "© 2023 William Roy",
-                         nullptr);
-}
-
-static const GActionEntry actions[] = {
-  { "about", echo_application_about_action },
-};
 
 static void
 echo_application_init (EchoApplication *self)
 {
-  GActionMap* map = G_ACTION_MAP (self);
 
-  g_assert (G_IS_ACTION_MAP (map));
-
-  g_action_map_add_action_entries (map, actions, G_N_ELEMENTS (actions), self);
 }
