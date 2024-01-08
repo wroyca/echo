@@ -73,13 +73,13 @@ echo_plugin_init (EchoApplication *self)
   for (guint i = 0; i < g_list_model_get_n_items (G_LIST_MODEL (engine)); i++)
     {
       g_autoptr (PeasPluginInfo) plugin_info =
-        plugin_info = g_list_model_get_item (G_LIST_MODEL (engine), i);
+        g_list_model_get_item (G_LIST_MODEL (engine), i);
 
       if (peas_plugin_info_is_loaded (plugin_info) == 0
           && peas_plugin_info_get_external_data (plugin_info, "At-Startup"))
         {
-          g_autoptr (GHashTable) plugin_table
-            = g_hash_table_new (g_str_hash, g_str_equal);
+          g_autoptr (GHashTable) plugin_table = 
+            g_hash_table_new (g_str_hash, g_str_equal);
 
           if (echo_plugin_can_load (engine, plugin_info, plugin_table))
             peas_engine_load_plugin (engine, plugin_info);
