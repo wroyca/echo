@@ -1,0 +1,12 @@
+[library]
+version = "1.0.0"
+devhelp = true
+search_index = true
+
+[theme]
+name = "basic"
+show_index_summary = true
+show_class_hierarchy = true
+
+[source-location]
+base_url = "https://github.com/wroyca/echo/blob/main/"

@@ -1,0 +1,47 @@
+./:
+
+alias{doc}: $src_root/libecho/{c h}{*}
+{{
+  diag gen $>
+
+  n = $name($project)
+  v = $version
+
+  echo $n | awk '{ $1 = toupper (substr ($1, 0, 1)) substr ($1, 2) } 1' | set N
+
+  r = $src_root
+  b = $src_base
+
+  f = $b/($N).filelist
+  g = $b/($N).gir
+  l = $b/($N).typelib
+  t = $b/($N).toml
+  s = $r/lib($n)/lib($n).a
+
+  touch $f && rm $f
+  echo $path($<) | tr ' ' '\n' >> $f # evaluation pipeline not yet supported
+
+  g-ir-scanner --quiet                                \
+               --symbol-prefix=$n                     \
+               --identifier-prefix=$N                 \
+               --namespace=$N                         \
+               --nsversion=$v                         \
+                                                      \
+               --library=$s                           \
+               --output=$g                            \
+               --filelist=$f                          \
+                                                      \
+               --include=Gtk-4.0                      \
+               --include=Adw-1                        \
+               --include=Peas-2                       \
+                                                      \
+               --cflags-begin                         \
+                 --include-directory=($r[0])          \
+               --cflags-end
+
+  g-ir-compiler $g \
+    --output $l --includedir=/usr/share/gir-1.0
+
+  gi-docgen generate $g \
+    --config=$t --output-dir=($b[0]) --content-dir=($b[0])
+}}
