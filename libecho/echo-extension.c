@@ -1,4 +1,4 @@
-// echo-application.h
+// echo-extension.c
 //
 // Copyright 2024 William Roy
 //
@@ -17,16 +17,20 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#pragma once
-
 #include <libecho/echo.h>
+#include <libecho/echo-application.h>
+#include <libecho/echo-application-private.h>
+#include <libecho/echo-application-extension.h>
 
-G_BEGIN_DECLS
 
-#define ECHO_TYPE_APPLICATION (echo_application_get_type())
+void
+_echo_extension_init (EchoApplication *self)
+{
+  g_assert (ECHO_IS_MAIN_THREAD ());
+  g_assert (ECHO_IS_APPLICATION (self));
+  g_assert (self->extensions == NULL);
 
-G_DECLARE_FINAL_TYPE (EchoApplication, echo_application, ECHO, APPLICATION, AdwApplication)
-
-EchoApplication *echo_application_new ();
-
-G_END_DECLS
+  self->extensions = peas_extension_set_new (peas_engine_get_default (),
+                                             ECHO_TYPE_APPLICATION_EXTENSION,
+                                             NULL);
+}

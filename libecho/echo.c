@@ -29,7 +29,7 @@ static GThread *echo_application_thread;
 G_DEFINE_CONSTRUCTOR (echo_init_ctor)
 
 # else
-#   error The `constructor` attribute is not supported on this compiler.
+#   error __attribute__((constructor)) is not supported.
 # endif
 
 static void

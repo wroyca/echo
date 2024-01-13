@@ -22,11 +22,14 @@
 #include <adwaita.h>
 #include <libpeas.h>
 
-#include <libecho/export.h>
 #include <libecho/gconstructor.h>
+
+G_BEGIN_DECLS
+
+#define ECHO_APPLICATION_ID "app.drey.Echo"
+#define ECHO_IS_MAIN_THREAD() (g_thread_self () == echo_thread_self ())
 
 GThread *
 echo_thread_self (void);
 
-#define ECHO_APPLICATION_ID "app.drey.Echo"
-#define ECHO_IS_MAIN_THREAD() (g_thread_self () == echo_thread_self ())
+G_END_DECLS

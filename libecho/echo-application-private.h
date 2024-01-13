@@ -1,7 +1,6 @@
-// echo-plugin.h
+// echo-application-private.h
 //
 // Copyright 2024 William Roy
-// Copyright 2024 Christian Hergert <chergert@redhat.com>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -20,10 +19,18 @@
 
 #pragma once
 
-#include <libecho/echo.h>
+#include <libecho/echo-application.h>
 
-typedef struct _EchoApplication EchoApplication;
+G_BEGIN_DECLS
 
-void
-echo_plugin_init (EchoApplication* self);
+struct _EchoApplication
+{
+  AdwApplication    parent_instance;
 
+  PeasExtensionSet *extensions;
+};
+
+void _echo_plugin_init    (EchoApplication *self);
+void _echo_extension_init (EchoApplication *self);
+
+G_END_DECLS

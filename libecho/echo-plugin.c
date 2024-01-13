@@ -1,7 +1,6 @@
-// echo-plugin.h
+// echo-plugin.c
 //
 // Copyright 2024 William Roy
-// Copyright 2024 Christian Hergert <chergert@redhat.com>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,8 +17,9 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include <echo/echo-plugin.h>
-#include <echo/echo-application.h>
+#include <libecho/echo.h>
+#include <libecho/echo-application.h>
+#include <libecho/echo-application-private.h>
 
 static gboolean
 echo_plugin_can_load (PeasEngine      *engine,
@@ -38,7 +38,10 @@ echo_plugin_can_load (PeasEngine      *engine,
   name = peas_plugin_info_get_module_name (plugin_info);
 
   if (g_hash_table_contains (plugin_table, name))
-    return g_warning ("Cyclic dependency detected from %s", name), FALSE;
+    {
+      g_warning ("Cyclic dependency detected from %s", name);
+      return FALSE;
+    }
 
   g_hash_table_add (plugin_table, (gpointer) name);
 
@@ -46,22 +49,27 @@ echo_plugin_can_load (PeasEngine      *engine,
     {
       for (guint i = 0; deps[i]; i++)
         {
-          g_autoptr (PeasPluginInfo) plugin_info
-            = peas_engine_get_plugin_info (engine, deps[i]);
+          g_autoptr (PeasPluginInfo) plugin_info =
+            peas_engine_get_plugin_info (engine, deps[i]);
 
           if (!echo_plugin_can_load (engine, plugin_info, plugin_table))
+          {
+            g_warning ("%s doesn't meet the minimum plugin requirements", name);
             return FALSE;
+          }
         }
     }
 
   g_hash_table_remove (plugin_table, (gpointer) name);
+
   return TRUE;
 }
 
 void
-echo_plugin_init (EchoApplication *self)
+_echo_plugin_init (EchoApplication *self)
 {
   g_autoptr (PeasEngine) engine = peas_engine_get_default ();
+  guint n_items;
 
   g_assert (ECHO_IS_MAIN_THREAD ());
   g_assert (ECHO_IS_APPLICATION (self));
@@ -70,7 +78,9 @@ echo_plugin_init (EchoApplication *self)
                                "resource:///app/drey/Echo/plugin",
                                nullptr);
 
-  for (guint i = 0; i < g_list_model_get_n_items (G_LIST_MODEL (engine)); i++)
+  n_items = g_list_model_get_n_items (G_LIST_MODEL (engine));
+
+  for (guint i = 0; i < n_items; i++)
     {
       g_autoptr (PeasPluginInfo) plugin_info =
         g_list_model_get_item (G_LIST_MODEL (engine), i);
@@ -78,7 +88,7 @@ echo_plugin_init (EchoApplication *self)
       if (peas_plugin_info_is_loaded (plugin_info) == 0
           && peas_plugin_info_get_external_data (plugin_info, "At-Startup"))
         {
-          g_autoptr (GHashTable) plugin_table = 
+          g_autoptr (GHashTable) plugin_table =
             g_hash_table_new (g_str_hash, g_str_equal);
 
           if (echo_plugin_can_load (engine, plugin_info, plugin_table))

@@ -1,4 +1,4 @@
-// echo.c
+// echo-application.h
 //
 // Copyright 2024 William Roy
 //
@@ -17,10 +17,17 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#pragma once
+
 #include <libecho/echo.h>
 
-extern void
-libecho_ui_register_types (PeasObjectModule *module)
-{
-  g_message ("hello");
-}
+G_BEGIN_DECLS
+
+#define ECHO_TYPE_APPLICATION    (echo_application_get_type())
+#define ECHO_APPLICATION_DEFAULT (ECHO_APPLICATION(g_application_get_default()))
+
+G_DECLARE_FINAL_TYPE (EchoApplication, echo_application, ECHO, APPLICATION, AdwApplication)
+
+EchoApplication *echo_application_new ();
+
+G_END_DECLS

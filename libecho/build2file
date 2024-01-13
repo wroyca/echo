@@ -1,28 +1,8 @@
-plug_libs = # Plugin dependencies.
 intf_libs = # Interface dependencies.
 impl_libs = # Implementation dependencies.
+intf_libs += %lib{adwaita-1 peas-2}
 
-plug_libs =+ ui/
-intf_libs =+ %lib{adwaita-1 peas-2}
-
-./: lib{echo}  $plug_libs
-    include    $plug_libs
-./: lib{echo}: {h c}{* -echo.resource.c}  \
-                 {c}{echo.resource.c}     \
-  $impl_libs $intf_libs
-
-# Resource bundle.
-#
-c{echo.resource.c}: file{echo.resource.xml}
-{{
-  diag glib-compile-resources ($<[0]) -> $>
-
-  r = $path($<[0])
-  b = $out_base/$name($>).c
-
-  glib-compile-resources \
-    --sourcedir $src_base --generate-source $r --target=$b
-}}
+lib{echo}: {h c}{**} $impl_libs $intf_libs
 
 # Build options.
 #

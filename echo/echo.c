@@ -17,7 +17,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include <echo/echo-application.h>
+#include <libecho/echo-application.h>
 
 int
 main (int   argc,
