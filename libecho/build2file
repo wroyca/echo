@@ -1,8 +1,28 @@
 intf_libs = # Interface dependencies.
 impl_libs = # Implementation dependencies.
-intf_libs += %lib{adwaita-1 peas-2}
 
-lib{echo}: {h c}{**} $impl_libs $intf_libs
+# Query platform-specific interface libraries that are (currently) not
+# packaged and need to come from the system package manager.
+#
+intf_libs =+ libpeas%lib{peas-2}
+intf_libs =+ libadwaita%lib{adwaita-1}
+
+./: lib{echo}: {h c}{* -echo.resource.c}  \
+                 {c}{echo.resource.c}     \
+  $impl_libs $intf_libs
+
+# Resource bundle.
+#
+c{echo.resource.c}: file{echo.resource.xml}
+{{
+  diag glib-compile-resources ($<[0]) -> $>
+
+  r = $path($<[0])
+  b = $out_base/$name($>).c
+
+  glib-compile-resources \
+    --sourcedir $src_base --generate-source $r --target=$b
+}}
 
 # Build options.
 #

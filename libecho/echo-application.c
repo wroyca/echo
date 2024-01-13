@@ -17,8 +17,10 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include <libecho/echo-private.h>
 #include <libecho/echo-application-private.h>
 #include <libecho/echo-application-extension.h>
+#include <libecho/echo-application-window.h>
 
 G_DEFINE_FINAL_TYPE (EchoApplication, echo_application, ADW_TYPE_APPLICATION)
 
@@ -56,18 +58,24 @@ static void
 echo_application_activate (GApplication *app)
 {
   g_autoptr (EchoApplication) self = ECHO_APPLICATION (app);
-  g_autoptr (GtkWindow) window = NULL;
+  g_autoptr (EchoApplicationWindow) window = NULL;
 
+  g_assert (ECHO_IS_MAIN_THREAD ());
   g_assert (ECHO_IS_APPLICATION (self));
 
-  if ((window = gtk_application_get_active_window (GTK_APPLICATION (self))))
-    gtk_window_present (GTK_WINDOW (g_steal_pointer (&window)));
+  window = _echo_application_get_active_window (self);
+  if (window == NULL)
+    window = _echo_application_window_new (self);
 
   if (self->extensions != NULL)
     peas_extension_set_foreach (self->extensions,
                                 echo_application_activate_cb,
                                 self);
+
+  _echo_application_window_present (window);
+
   g_steal_pointer (&self);
+  g_steal_pointer (&window);
 }
 
 static void
