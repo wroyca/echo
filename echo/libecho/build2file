@@ -1,19 +1,17 @@
 intf_libs = # Interface dependencies.
 impl_libs = # Implementation dependencies.
+intf_libs =+ %lib{adwaita-1 peas-2}
 
-# Query platform-specific interface libraries that are (currently) not
-# packaged and need to come from the system package manager.
-#
-intf_libs =+ libpeas%lib{peas-2}
-intf_libs =+ libadwaita%lib{adwaita-1}
-
-./: lib{echo}: {h c}{* -echo.resource.c}  \
-                 {c}{echo.resource.c}     \
+lib{echo}: {h c}{** -echo-version   \
+                    -echo-resource} \
+             {h}{echo-version}      \
+             {c}{echo-resource}     \
   $impl_libs $intf_libs
+h{echo-version}: in{echo-version} $src_root/manifest
 
 # Resource bundle.
 #
-c{echo.resource.c}: file{echo.resource.xml}
+c{echo-resource}: x{echo-resource}
 {{
   diag glib-compile-resources ($<[0]) -> $>
 
@@ -28,8 +26,8 @@ c{echo.resource.c}: file{echo.resource.xml}
 #
 c.poptions =+ "-I$out_root" "-I$src_root"
 
-{hbmia obja}{*}: c.poptions += -DLIBECHO_STATIC_BUILD
-{hbmis objs}{*}: c.poptions += -DLIBECHO_SHARED_BUILD
+{hbmia obja}{*}: c.poptions += -DLIBECHO_STATIC_BUILD -DECHO_COMPILATION
+{hbmis objs}{*}: c.poptions += -DLIBECHO_SHARED_BUILD -DECHO_COMPILATION
 
 # Export options.
 #

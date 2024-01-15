@@ -1,0 +1,7 @@
+# Resource bundle (auto-generated).
+#
+echo-resource.c
+
+# .in (input) file preprocessing.
+#
+echo-version.h

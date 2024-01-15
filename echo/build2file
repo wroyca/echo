@@ -1,6 +1,1 @@
-libs =
-import libs += lib{echo}
-
-exe{echo}: {h c}{**} $libs testscript
-
-c.poptions =+ "-I$out_root" "-I$src_root"
+./: {*/ -build2/} doc{README.md} manifest
