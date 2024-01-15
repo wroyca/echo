@@ -27,25 +27,239 @@
 
 G_DEFINE_INTERFACE (EchoApplicationExtension, echo_application_extension, G_TYPE_OBJECT)
 
-void echo_application_extension_real_load   (EchoApplicationExtension *self,
-                                             EchoApplication          *application) {}
-void echo_application_extension_real_unload (EchoApplicationExtension *self,
-                                             EchoApplication          *application) {}
+static void
+echo_application_extension_real_activate (EchoApplicationExtension *self,
+                                          EchoApplication          *application)
+{
+  ECHO_ENTRY;
+
+  g_assert (ECHO_IS_APPLICATION_EXTENSION (self));
+  g_assert (ECHO_IS_APPLICATION (application));
+
+  ECHO_EXIT;
+}
+
+
+static gint
+echo_application_extension_real_command_line (EchoApplicationExtension *self,
+                                              EchoApplication          *application,
+                                              GApplicationCommandLine  *command_line)
+{
+  ECHO_ENTRY;
+
+  g_assert (ECHO_IS_APPLICATION_EXTENSION (self));
+  g_assert (ECHO_IS_APPLICATION (application));
+  g_assert (G_IS_APPLICATION_COMMAND_LINE (command_line));
+
+  ECHO_RETURN (0);
+}
+
+static gint
+echo_application_extension_real_handle_local_options (EchoApplicationExtension *self,
+                                                      EchoApplication          *application,
+                                                      GVariantDict             *options)
+{
+  ECHO_ENTRY;
+
+  g_assert (ECHO_IS_APPLICATION_EXTENSION (self));
+  g_assert (ECHO_IS_APPLICATION (application));
+  g_assert (options != NULL);
+
+  ECHO_RETURN (0);
+}
+
+static gboolean
+echo_application_extension_real_name_lost (EchoApplicationExtension *self,
+                                           EchoApplication          *application)
+{
+  ECHO_ENTRY;
+
+  g_assert (ECHO_IS_APPLICATION_EXTENSION (self));
+  g_assert (ECHO_IS_APPLICATION (application));
+
+  ECHO_RETURN (FALSE);
+}
+
+static void
+echo_application_extension_real_open (EchoApplicationExtension *self,
+                                      EchoApplication          *application,
+                                      GFile                   **files,
+                                      gint                      n_files,
+                                      const gchar              *hint)
+{
+  ECHO_ENTRY;
+
+  g_assert (ECHO_IS_APPLICATION_EXTENSION (self));
+  g_assert (ECHO_IS_APPLICATION (application));
+  g_assert (files != NULL);
+  g_assert (n_files > 0);
+  g_assert (hint != NULL);
+
+  ECHO_EXIT;
+}
+
+static void
+echo_application_extension_real_shutdown (EchoApplicationExtension *self,
+                                          EchoApplication          *application)
+{
+  ECHO_ENTRY;
+
+  g_assert (ECHO_IS_APPLICATION_EXTENSION (self));
+  g_assert (ECHO_IS_APPLICATION (application));
+
+  ECHO_EXIT;
+}
+
+static void
+echo_application_extension_real_startup (EchoApplicationExtension *self,
+                                         EchoApplication          *application)
+{
+  ECHO_ENTRY;
+
+  g_assert (ECHO_IS_APPLICATION_EXTENSION (self));
+  g_assert (ECHO_IS_APPLICATION (application));
+
+  ECHO_EXIT;
+}
 
 static void
 echo_application_extension_default_init (EchoApplicationExtensionInterface *iface)
 {
-  iface->load = echo_application_extension_real_load;
-  iface->unload = echo_application_extension_real_unload;
+  iface->activate             = echo_application_extension_real_activate;
+  iface->command_line         = echo_application_extension_real_command_line;
+  iface->handle_local_options = echo_application_extension_real_handle_local_options;
+  iface->name_lost            = echo_application_extension_real_name_lost;
+  iface->open                 = echo_application_extension_real_open;
+  iface->shutdown             = echo_application_extension_real_shutdown;
+  iface->startup              = echo_application_extension_real_startup;
 }
 
 void
 echo_application_extension_activate (EchoApplicationExtension *self,
                                      EchoApplication          *application)
 {
+  ECHO_ENTRY;
+
   g_return_if_fail (ECHO_IS_APPLICATION_EXTENSION (self));
   g_return_if_fail (ECHO_IS_APPLICATION (application));
 
   if (ECHO_APPLICATION_EXTENSION_GET_IFACE (self)->activate)
     ECHO_APPLICATION_EXTENSION_GET_IFACE (self)->activate (self, application);
+
+  ECHO_EXIT;
+}
+
+
+gint
+echo_application_extension_command_line (EchoApplicationExtension *self,
+                                         EchoApplication          *application,
+                                         GApplicationCommandLine  *command_line)
+
+{
+  gint ret;
+
+  ECHO_ENTRY;
+
+  g_return_val_if_fail (ECHO_IS_APPLICATION_EXTENSION (self), 1);
+  g_return_val_if_fail (ECHO_IS_APPLICATION (application), 1);
+  g_return_val_if_fail (G_IS_APPLICATION_COMMAND_LINE (command_line), 1);
+
+  ret = 1;
+
+  if (ECHO_APPLICATION_EXTENSION_GET_IFACE (self)->command_line)
+    ret = ECHO_APPLICATION_EXTENSION_GET_IFACE (self)->command_line (self, application, command_line);
+
+  ECHO_RETURN (ret);
+}
+
+gint
+echo_application_extension_handle_local_options (EchoApplicationExtension *self,
+                                                 EchoApplication          *application,
+                                                 GVariantDict             *options)
+
+{
+  gint ret;
+
+  ECHO_ENTRY;
+
+  g_return_val_if_fail (ECHO_IS_APPLICATION_EXTENSION (self), 1);
+  g_return_val_if_fail (ECHO_IS_APPLICATION (application), 1);
+  g_return_val_if_fail (options != NULL, 1);
+
+  ret = 1;
+
+  if (ECHO_APPLICATION_EXTENSION_GET_IFACE (self)->handle_local_options)
+    ret = ECHO_APPLICATION_EXTENSION_GET_IFACE (self)->handle_local_options (self, application, options);
+
+  ECHO_RETURN (ret);
+}
+
+gboolean
+echo_application_extension_name_lost (EchoApplicationExtension *self,
+                                      EchoApplication          *application)
+{
+  gboolean ret;
+
+  ECHO_ENTRY;
+
+  g_return_val_if_fail (ECHO_IS_APPLICATION_EXTENSION (self), FALSE);
+  g_return_val_if_fail (ECHO_IS_APPLICATION (application), FALSE);
+
+  ret = FALSE;
+
+  if (ECHO_APPLICATION_EXTENSION_GET_IFACE (self)->name_lost)
+    ret = ECHO_APPLICATION_EXTENSION_GET_IFACE (self)->name_lost (self, application);
+
+  ECHO_RETURN (ret);
+}
+
+void
+echo_application_extension_open (EchoApplicationExtension *self,
+                                 EchoApplication          *application,
+                                 GFile                   **files,
+                                 gint                      n_files,
+                                 const gchar              *hint)
+{
+  ECHO_ENTRY;
+
+  g_return_if_fail (ECHO_IS_APPLICATION_EXTENSION (self));
+  g_return_if_fail (ECHO_IS_APPLICATION (application));
+  g_return_if_fail (files != NULL);
+  g_return_if_fail (n_files > 0);
+  g_return_if_fail (hint != NULL);
+
+  if (ECHO_APPLICATION_EXTENSION_GET_IFACE (self)->open)
+    ECHO_APPLICATION_EXTENSION_GET_IFACE (self)->open (self, application, files, n_files, hint);
+
+  ECHO_EXIT;
+}
+
+void
+echo_application_extension_shutdown (EchoApplicationExtension *self,
+                                     EchoApplication          *application)
+{
+  ECHO_ENTRY;
+
+  g_return_if_fail (ECHO_IS_APPLICATION_EXTENSION (self));
+  g_return_if_fail (ECHO_IS_APPLICATION (application));
+
+  if (ECHO_APPLICATION_EXTENSION_GET_IFACE (self)->shutdown)
+    ECHO_APPLICATION_EXTENSION_GET_IFACE (self)->shutdown (self, application);
+
+  ECHO_EXIT;
+}
+
+void
+echo_application_extension_startup (EchoApplicationExtension *self,
+                                    EchoApplication          *application)
+{
+  ECHO_ENTRY;
+
+  g_return_if_fail (ECHO_IS_APPLICATION_EXTENSION (self));
+  g_return_if_fail (ECHO_IS_APPLICATION (application));
+
+  if (ECHO_APPLICATION_EXTENSION_GET_IFACE (self)->startup)
+    ECHO_APPLICATION_EXTENSION_GET_IFACE (self)->startup (self, application);
+
+  ECHO_EXIT;
 }

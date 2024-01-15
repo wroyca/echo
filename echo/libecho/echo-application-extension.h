@@ -24,31 +24,57 @@
 #  error "Only <libecho/echo.h> can be included directly."
 #endif
 
-#include <libecho/echo-application.h>
-
 #include <adwaita.h>
 
-G_BEGIN_DECLS
+#include <libecho/echo-application-extension.h>
+#include <libecho/echo-application.h>
 
-#define ECHO_TYPE_APPLICATION_EXTENSION (echo_application_extension_get_type())
+#define ECHO_TYPE_APPLICATION_EXTENSION (echo_application_extension_get_type ())
 
-G_DECLARE_INTERFACE (EchoApplicationExtension, echo_application_extension,
-                     ECHO, APPLICATION_EXTENSION, GObject)
+G_DECLARE_INTERFACE (EchoApplicationExtension, echo_application_extension, ECHO, APPLICATION_EXTENSION, GObject)
 
 struct _EchoApplicationExtensionInterface
 {
   GTypeInterface parent_interface;
 
-  void (*load)     (EchoApplicationExtension  *self,
-                    EchoApplication           *application);
-  void (*unload)   (EchoApplicationExtension  *self,
-                    EchoApplication           *application);
-  void (*activate) (EchoApplicationExtension  *self,
-                    EchoApplication           *application);
+  void     (*activate)             (EchoApplicationExtension  *self,
+                                    EchoApplication           *application);
+  gint     (*command_line)         (EchoApplicationExtension  *self,
+                                    EchoApplication           *application,
+                                    GApplicationCommandLine   *command_line);
+  gint     (*handle_local_options) (EchoApplicationExtension  *self,
+                                    EchoApplication           *application,
+                                    GVariantDict              *options);
+  gboolean (*name_lost)            (EchoApplicationExtension  *self,
+                                    EchoApplication           *application);
+  void     (*open)                 (EchoApplicationExtension  *self,
+                                    EchoApplication           *application,
+                                    GFile                    **files,
+                                    gint                       n_files,
+                                    const gchar               *hint);
+  void     (*shutdown)             (EchoApplicationExtension  *self,
+                                    EchoApplication           *application);
+  void     (*startup)              (EchoApplicationExtension  *self,
+                                    EchoApplication           *application);
 };
 
-void
-echo_application_extension_activate (EchoApplicationExtension *self,
-                                     EchoApplication          *application);
+void     echo_application_extension_activate             (EchoApplicationExtension *self,
+                                                          EchoApplication          *application);
+gint     echo_application_extension_command_line         (EchoApplicationExtension *self,
+                                                          EchoApplication          *application,
+                                                          GApplicationCommandLine  *command_line);
+gint     echo_application_extension_handle_local_options (EchoApplicationExtension *self,
+                                                          EchoApplication          *application,
+                                                          GVariantDict             *options);
+gboolean echo_application_extension_name_lost            (EchoApplicationExtension *self,
+                                                          EchoApplication          *application);
+void     echo_application_extension_open                 (EchoApplicationExtension *self,
+                                                          EchoApplication          *application,
+                                                          GFile                   **files,
+                                                          gint                      n_files,
+                                                          const gchar              *hint);
+void     echo_application_extension_shutdown             (EchoApplicationExtension *self,
+                                                          EchoApplication          *application);
+void     echo_application_extension_startup              (EchoApplicationExtension *self,
+                                                          EchoApplication          *application);
 
-G_END_DECLS
