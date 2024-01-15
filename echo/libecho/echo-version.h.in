@@ -143,7 +143,7 @@ G_BEGIN_DECLS
 /**
  * ECHO_VERSION_MAX_ALLOWED:
  *
- * A macro that defines Echo API upper bound
+ * A macro that defines Echo API upper bound.
  *
  * This should be defined prior to including any libecho headers and must be
  * one of the predefined version macros, such as %ECHO_VERSION_0_1.

@@ -19,6 +19,7 @@
  */
 
 #include <libecho/echo-version.h>
+#include <libecho/echo-log.h>
 
 /**
  * echo_get_major_version:
@@ -32,7 +33,9 @@
 guint
 echo_get_major_version (void)
 {
-  return ECHO_MAJOR_VERSION;
+  ECHO_ENTRY;
+
+  ECHO_RETURN (ECHO_MAJOR_VERSION);
 }
 
 /**
@@ -47,7 +50,9 @@ echo_get_major_version (void)
 guint
 echo_get_minor_version (void)
 {
-  return ECHO_MINOR_VERSION;
+  ECHO_ENTRY;
+
+  ECHO_RETURN (ECHO_MINOR_VERSION);
 }
 
 /**
@@ -62,5 +67,7 @@ echo_get_minor_version (void)
 guint
 echo_get_patch_version (void)
 {
-  return ECHO_PATCH_VERSION;
+  ECHO_ENTRY;
+
+  ECHO_RETURN (ECHO_PATCH_VERSION);
 }
