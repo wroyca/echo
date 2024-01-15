@@ -1,4 +1,4 @@
-/* echo-private.h
+/* echo-ui.h
  *
  * Copyright 2024 William Roy
  *
@@ -18,18 +18,15 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-/*
- * Aliases to handle type cast and have better decoupling between GTK and ECHO.
- * Note that unlike macro, aliases should be lowercase in nature so that they
- * can be replaced by a implementation if wanted.
- */
+#pragma once
 
-#ifndef _echo_application_get_active_window
-#define _echo_application_get_active_window(t) \
-  ECHO_APPLICATION_WINDOW (gtk_application_get_active_window (GTK_APPLICATION (t)))
-#endif
+#include <libecho/echo.h>
 
-#ifndef _echo_application_window_present
-#define _echo_application_window_present(t) \
-   gtk_window_present (GTK_WINDOW (t))
-#endif
+G_BEGIN_DECLS
+
+#define ECHO_TYPE_UI (echo_ui_get_type())
+
+G_DECLARE_FINAL_TYPE (EchoUI, echo_ui, ECHO, UI, GObject)
+
+G_END_DECLS
+

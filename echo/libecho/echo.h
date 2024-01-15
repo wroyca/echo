@@ -20,12 +20,15 @@
 
 #pragma once
 
+#include <adwaita.h>
+#include <libpeas.h>
 #include <glib.h>
 
 G_BEGIN_DECLS
 
 #define ECHO_INSIDE
 #  include <libecho/echo-application.h>
+#  include <libecho/echo-application-extension.h>
 #  include <libecho/echo-log.h>
 #  include <libecho/echo-version.h>
 #undef ECHO_INSIDE

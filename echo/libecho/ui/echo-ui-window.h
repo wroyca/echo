@@ -1,4 +1,4 @@
-/* echo-application-window.h
+/* window.h
  *
  * Copyright 2024 William Roy
  *
@@ -20,27 +20,15 @@
 
 #pragma once
 
-#if !defined(ECHO_INSIDE) && !defined(ECHO_COMPILATION)
-#  error "Only <libecho/echo.h> can be included directly."
-#endif
-
-#include <libecho/echo-application-window.h>
+#include <libecho/echo.h>
 
 G_BEGIN_DECLS
 
-struct _EchoApplicationWindow
-{
-  AdwApplicationWindow  parent_instance;
+#define ECHO_TYPE_WINDOW (echo_window_get_type ())
 
-  /* Template widgets */
-  AdwHeaderBar         *header_bar;
-  GtkLabel             *label;
-};
+G_DECLARE_FINAL_TYPE (EchoWindow, echo_window, ECHO, WINDOW, AdwApplicationWindow)
 
-typedef struct _EchoApplication EchoApplication;
-
-EchoApplicationWindow *_echo_application_window_new (EchoApplication* application);
+EchoWindow *echo_window_new (EchoApplication *app);
 
 G_END_DECLS
-
 

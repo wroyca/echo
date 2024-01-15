@@ -1,5 +1,6 @@
 libs =
 import libs += lib{echo}
+import libs += lib{echo-ui}
 
 exe{echo}: {h c}{**} $libs testscript
 

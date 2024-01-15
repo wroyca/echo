@@ -1,0 +1,7 @@
+[Plugin]
+Module=libecho-ui
+Name=echo-ui
+Builtin=true
+Embedded=echo_ui_register_types
+Hidden=true
+X-At-Startup=true

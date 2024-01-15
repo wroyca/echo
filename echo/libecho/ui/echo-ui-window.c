@@ -1,4 +1,4 @@
-/* echo-application-window.c
+/* echo-ui-window.c
  *
  * Copyright 2024 William Roy
  *
@@ -18,22 +18,29 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#define G_LOG_DOMAIN "ECHO-APPLICATION-WINDOW"
+#define G_LOG_DOMAIN "ECHO-UI-WINDOW"
 
-#include <libecho/echo-application-window-private.h>
+#include <libecho/ui/echo-ui-window.h>
 
-#include <libecho/echo-log.h>
+struct _EchoWindow
+{
+  AdwApplicationWindow  parent_instance;
 
-G_DEFINE_FINAL_TYPE (EchoApplicationWindow, echo_application_window, ADW_TYPE_APPLICATION_WINDOW)
+  /* Template widgets */
+  AdwHeaderBar         *header_bar;
+  GtkLabel             *label;
+};
 
-EchoApplicationWindow *
-_echo_application_window_new (EchoApplication* app)
+G_DEFINE_FINAL_TYPE (EchoWindow, echo_window, ADW_TYPE_APPLICATION_WINDOW)
+
+EchoWindow *
+echo_window_new (EchoApplication *app)
 {
   ECHO_ENTRY;
 
-  g_autoptr (EchoApplicationWindow) self = NULL;
+  g_autoptr (EchoWindow) self = NULL;
 
-  self = g_object_new (ECHO_TYPE_APPLICATION_WINDOW,
+  self = g_object_new (ECHO_TYPE_WINDOW,
                        "application", app,
                        NULL);
 
@@ -41,21 +48,21 @@ _echo_application_window_new (EchoApplication* app)
 }
 
 static void
-echo_application_window_class_init (EchoApplicationWindowClass *klass)
+echo_window_class_init (EchoWindowClass *klass)
 {
   ECHO_ENTRY;
 
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-  gtk_widget_class_set_template_from_resource (widget_class, "/app/drey/Echo/echo-application-window.ui");
-  gtk_widget_class_bind_template_child (widget_class, EchoApplicationWindow, header_bar);
-  gtk_widget_class_bind_template_child (widget_class, EchoApplicationWindow, label);
+  gtk_widget_class_set_template_from_resource (widget_class, "/app/drey/Echo/plugin/echo-ui-window.ui");
+  gtk_widget_class_bind_template_child (widget_class, EchoWindow, header_bar);
+  gtk_widget_class_bind_template_child (widget_class, EchoWindow, label);
 
   ECHO_EXIT;
 }
 
 static void
-echo_application_window_init (EchoApplicationWindow *self)
+echo_window_init (EchoWindow *self)
 {
   ECHO_ENTRY;
 

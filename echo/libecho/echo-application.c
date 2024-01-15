@@ -23,9 +23,7 @@
 #include <libecho/echo-application.h>
 #include <libecho/echo-application-private.h>
 #include <libecho/echo-application-extension.h>
-#include <libecho/echo-application-window-private.h>
 
-#include <libecho/echo-private.h>
 #include <libecho/echo-log.h>
 #include <libecho/echo-global.h>
 
@@ -92,24 +90,16 @@ echo_application_activate (GApplication *app)
   ECHO_ENTRY;
 
   g_autoptr (EchoApplication) self = ECHO_APPLICATION (app);
-  g_autoptr (EchoApplicationWindow) window = NULL;
 
   g_assert (ECHO_IS_MAIN_THREAD ());
   g_assert (ECHO_IS_APPLICATION (self));
-
-  window = _echo_application_get_active_window (self);
-  if (window == NULL)
-    window = _echo_application_window_new (self);
 
   if (self->extensions != NULL)
     peas_extension_set_foreach (self->extensions,
                                 echo_application_activate_cb,
                                 self);
 
-  _echo_application_window_present (window);
-
   g_steal_pointer (&self);
-  g_steal_pointer (&window);
 
   ECHO_EXIT;
 }

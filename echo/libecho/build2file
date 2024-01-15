@@ -1,11 +1,15 @@
+plug_libs = # Builtin plugins.
 intf_libs = # Interface dependencies.
 impl_libs = # Implementation dependencies.
 intf_libs =+ %lib{adwaita-1 peas-2}
+plug_libs =+ ui/
 
-lib{echo}: {h c}{** -echo-version   \
-                    -echo-resource} \
-             {h}{echo-version}      \
-             {c}{echo-resource}     \
+./: lib{echo}  $plug_libs
+    include    $plug_libs
+./: lib{echo}: {h c}{** -echo-version   \
+                        -echo-resource} \
+                 {h}{echo-version}      \
+                 {c}{echo-resource}     \
   $impl_libs $intf_libs
 h{echo-version}: in{echo-version} $src_root/manifest
 

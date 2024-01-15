@@ -28,9 +28,13 @@
 
 #include <libecho/echo-application-extension.h>
 #include <libecho/echo-application.h>
+#include <libecho/echo-version.h>
+
+G_BEGIN_DECLS
 
 #define ECHO_TYPE_APPLICATION_EXTENSION (echo_application_extension_get_type ())
 
+ECHO_AVAILABLE_IN_ALL
 G_DECLARE_INTERFACE (EchoApplicationExtension, echo_application_extension, ECHO, APPLICATION_EXTENSION, GObject)
 
 struct _EchoApplicationExtensionInterface
@@ -77,4 +81,4 @@ void     echo_application_extension_shutdown             (EchoApplicationExtensi
                                                           EchoApplication          *application);
 void     echo_application_extension_startup              (EchoApplicationExtension *self,
                                                           EchoApplication          *application);
-
+G_END_DECLS
