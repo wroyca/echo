@@ -25,9 +25,9 @@
 G_BEGIN_DECLS
 
 #define ECHO_INSIDE
-# include <libecho/echo-application.h>
-# include <libecho/echo-log.h>
-# include <libecho/echo-version.h>
+#  include <libecho/echo-application.h>
+#  include <libecho/echo-log.h>
+#  include <libecho/echo-version.h>
 #undef ECHO_INSIDE
 
 G_END_DECLS
