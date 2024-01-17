@@ -64,6 +64,17 @@ G_BEGIN_DECLS
  */
 #define ECHO_VERSION_S "$echo.version.project$"
 
+/**
+ * ECHO_ENCODE_VERSION:
+ * @major: The major version component
+ * @minor: The minor version component
+ * @micro: The patch version component
+ *
+ * Encodes the given components into a value that can be used for
+ * version checks.
+ *
+ * Since: 0.1
+ */
 #define ECHO_ENCODE_VERSION(major,minor,patch) \
         ((major) << 24 | (minor) << 16 | (patch) << 8)
 
@@ -80,9 +91,9 @@ G_BEGIN_DECLS
 
 /**
  * ECHO_CHECK_VERSION:
- * @major: the required major version
- * @minor: the required minor version
- * @patch: the required patch version
+ * @major: the required major version component
+ * @minor: the required minor version component
+ * @patch: the required patch version component
  *
  * Compile-time version checking.
  *

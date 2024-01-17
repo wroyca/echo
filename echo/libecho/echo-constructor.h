@@ -30,7 +30,6 @@ G_BEGIN_DECLS
 
 /**
  * G_DEFINE_CONSTRUCTOR:
- * @name: The function name.
  *
  * Causes the function to be called automatically before execution enters main ().
  *

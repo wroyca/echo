@@ -24,7 +24,10 @@
 #  error "Only <libecho/echo.h> can be included directly."
 #endif
 
+#include <libecho/echo-version.h>
+
 #include <adwaita.h>
+#include <libpeas.h>
 
 G_BEGIN_DECLS
 
@@ -33,6 +36,20 @@ G_BEGIN_DECLS
 
 G_DECLARE_FINAL_TYPE (EchoApplication, echo_application, ECHO, APPLICATION, AdwApplication)
 
-EchoApplication *echo_application_new ();
+/**
+ * EchoApplication:
+ *
+ * Echo primary application class.
+ *
+ * Since: 0.1
+ */
+struct _EchoApplication
+{
+  AdwApplication    parent_instance;
+
+  PeasExtensionSet *extensions;
+};
+
+EchoApplication *_echo_application_new ();
 
 G_END_DECLS

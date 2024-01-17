@@ -18,12 +18,12 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#define G_LOG_DOMAIN "ECHO-PLUGIN"
+#define G_LOG_DOMAIN "echo-plugin"
 
 #include <libecho/echo-application.h>
-#include <libecho/echo-application-private.h>
-
 #include <libecho/echo-global.h>
+
+#include <libpeas.h>
 
 static gboolean
 echo_plugin_can_load (PeasEngine      *engine,

@@ -62,7 +62,7 @@ G_BEGIN_DECLS
 
 /**
  * ECHO_RETURN: (skip)
- * @_r: the return value
+ * @_r: The return value
  *
  * Traces the exit from a function. Use this instead of `return` to return @_r
  * and log the function exiting.
@@ -72,7 +72,7 @@ G_BEGIN_DECLS
 
 /**
  * ECHO_GOTO: (skip)
- * @_l: the label to jump to
+ * @_l: The label to jump to
  *
  * Traces the jump to a label in a function. Use this instead of `goto` to jump
  * to @_l and log the label.

@@ -21,11 +21,11 @@
 #define G_LOG_DOMAIN "ECHO-APPLICATION"
 
 #include <libecho/echo-application.h>
-#include <libecho/echo-application-private.h>
-#include <libecho/echo-application-extension.h>
-
+#include <libecho/echo-extension.h>
 #include <libecho/echo-log.h>
 #include <libecho/echo-global.h>
+
+
 
 typedef struct
 {
@@ -37,6 +37,9 @@ typedef struct
 
 G_DEFINE_FINAL_TYPE (EchoApplication, echo_application, ADW_TYPE_APPLICATION)
 
+void _echo_plugin_init    (EchoApplication *self);
+void _echo_extension_init (EchoApplication *self);
+
  /**
  * echo_application_new:
  *
@@ -45,7 +48,7 @@ G_DEFINE_FINAL_TYPE (EchoApplication, echo_application, ADW_TYPE_APPLICATION)
  * Returns: (transfer full): the newly created `EchoApplication`
  */
 EchoApplication *
-echo_application_new ()
+_echo_application_new ()
 {
   ECHO_ENTRY;
 
@@ -70,14 +73,14 @@ echo_application_activate_cb (PeasExtensionSet *set,
 {
   ECHO_ENTRY;
 
-  g_autoptr (EchoApplicationExtension) extension = ECHO_APPLICATION_EXTENSION (exten);
+  g_autoptr (EchoExtension) extension = ECHO_EXTENSION (exten);
 
   g_assert (PEAS_IS_EXTENSION_SET (set));
   g_assert (plugin_info != NULL);
-  g_assert (ECHO_IS_APPLICATION_EXTENSION (extension));
+  g_assert (ECHO_IS_EXTENSION (extension));
   g_assert (ECHO_IS_APPLICATION (user_data));
 
-  echo_application_extension_activate (extension, user_data);
+  echo_extension_activate (extension, user_data);
 
   g_steal_pointer (&extension);
 
@@ -112,14 +115,14 @@ echo_application_command_line_cb (PeasExtensionSet *set,
 {
   ECHO_ENTRY;
 
-  g_autoptr (EchoApplicationExtension) extension = ECHO_APPLICATION_EXTENSION (exten);
+  g_autoptr (EchoExtension) extension = ECHO_EXTENSION (exten);
 
   g_assert (PEAS_IS_EXTENSION_SET (set));
   g_assert (plugin_info != NULL);
-  g_assert (ECHO_IS_APPLICATION_EXTENSION (extension));
+  g_assert (ECHO_IS_EXTENSION (extension));
   g_assert (G_IS_APPLICATION_COMMAND_LINE (user_data));
 
-  echo_application_extension_command_line (extension, ECHO_APPLICATION_DEFAULT, user_data);
+  echo_extension_command_line (extension, ECHO_APPLICATION_DEFAULT, user_data);
 
   g_steal_pointer (&extension);
 
@@ -138,8 +141,7 @@ echo_application_command_line (GApplication *app,
   g_assert (ECHO_IS_APPLICATION (self));
 
   /*
-   * TODO: Chain-up plugins and handle GApplicationCommandLine.
-   *
+   * TODO: Chain-up and handle GApplicationCommandLine.
    */
   if (self->extensions != NULL)
     peas_extension_set_foreach (self->extensions,
@@ -159,14 +161,14 @@ echo_application_handle_local_options_cb (PeasExtensionSet *set,
 {
   ECHO_ENTRY;
 
-  g_autoptr (EchoApplicationExtension) extension = ECHO_APPLICATION_EXTENSION (exten);
+  g_autoptr (EchoExtension) extension = ECHO_EXTENSION (exten);
 
   g_assert (PEAS_IS_EXTENSION_SET (set));
   g_assert (plugin_info != NULL);
-  g_assert (ECHO_IS_APPLICATION_EXTENSION (extension));
+  g_assert (ECHO_IS_EXTENSION (extension));
   g_assert (user_data != NULL);
 
-  echo_application_extension_handle_local_options (extension, ECHO_APPLICATION_DEFAULT, user_data);
+  echo_extension_handle_local_options (extension, ECHO_APPLICATION_DEFAULT, user_data);
 
   g_steal_pointer (&extension);
 
@@ -202,14 +204,14 @@ echo_application_name_lost_cb (PeasExtensionSet *set,
 {
   ECHO_ENTRY;
 
-  g_autoptr (EchoApplicationExtension) extension = ECHO_APPLICATION_EXTENSION (exten);
+  g_autoptr (EchoExtension) extension = ECHO_EXTENSION (exten);
 
   g_assert (PEAS_IS_EXTENSION_SET (set));
   g_assert (plugin_info != NULL);
-  g_assert (ECHO_IS_APPLICATION_EXTENSION (extension));
+  g_assert (ECHO_IS_EXTENSION (extension));
   g_assert (ECHO_IS_APPLICATION (user_data));
 
-  echo_application_extension_name_lost (extension, user_data);
+  echo_extension_name_lost (extension, user_data);
 
   g_steal_pointer (&extension);
 
@@ -242,19 +244,19 @@ echo_application_open_cb (PeasExtensionSet *set,
                           GObject          *exten,
                           gpointer          user_data)
 {
-  g_autoptr (EchoApplicationExtension) extension = ECHO_APPLICATION_EXTENSION (exten);
-  OpenData *data = user_data;
-
   ECHO_ENTRY;
+
+  g_autoptr (EchoExtension) extension = ECHO_EXTENSION (exten);
+  OpenData *data = user_data;
 
   g_assert (PEAS_IS_EXTENSION_SET (set));
   g_assert (plugin_info != NULL);
-  g_assert (ECHO_IS_APPLICATION_EXTENSION (extension));
+  g_assert (ECHO_IS_EXTENSION (extension));
   g_assert (data != NULL);
   g_assert (ECHO_IS_APPLICATION (data->self));
   g_assert (data->files != NULL);
 
-  echo_application_extension_open (extension, data->self, data->files, data->n_files, data->hint);
+  echo_extension_open (extension, data->self, data->files, data->n_files, data->hint);
 
   g_steal_pointer (&extension);
 
@@ -267,10 +269,10 @@ echo_application_open (GApplication  *app,
                        gint           n_files,
                        const gchar   *hint)
 {
+  ECHO_ENTRY;
+
   g_autoptr (EchoApplication) self = ECHO_APPLICATION (app);
   OpenData data;
-
-  ECHO_ENTRY;
 
   g_assert (ECHO_IS_MAIN_THREAD ());
   g_assert (ECHO_IS_APPLICATION (self));
@@ -303,14 +305,14 @@ echo_application_shutdown_cb (PeasExtensionSet *set,
 {
   ECHO_ENTRY;
 
-  g_autoptr (EchoApplicationExtension) extension = ECHO_APPLICATION_EXTENSION (exten);
+  g_autoptr (EchoExtension) extension = ECHO_EXTENSION (exten);
 
   g_assert (PEAS_IS_EXTENSION_SET (set));
   g_assert (plugin_info != NULL);
-  g_assert (ECHO_IS_APPLICATION_EXTENSION (extension));
+  g_assert (ECHO_IS_EXTENSION (extension));
   g_assert (ECHO_IS_APPLICATION (user_data));
 
-  echo_application_extension_shutdown (extension, user_data);
+  echo_extension_shutdown (extension, user_data);
 
   g_steal_pointer (&extension);
 
@@ -347,14 +349,14 @@ echo_application_startup_cb (PeasExtensionSet *set,
 {
   ECHO_ENTRY;
 
-  g_autoptr (EchoApplicationExtension) extension = ECHO_APPLICATION_EXTENSION (exten);
+  g_autoptr (EchoExtension) extension = ECHO_EXTENSION (exten);
 
   g_assert (PEAS_IS_EXTENSION_SET (set));
   g_assert (plugin_info != NULL);
-  g_assert (ECHO_IS_APPLICATION_EXTENSION (extension));
+  g_assert (ECHO_IS_EXTENSION (extension));
   g_assert (ECHO_IS_APPLICATION (user_data));
 
-  echo_application_extension_startup (extension, user_data);
+  echo_extension_startup (extension, user_data);
 
   g_steal_pointer (&extension);
 
