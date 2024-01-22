@@ -1,8 +1,0 @@
-libs =
-import libs += lib{echo}
-import libs += lib{echo-ui}
-
-exe{echo}: {h c}{**} $libs testscript
-
-c.poptions =+ "-I$out_root" "-I$src_root"
-c.poptions =+ "-DG_LOG_USE_STRUCTURED"

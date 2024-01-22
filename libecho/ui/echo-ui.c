@@ -36,15 +36,15 @@ echo_ui_register_types (PeasObjectModule *module)
   ECHO_ENTRY;
 
   peas_object_module_register_extension_type (module,
-                                              ECHO_TYPE_APPLICATION_EXTENSION,
+                                              ECHO_TYPE_EXTENSION,
                                               ECHO_TYPE_UI);
 
   ECHO_EXIT;
 }
 
 static void
-echo_ui_activate (EchoApplicationExtension *self,
-                  EchoApplication          *application)
+echo_ui_activate (EchoExtension   *self,
+                  EchoApplication *application)
 {
   ECHO_ENTRY;
 
@@ -65,7 +65,7 @@ echo_ui_activate (EchoApplicationExtension *self,
 }
 
 static void
-echo_ui_iface_init (EchoApplicationExtensionInterface *iface)
+echo_ui_iface_init (EchoExtensionInterface *iface)
 {
   ECHO_ENTRY;
 
@@ -75,7 +75,7 @@ echo_ui_iface_init (EchoApplicationExtensionInterface *iface)
 }
 
 G_DEFINE_FINAL_TYPE_WITH_CODE (EchoUI, echo_ui, G_TYPE_OBJECT,
-                               G_IMPLEMENT_INTERFACE (ECHO_TYPE_APPLICATION_EXTENSION, echo_ui_iface_init))
+                               G_IMPLEMENT_INTERFACE (ECHO_TYPE_EXTENSION, echo_ui_iface_init))
 
 static void
 echo_ui_class_init (EchoUIClass *klass)
