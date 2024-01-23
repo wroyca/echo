@@ -15,6 +15,8 @@ depends: * bpkg >= 0.16.0
 
 # CI builds and binary distribution packages.
 #
+builds: none
+
 bindist-fedora-builds: bindist
 bindist-fedora-build-include: linux_fedora_39-**
 bindist-fedora-build-exclude: **
