@@ -1,4 +1,4 @@
-/* echo-version.h
+/* libecho/version.h
  *
  * Copyright 2024 William Roy
  *
@@ -21,7 +21,7 @@
 #pragma once
 
 #if !defined(ECHO_INSIDE) && !defined(ECHO_COMPILATION)
-#  error "Only <libecho/echo.h> can be included directly."
+# error "Only <libecho/echo.h> can be included directly."
 #endif
 
 #include <glib.h>

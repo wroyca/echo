@@ -1,4 +1,4 @@
-/* echo-global.h
+/* libecho/log.c
  *
  * Copyright 2024 William Roy
  *
@@ -18,21 +18,6 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#pragma once
+#define G_LOG_DOMAIN "ECHO-LOG"
 
-#if !defined(ECHO_INSIDE) && !defined(ECHO_COMPILATION)
-#  error "Only <libecho/echo.h> can be included directly."
-#endif
-
-#include <libecho/echo-version.h>
-
-#include <adwaita.h>
-
-G_BEGIN_DECLS
-
-#define ECHO_IS_MAIN_THREAD() (g_thread_self () == echo_get_main_thread ())
-
-ECHO_AVAILABLE_IN_ALL
-GThread *echo_get_main_thread (void);
-
-G_END_DECLS
+#include <libecho/log.h>

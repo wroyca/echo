@@ -1,4 +1,4 @@
-/* echo-ui.c
+/* libecho/client/client.c
  *
  * Copyright 2024 William Roy
  *
@@ -18,33 +18,38 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#define G_LOG_DOMAIN "ECHO-UI"
+#define G_LOG_DOMAIN "ECHO-CLIENT"
 
-#include <libecho/ui/echo-ui.h>
-#include <libecho/ui/echo-ui-window.h>
+#include <libecho/client/client.h>
+#include <libecho/client/window.h>
 
-struct _EchoUI
+struct _EchoClient
 {
   GObject          parent_instance;
-
   EchoApplication *application;
 };
 
-extern void
-echo_ui_register_types (PeasObjectModule *module)
+static void
+echo_client_iface_init (EchoExtensionInterface *iface);
+G_DEFINE_FINAL_TYPE_WITH_CODE (EchoClient, echo_client, G_TYPE_OBJECT,
+                               G_IMPLEMENT_INTERFACE (ECHO_TYPE_EXTENSION,
+                                                      echo_client_iface_init))
+
+void
+echo_client_register_types (PeasObjectModule *module)
 {
   ECHO_ENTRY;
 
   peas_object_module_register_extension_type (module,
                                               ECHO_TYPE_EXTENSION,
-                                              ECHO_TYPE_UI);
+                                              ECHO_TYPE_CLIENT);
 
   ECHO_EXIT;
 }
 
 static void
-echo_ui_activate (EchoExtension   *self,
-                  EchoApplication *application)
+echo_client_activate (EchoExtension   *self,
+                      EchoApplication *application)
 {
   ECHO_ENTRY;
 
@@ -65,31 +70,23 @@ echo_ui_activate (EchoExtension   *self,
 }
 
 static void
-echo_ui_iface_init (EchoExtensionInterface *iface)
+echo_client_iface_init (EchoExtensionInterface *iface)
 {
   ECHO_ENTRY;
 
-  iface->activate = echo_ui_activate;
-
-  ECHO_EXIT;
-}
-
-G_DEFINE_FINAL_TYPE_WITH_CODE (EchoUI, echo_ui, G_TYPE_OBJECT,
-                               G_IMPLEMENT_INTERFACE (ECHO_TYPE_EXTENSION, echo_ui_iface_init))
-
-static void
-echo_ui_class_init (EchoUIClass *klass)
-{
-  ECHO_ENTRY;
+  iface->activate = echo_client_activate;
 
   ECHO_EXIT;
 }
 
 static void
-echo_ui_init (EchoUI *self)
+echo_client_class_init (EchoClientClass *klass)
 {
-  ECHO_ENTRY;
-
-  ECHO_EXIT;
+  ECHO_ENTRY; ECHO_EXIT;
 }
 
+static void
+echo_client_init (EchoClient *self)
+{
+  ECHO_ENTRY; ECHO_EXIT;
+}

@@ -1,4 +1,4 @@
-/* echo.h
+/* libecho/echo.h
  *
  * Copyright 2024 William Roy
  *
@@ -20,17 +20,15 @@
 
 #pragma once
 
-#include <adwaita.h>
-#include <libpeas.h>
 #include <glib.h>
 
 G_BEGIN_DECLS
 
 #define ECHO_INSIDE
-#  include <libecho/echo-application.h>
-#  include <libecho/echo-extension.h>
-#  include <libecho/echo-log.h>
-#  include <libecho/echo-version.h>
+#  include <libecho/extension/application.h>
+#  include <libecho/extension/extension.h>
+#  include <libecho/log.h>
+#  include <libecho/version.h>
 #undef ECHO_INSIDE
 
 G_END_DECLS

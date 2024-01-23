@@ -1,0 +1,65 @@
+include ../
+impl_libs = ../lib{echo}
+
+lib{echo-extension}: {h c}{* -extension.resource.c} \
+                       {c}{extension.resource.c}    \
+  $impl_libs $intf_libs
+
+# Resource bundle.
+#
+if ($glib-compile-resources != [null])
+{
+  c{extension.resource.c}: x{extension.resource.xml}
+  {{
+    diag glib-compile-resources ($<[0]) -> $>
+
+    r = $path($<[0])
+    b = $out_base/$name($>).c
+
+    glib-compile-resources \
+      --sourcedir $src_base --generate-source $r --target=$b
+  }}
+
+  c{extension.resource.c}:
+  {
+    dist = true
+    clean = ($src_root != $out_root)
+    backlink = overwrite
+  }
+}
+
+# Build options.
+#
+c.poptions =+ "-I$out_root" "-I$src_root"
+
+{hbmia obja}{*}: c.poptions += -DLIBECHO_EXTENSION_STATIC_BUILD -DECHO_COMPILATION
+{hbmis objs}{*}: c.poptions += -DLIBECHO_EXTENSION_SHARED_BUILD -DECHO_COMPILATION
+
+# Export options.
+#
+lib{echo-extension}:
+{
+  c.export.poptions = "-I$out_root" "-I$src_root"
+  c.export.libs = $intf_libs
+}
+
+liba{echo-extension}: c.export.poptions += -DLIBECHO_EXTENSION_STATIC
+libs{echo-extension}: c.export.poptions += -DLIBECHO_EXTENSION_SHARED
+
+# For pre-releases use the complete version to make sure they cannot
+# be used in place of another pre-release or the final version. See
+# the version module for details on the version.* variable values.
+#
+if $version.pre_release
+  lib{echo-extension}: bin.lib.version = "-$version.project_id"
+else
+  lib{echo-extension}: bin.lib.version = "-$version.major.$version.minor"
+
+# Install into the libecho/extension/ subdirectory of, say, /usr/include/
+# recreating subdirectories.
+#
+h{*}:
+{
+  install         = include/libecho/extension/
+  install.subdirs = true
+}

@@ -1,4 +1,4 @@
-/* echo-plugin.c
+/* libecho/extension/plugin.c
  *
  * Copyright 2024 William Roy
  *
@@ -18,12 +18,9 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#define G_LOG_DOMAIN "echo-plugin"
+#define G_LOG_DOMAIN "ECHO-PLUGIN"
 
-#include <libecho/echo-application.h>
-#include <libecho/echo-global.h>
-
-#include <libpeas.h>
+#include <libecho/extension/plugin.h>
 
 static gboolean
 echo_plugin_can_load (PeasEngine      *engine,
@@ -34,7 +31,6 @@ echo_plugin_can_load (PeasEngine      *engine,
   const char *name;
   const char *const *deps;
 
-  g_assert (ECHO_IS_MAIN_THREAD ());
   g_assert (PEAS_IS_ENGINE (engine));
   g_assert (PEAS_IS_PLUGIN_INFO (plugin_info));
 
@@ -75,11 +71,10 @@ _echo_plugin_init (EchoApplication *self)
   g_autoptr (PeasEngine) engine = peas_engine_get_default ();
   guint n_items;
 
-  g_assert (ECHO_IS_MAIN_THREAD ());
   g_assert (ECHO_IS_APPLICATION (self));
 
   peas_engine_add_search_path (engine,
-                               "resource:///app/drey/Echo/plugin",
+                               "resource:///app/drey/Echo/extension",
                                nullptr);
 
   n_items = g_list_model_get_n_items (G_LIST_MODEL (engine));

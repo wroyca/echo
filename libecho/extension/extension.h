@@ -1,4 +1,4 @@
-/* echo-application-extension.h
+/* libecho/extension/extension.h
  *
  * Copyright 2024 William Roy
  *
@@ -21,13 +21,13 @@
 #pragma once
 
 #if !defined(ECHO_INSIDE) && !defined(ECHO_COMPILATION)
-#  error "Only <libecho/echo.h> can be included directly."
+# error "Only <libecho/echo.h> can be included directly."
 #endif
 
 #include <adwaita.h>
 
-#include <libecho/echo-application.h>
-#include <libecho/echo-version.h>
+#include <libecho/extension/application.h>
+#include <libecho/version.h>
 
 G_BEGIN_DECLS
 

@@ -1,4 +1,4 @@
-/* echo-ui.h
+/* libecho/extension/plugin.h
  *
  * Copyright 2024 William Roy
  *
@@ -20,13 +20,14 @@
 
 #pragma once
 
-#include <libecho/echo.h>
+#if !defined(ECHO_INSIDE) && !defined(ECHO_COMPILATION)
+# error "Only <libecho/echo.h> can be included directly."
+#endif
+
+#include <libpeas.h>
+
+#include <libecho/extension/application.h>
 
 G_BEGIN_DECLS
-
-#define ECHO_TYPE_UI (echo_ui_get_type())
-
-G_DECLARE_FINAL_TYPE (EchoUI, echo_ui, ECHO, UI, GObject)
-
 G_END_DECLS
 

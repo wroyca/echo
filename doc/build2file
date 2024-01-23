@@ -1,5 +1,7 @@
 ./:
 
+# TODO: Handle extensions, plugins and additional modules.
+#
 alias{doc}: $src_root/libecho/{c h}{*}
 {{
   diag gen $>
@@ -34,14 +36,14 @@ alias{doc}: $src_root/libecho/{c h}{*}
                --include=Gtk-4.0                      \
                --include=Adw-1                        \
                --include=Peas-2                       \
-                                   \
-               --library=adwaita-1 \
-               --library=gtk-4   \
-               --library=peas-2    \
-                                   \
+                                                      \
+               --library=adwaita-1                    \
+               --library=gtk-4                        \
+               --library=peas-2                       \
+                                                      \
                                                       \
                --cflags-begin                         \
-                 -DECHO_COMPILATION \
+                 -DECHO_COMPILATION                   \
                  --include-directory=($r[0])          \
                --cflags-end
 

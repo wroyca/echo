@@ -1,4 +1,4 @@
-/* echo-global.h
+/* libecho/extension/application.h
  *
  * Copyright 2024 William Roy
  *
@@ -18,7 +18,38 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#define G_LOG_DOMAIN "ECHO-GLOBAL"
+#pragma once
 
-#include <libecho/echo-global.h>
+#if !defined(ECHO_INSIDE) && !defined(ECHO_COMPILATION)
+# error "Only <libecho/echo.h> can be included directly."
+#endif
 
+#include <libecho/version.h>
+
+#include <adwaita.h>
+#include <libpeas.h>
+
+G_BEGIN_DECLS
+
+#define ECHO_TYPE_APPLICATION    (echo_application_get_type())
+#define ECHO_APPLICATION_DEFAULT (ECHO_APPLICATION (g_application_get_default ()))
+
+G_DECLARE_FINAL_TYPE (EchoApplication, echo_application, ECHO, APPLICATION, AdwApplication)
+
+/**
+ * EchoApplication:
+ *
+ * Echo primary application class.
+ *
+ * Since: 0.1
+ */
+struct _EchoApplication
+{
+  AdwApplication    parent_instance;
+
+  PeasExtensionSet *extensions;
+};
+
+EchoApplication *_echo_application_new ();
+
+G_END_DECLS

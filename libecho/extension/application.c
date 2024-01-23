@@ -1,4 +1,4 @@
-/* echo-application.c
+/* libecho/extension/application.c
  *
  * Copyright 2024 William Roy
  *
@@ -18,14 +18,11 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#define G_LOG_DOMAIN "ECHO-APPLICATION"
+#define G_LOG_DOMAIN "ECHO-EXTENSION-APPLICATION"
 
-#include <libecho/echo-application.h>
-#include <libecho/echo-extension.h>
-#include <libecho/echo-log.h>
-#include <libecho/echo-global.h>
-
-
+#include <libecho/extension/application.h>
+#include <libecho/extension/extension.h>
+#include <libecho/log.h>
 
 typedef struct
 {
@@ -94,7 +91,6 @@ echo_application_activate (GApplication *app)
 
   g_autoptr (EchoApplication) self = ECHO_APPLICATION (app);
 
-  g_assert (ECHO_IS_MAIN_THREAD ());
   g_assert (ECHO_IS_APPLICATION (self));
 
   if (self->extensions != NULL)
@@ -137,7 +133,6 @@ echo_application_command_line (GApplication *app,
 
   g_autoptr (EchoApplication) self = ECHO_APPLICATION (app);
 
-  g_assert (ECHO_IS_MAIN_THREAD ());
   g_assert (ECHO_IS_APPLICATION (self));
 
   /*
@@ -183,7 +178,6 @@ echo_application_handle_local_options (GApplication *app,
 
   g_autoptr (EchoApplication) self = ECHO_APPLICATION (app);
 
-  g_assert (ECHO_IS_MAIN_THREAD ());
   g_assert (ECHO_IS_APPLICATION (self));
 
   if (self->extensions != NULL)
@@ -225,7 +219,6 @@ echo_application_name_lost (GApplication *app)
 
   g_autoptr (EchoApplication) self = ECHO_APPLICATION (app);
 
-  g_assert (ECHO_IS_MAIN_THREAD ());
   g_assert (ECHO_IS_APPLICATION (self));
 
   if (self->extensions != NULL)
@@ -274,7 +267,6 @@ echo_application_open (GApplication  *app,
   g_autoptr (EchoApplication) self = ECHO_APPLICATION (app);
   OpenData data;
 
-  g_assert (ECHO_IS_MAIN_THREAD ());
   g_assert (ECHO_IS_APPLICATION (self));
   g_assert (files);
   g_assert (n_files > 0);
@@ -326,7 +318,6 @@ echo_application_shutdown (GApplication *app)
 
   g_autoptr (EchoApplication) self = ECHO_APPLICATION (app);
 
-  g_assert (ECHO_IS_MAIN_THREAD ());
   g_assert (ECHO_IS_APPLICATION (self));
 
   if (self->extensions != NULL)
@@ -371,7 +362,6 @@ echo_application_startup (GApplication *app)
 
   g_autoptr (EchoApplication) self = ECHO_APPLICATION (app);
 
-  g_assert (ECHO_IS_MAIN_THREAD ());
   g_assert (ECHO_IS_APPLICATION (self));
 
   if (self->extensions != NULL)

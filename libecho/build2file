@@ -1,30 +1,44 @@
-plug_libs = # Builtin plugins.
+import! glib-compile-resources = glib-compile-resources%exe{glib-compile-resources}
+
 intf_libs = # Interface dependencies.
 impl_libs = # Implementation dependencies.
+plug_libs = # Extensions (plug-ins).
+
+plug_libs =+ extension/ client/
 intf_libs =+ %lib{adwaita-1 peas-2}
-plug_libs =+ ui/
 
 ./: lib{echo}  $plug_libs
     include    $plug_libs
-./: lib{echo}: {h c}{** -echo-version   \
-                        -echo-resource} \
-                 {h}{echo-version}      \
-                 {c}{echo-resource}     \
+./: lib{echo}: {h c}{* -version           \
+                       -echo.resource.c}  \
+                 {h}{version}             \
+                 {c}{echo.resource.c}     \
   $impl_libs $intf_libs
-h{echo-version}: in{echo-version} $src_root/manifest
+
+h{version}: in{version} $src_root/manifest
 
 # Resource bundle.
 #
-c{echo-resource}: x{echo-resource}
-{{
-  diag glib-compile-resources ($<[0]) -> $>
+if ($glib-compile-resources != [null])
+{
+  c{echo.resource.c}: x{echo.resource.xml}
+  {{
+    diag glib-compile-resources ($<[0]) -> $>
 
-  r = $path($<[0])
-  b = $out_base/$name($>).c
+    r = $path($<[0])
+    b = $out_base/$name($>).c
 
-  glib-compile-resources \
-    --sourcedir $src_base --generate-source $r --target=$b
-}}
+    glib-compile-resources \
+      --sourcedir $src_base --generate-source $r --target=$b
+  }}
+
+  c{echo.resource.c}:
+  {
+    dist = true
+    clean = ($src_root != $out_root)
+    backlink = overwrite
+  }
+}
 
 # Build options.
 #

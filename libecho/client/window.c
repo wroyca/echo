@@ -1,4 +1,4 @@
-/* echo-ui-window.c
+/* libecho/client/window.c
  *
  * Copyright 2024 William Roy
  *
@@ -18,9 +18,9 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#define G_LOG_DOMAIN "ECHO-UI-WINDOW"
+#define G_LOG_DOMAIN "ECHO-CLIENT-WINDOW"
 
-#include <libecho/ui/echo-ui-window.h>
+#include <libecho/client/window.h>
 
 struct _EchoWindow
 {
@@ -54,7 +54,7 @@ echo_window_class_init (EchoWindowClass *klass)
 
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-  gtk_widget_class_set_template_from_resource (widget_class, "/app/drey/Echo/plugin/echo-ui-window.ui");
+  gtk_widget_class_set_template_from_resource (widget_class, "/app/drey/Echo/extension/window.ui");
   gtk_widget_class_bind_template_child (widget_class, EchoWindow, header_bar);
   gtk_widget_class_bind_template_child (widget_class, EchoWindow, label);
 

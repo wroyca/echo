@@ -1,4 +1,4 @@
-/* echo-application-extension.h
+/* libecho/extension/extension.c
  *
  * Copyright 2024 William Roy
  *
@@ -20,10 +20,9 @@
 
 #define G_LOG_DOMAIN "ECHO-EXTENSION"
 
-#include <libecho/echo-extension.h>
-#include <libecho/echo-application.h>
-#include <libecho/echo-log.h>
-#include <libecho/echo-global.h>
+#include <libecho/extension/extension.h>
+#include <libecho/extension/application.h>
+#include <libecho/log.h>
 
 #include <libpeas.h>
 
@@ -268,7 +267,6 @@ echo_extension_startup (EchoExtension   *self,
 void
 _echo_extension_init (EchoApplication *self)
 {
-  g_assert (ECHO_IS_MAIN_THREAD ());
   g_assert (ECHO_IS_APPLICATION (self));
   g_assert (self->extensions == NULL);
 

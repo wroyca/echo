@@ -1,4 +1,4 @@
-/* echo-application.h
+/* libecho/client/window.h
  *
  * Copyright 2024 William Roy
  *
@@ -20,36 +20,14 @@
 
 #pragma once
 
-#if !defined(ECHO_INSIDE) && !defined(ECHO_COMPILATION)
-#  error "Only <libecho/echo.h> can be included directly."
-#endif
-
-#include <libecho/echo-version.h>
-
-#include <adwaita.h>
-#include <libpeas.h>
+#include <libecho/echo.h>
 
 G_BEGIN_DECLS
 
-#define ECHO_TYPE_APPLICATION    (echo_application_get_type())
-#define ECHO_APPLICATION_DEFAULT (ECHO_APPLICATION (g_application_get_default ()))
+#define ECHO_TYPE_WINDOW (echo_window_get_type ())
 
-G_DECLARE_FINAL_TYPE (EchoApplication, echo_application, ECHO, APPLICATION, AdwApplication)
+G_DECLARE_FINAL_TYPE (EchoWindow, echo_window, ECHO, WINDOW, AdwApplicationWindow)
 
-/**
- * EchoApplication:
- *
- * Echo primary application class.
- *
- * Since: 0.1
- */
-struct _EchoApplication
-{
-  AdwApplication    parent_instance;
-
-  PeasExtensionSet *extensions;
-};
-
-EchoApplication *_echo_application_new ();
+EchoWindow *echo_window_new (EchoApplication *app);
 
 G_END_DECLS

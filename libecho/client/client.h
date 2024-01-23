@@ -1,4 +1,4 @@
-/* echo-log.c
+/* libecho/client/client.h
  *
  * Copyright 2024 William Roy
  *
@@ -18,6 +18,14 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#define G_LOG_DOMAIN "echo-log"
+#pragma once
 
-#include <libecho/echo-log.h>
+#include <libecho/echo.h>
+
+G_BEGIN_DECLS
+
+#define ECHO_TYPE_CLIENT (echo_client_get_type ())
+
+G_DECLARE_FINAL_TYPE (EchoClient, echo_client, ECHO, CLIENT, GObject)
+
+G_END_DECLS

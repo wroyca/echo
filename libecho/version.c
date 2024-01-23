@@ -1,4 +1,4 @@
-/* echo-version.c
+/* libecho/version.c
  *
  * Copyright 2024 William Roy
  *
@@ -18,10 +18,10 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#define G_LOG_DOMAIN "echo-version"
+#define G_LOG_DOMAIN "ECHO-VERSION"
 
-#include <libecho/echo-version.h>
-#include <libecho/echo-log.h>
+#include <libecho/version.h>
+#include <libecho/log.h>
 
 /**
  * echo_get_major_version:
