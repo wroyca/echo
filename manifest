@@ -12,3 +12,17 @@ email: wroy@proton.me
 depends: * build2 >= 0.16.0
 depends: * bpkg >= 0.16.0
 #depends: libhello ^1.0.0
+
+# CI builds and binary distribution packages.
+#
+bindist-fedora-builds: bindist
+bindist-fedora-build-include: linux_fedora_39-**
+bindist-fedora-build-exclude: **
+bindist-fedora-build-config:
+\
++bpkg.bindist.fedora:
++bbot.bindist.upload:
+b.create:config.cxx.std=c++23
+sys:libadwaita
+sys:libpeas
+\
