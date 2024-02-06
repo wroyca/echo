@@ -1,9 +1,1 @@
-libs =
-import libs += lib{echo}
-import libs += lib{echo-extension}
-import libs += lib{echo-client}
-
-exe{echo}: {h c}{**} $libs testscript
-
-c.poptions =+ "-I$out_root" "-I$src_root"
-c.poptions =+ "-DG_LOG_USE_STRUCTURED"
+./: {*/ -build2/} doc{README.md} legal{LICENSE.md} manifest

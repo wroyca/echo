@@ -1,0 +1,5 @@
+echo
+
+# Testscript output directory (can be symlink).
+#
+test-echo

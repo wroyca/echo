@@ -1,0 +1,3 @@
+import libs = libecho-toolkit%lib{echo-toolkit}
+
+exe{driver}: {h c}{**} $libs testscript{**}

@@ -1,0 +1,12 @@
+# Uncomment to suppress warnings coming from external libraries.
+#
+#c.internal.scope = current
+
+using c
+
+h{*}: extension = h
+c{*}: extension = c
+
+# The test target for cross-testing (running tests under Wine, etc).
+#
+test.target = $c.target

@@ -1,7 +1,0 @@
-[Plugin]
-Module=libecho-client
-Name=echo-client
-Builtin=true
-Embedded=echo_client_register_types
-Hidden=true
-X-At-Startup=true

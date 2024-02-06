@@ -1,0 +1,58 @@
+/* libecho/toolkit/version.h
+ *
+ * Copyright 2024 William Roy
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
+#pragma once
+
+#if !defined (LIBECHO_TOOLKIT_INSIDE) && !defined (LIBECHO_TOOLKIT_COMPILATION)
+#  error "Only <libecho/toolkit/toolkit.h> can be included directly."
+#endif
+
+/* The numeric version format is AAAAABBBBBCCCCCDDDE where:
+ *
+ * AAAAA - major version number
+ * BBBBB - minor version number
+ * CCCCC - bugfix version number
+ * DDD   - alpha / beta (DDD + 500) version number
+ * E     - final (0) / snapshot (1)
+ *
+ * When DDDE is not 0, 1 is subtracted from AAAAABBBBBCCCCC. For example:
+ *
+ * Version      AAAAABBBBBCCCCCDDDE
+ *
+ * 0.1.0        0000000001000000000
+ * 0.1.2        0000000001000020000
+ * 1.2.3        0000100002000030000
+ * 2.2.0-a.1    0000200001999990010
+ * 3.0.0-b.2    0000299999999995020
+ * 2.2.0-a.1.z  0000200001999990011
+ */
+#define LIBECHO_TOOLKIT_VERSION       $libecho_toolkit.version.project_number$ULL
+#define LIBECHO_TOOLKIT_VERSION_STR   "$libecho_toolkit.version.project$"
+#define LIBECHO_TOOLKIT_VERSION_ID    "$libecho_toolkit.version.project_id$"
+#define LIBECHO_TOOLKIT_VERSION_FULL  "$libecho_toolkit.version$"
+
+#define LIBECHO_TOOLKIT_VERSION_MAJOR $libecho_toolkit.version.major$
+#define LIBECHO_TOOLKIT_VERSION_MINOR $libecho_toolkit.version.minor$
+#define LIBECHO_TOOLKIT_VERSION_PATCH $libecho_toolkit.version.patch$
+
+#define LIBECHO_TOOLKIT_PRE_RELEASE   $libecho_toolkit.version.pre_release$
+
+#define LIBECHO_TOOLKIT_SNAPSHOT_SN   $libecho_toolkit.version.snapshot_sn$ULL
+#define LIBECHO_TOOLKIT_SNAPSHOT_ID   "$libecho_toolkit.version.snapshot_id$"
