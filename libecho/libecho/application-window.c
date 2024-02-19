@@ -26,21 +26,64 @@ struct _EchoApplicationWindow
   AdwApplicationWindow  parent_instance;
 
   AdwHeaderBar         *header_bar;
-  GtkLabel             *label;
+  PanelDock            *dock;
+  PanelGrid            *grid;
 };
 
 G_DEFINE_FINAL_TYPE (EchoApplicationWindow, echo_application_window, ADW_TYPE_APPLICATION_WINDOW)
+
+static PanelFrame *
+create_frame_cb (PanelGrid             *grid,
+                 EchoApplicationWindow *self)
+{
+  PanelFrame       *frame;
+  PanelFrameHeader *header;
+  AdwStatusPage    *status;
+  GtkGrid          *shortcuts;
+  GtkWidget        *child;
+
+  g_assert (ECHO_IS_APPLICATION_WINDOW (self));
+
+  frame = PANEL_FRAME (panel_frame_new ());
+  status = ADW_STATUS_PAGE (adw_status_page_new ());
+
+  adw_status_page_set_title (status, "Hello");
+  adw_status_page_set_icon_name (status, "application-x-executable-symbolic");
+  adw_status_page_set_description (status, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut egestas.");
+  panel_frame_set_placeholder (frame, GTK_WIDGET (status));
+
+  return frame;
+}
+
+static void
+echo_application_window_constructed (GObject *object)
+{
+  g_autoptr (EchoApplicationWindow) self = ECHO_APPLICATION_WINDOW (object);
+
+  g_assert (ECHO_IS_APPLICATION_WINDOW (self));
+
+  G_OBJECT_CLASS (echo_application_window_parent_class)->constructed (object);
+
+  panel_grid_column_get_row (panel_grid_get_column (self->grid, 0), 0);
+
+  g_steal_pointer (&self);
+}
 
 static void
 echo_application_window_class_init (EchoApplicationWindowClass *klass)
 {
   ECHO_ENTRY;
 
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+
+  object_class->constructed = echo_application_window_constructed;
 
   gtk_widget_class_set_template_from_resource (widget_class, "/app/drey/Echo/application-window.ui");
   gtk_widget_class_bind_template_child (widget_class, EchoApplicationWindow, header_bar);
-  gtk_widget_class_bind_template_child (widget_class, EchoApplicationWindow, label);
+  gtk_widget_class_bind_template_child (widget_class, EchoApplicationWindow, dock);
+  gtk_widget_class_bind_template_child (widget_class, EchoApplicationWindow, grid);
+  gtk_widget_class_bind_template_callback (widget_class, create_frame_cb);
 
   ECHO_EXIT;
 }

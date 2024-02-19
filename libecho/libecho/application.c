@@ -718,6 +718,7 @@ echo_application_new ()
                        "flags", G_APPLICATION_DEFAULT_FLAGS,
                        NULL);
 
+  panel_init();
   echo_plugin_init (self);
   echo_application_extension_init (self);
 

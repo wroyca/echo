@@ -2,12 +2,13 @@ import libecho%buildfile{glib-compile-resource}
 
 intf_libs = # Interface dependencies.
 impl_libs = # Implementation dependencies.
-intf_libs += %lib{adwaita-1 peas-2}
+intf_libs += %lib{adwaita-1 peas-2 panel-1}
 
 ./: lib{echo}: {h c}{** -version -resource} h{version} c{resource} $impl_libs $intf_libs
 
 h{version}: in{version} $src_root/manifest
-c{resource}: xml{resource}
+
+c{resource}: xml{resource} ui{**} css{**}
 
 # Build options.
 #

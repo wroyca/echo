@@ -25,6 +25,7 @@
 #endif
 
 #include <adwaita.h>
+#include <libpanel.h>
 
 #include <libecho/export.h>
 #include <libecho/application.h>
