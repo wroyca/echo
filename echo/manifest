@@ -1,8 +1,8 @@
 : 1
 name: echo
 version: 0.1.0-a.0.z
-language: c++
-summary: echo C++ executable
+language: c
+summary: echo C executable
 license: GPL-3.0-or-later ; GNU General Public License v3.0 or later.
 description-file: README.md
 url: https://example.org/echo
@@ -11,4 +11,3 @@ email: wroy@proton.me
 depends: * build2 >= 0.16.0
 depends: * bpkg >= 0.16.0
 depends: libecho == $
-depends: libecho-toolkit == $

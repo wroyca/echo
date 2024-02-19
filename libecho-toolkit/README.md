@@ -1,3 +1,0 @@
-# libecho-toolkit
-
-C library

@@ -1,7 +1,6 @@
 libs =
 import libs += libecho%lib{echo}
-import libs += libecho-toolkit%lib{echo-toolkit}
 
-exe{echo}: {hxx ixx txx cxx}{**} $libs testscript
+exe{echo}: {h c}{**} $libs testscript
 
-cxx.poptions =+ "-I$out_root" "-I$src_root"
+c.poptions =+ "-I$out_root" "-I$src_root"

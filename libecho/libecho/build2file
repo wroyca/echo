@@ -1,28 +1,32 @@
+import libecho%buildfile{glib-compile-resource}
+
 intf_libs = # Interface dependencies.
 impl_libs = # Implementation dependencies.
-#import xxxx_libs += libhello%lib{hello}
+intf_libs += %lib{adwaita-1 peas-2}
 
-lib{echo}: {hxx ixx txx cxx}{** -version} hxx{version} $impl_libs $intf_libs
+./: lib{echo}: {h c}{** -version -resource} h{version} c{resource} $impl_libs $intf_libs
 
-hxx{version}: in{version} $src_root/manifest
+h{version}: in{version} $src_root/manifest
+c{resource}: xml{resource}
 
 # Build options.
 #
-cxx.poptions =+ "-I$out_root" "-I$src_root"
+c.poptions =+ "-I$out_root" "-I$src_root"
+c.poptions =+ "-DLIBECHO_COMPILATION"
 
-obja{*}: cxx.poptions += -DLIBECHO_STATIC_BUILD
-objs{*}: cxx.poptions += -DLIBECHO_SHARED_BUILD
+obja{*}: c.poptions += -DLIBECHO_STATIC_BUILD
+objs{*}: c.poptions += -DLIBECHO_SHARED_BUILD
 
 # Export options.
 #
 lib{echo}:
 {
-  cxx.export.poptions = "-I$out_root" "-I$src_root"
-  cxx.export.libs = $intf_libs
+  c.export.poptions = "-I$out_root" "-I$src_root"
+  c.export.libs = $intf_libs
 }
 
-liba{echo}: cxx.export.poptions += -DLIBECHO_STATIC
-libs{echo}: cxx.export.poptions += -DLIBECHO_SHARED
+liba{echo}: c.export.poptions += -DLIBECHO_STATIC
+libs{echo}: c.export.poptions += -DLIBECHO_SHARED
 
 # For pre-releases use the complete version to make sure they cannot
 # be used in place of another pre-release or the final version. See
@@ -36,7 +40,7 @@ else
 # Install into the libecho/ subdirectory of, say, /usr/include/
 # recreating subdirectories.
 #
-{hxx ixx txx}{*}:
+h{*}:
 {
   install         = include/libecho/
   install.subdirs = true

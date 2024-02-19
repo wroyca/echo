@@ -1,7 +1,0 @@
-project = libecho-toolkit
-
-using version
-using config
-using test
-using install
-using dist

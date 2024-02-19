@@ -1,9 +1,9 @@
 : 1
 name: libecho
 version: 0.1.0-a.0.z
-language: c++
+language: c
 project: echo
-summary: echo C++ library
+summary: echo C library
 license: GPL-3.0-or-later ; GNU General Public License v3.0 or later.
 description-file: README.md
 url: https://example.org/echo
