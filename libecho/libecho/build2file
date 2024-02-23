@@ -1,4 +1,4 @@
-import libecho%buildfile{glib-compile-resource}
+source $src_root/build2/export/glib-compile-resource.build2
 
 intf_libs = # Interface dependencies.
 impl_libs = # Implementation dependencies.
