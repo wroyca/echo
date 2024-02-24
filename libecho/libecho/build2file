@@ -25,7 +25,7 @@ h{config}: in{config.h.in}
 
 # Resource bundle.
 #
-c{echo.resource.c}: xml{echo.resource.xml}
+c{echo.resource.c}: xml{echo.resource.xml} ui{**} css{**}
 
 # Build options.
 #

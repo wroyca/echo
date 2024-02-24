@@ -2,9 +2,10 @@
 
 CompileFlags:
   Add:
-  - -I/home/wroy/Projects/echo/libecho
+  - -I$src_base$
+  - -I$out_base$
 
-  - -DLIBECHO_COMPILATION
+  - -DECHO_COMPILATION
   - -DLIBGDK_PIXBUF_2_0_SHARED
   - -DLIBGTK_4_SHARED
   - -DLIBPANGOCAIRO_1_0_SHARED
@@ -36,4 +37,3 @@ CompileFlags:
 
   - -std=c2x
   - -xc # treat all files as c
-

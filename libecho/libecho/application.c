@@ -1,4 +1,4 @@
-/* libecho/application.c
+/* application.c
  *
  * Copyright 2024 William Roy
  *

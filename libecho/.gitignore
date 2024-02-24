@@ -1,3 +1,7 @@
+# Generated project-level settings.
+#
+*.clangd
+
 # Compiler/linker output.
 #
 *.d

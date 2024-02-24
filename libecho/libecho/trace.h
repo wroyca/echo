@@ -1,4 +1,4 @@
-/* echo-log.h
+/* trace.h
  *
  * Copyright 2024 William Roy
  *

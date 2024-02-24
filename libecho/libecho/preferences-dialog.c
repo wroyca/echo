@@ -1,4 +1,4 @@
-/* application.c
+/* preferences-dialog.c
  *
  * Copyright 2024 William Roy
  *

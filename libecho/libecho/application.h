@@ -1,4 +1,4 @@
-/* libecho/application.h
+/* application.h
  *
  * Copyright 2024 William Roy
  *
@@ -26,6 +26,7 @@
 
 #include <adwaita.h>
 #include <libpeas.h>
+#include <libpanel.h>
 
 #include <libecho/version.h>
 

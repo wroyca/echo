@@ -20,6 +20,7 @@
 
 #define G_LOG_DOMAIN "ECHO-WINDOW-APPLICATION"
 
+#include <libecho/config.h>
 #include <libecho/version.h>
 
 #include <libecho/application-window.h>
@@ -98,6 +99,10 @@ echo_application_window_init (EchoApplicationWindow *self)
   ECHO_ENTRY;
 
   gtk_widget_init_template (GTK_WIDGET (self));
+
+#ifdef PACKAGE_DEVEL
+  gtk_widget_add_css_class (GTK_WIDGET (self), "devel");
+#endif
 
   ECHO_EXIT;
 }
