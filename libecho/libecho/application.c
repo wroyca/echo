@@ -18,6 +18,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+#define G_LOG_DOMAIN "ECHO-APPLICATION"
+
 #include <libecho/config.h>
 
 #include <libecho/application.h>
@@ -627,7 +629,9 @@ echo_application_extension_init (EchoApplication *self)
 static void
 echo_application_init (EchoApplication *self)
 {
-  ECHO_ENTRY; ECHO_EXIT;
+  ECHO_ENTRY;
+
+  ECHO_EXIT;
 }
 
 static gboolean
@@ -635,6 +639,8 @@ echo_plugin_can_load (PeasEngine      *engine,
                       PeasPluginInfo  *plugin_info,
                       GHashTable      *plugin_table)
 {
+  ECHO_ENTRY;
+
   const char *dir;
   const char *name;
   const char *const *deps;
@@ -670,12 +676,14 @@ echo_plugin_can_load (PeasEngine      *engine,
 
   g_hash_table_remove (plugin_table, (gpointer) name);
 
-  return TRUE;
+  ECHO_RETURN (TRUE);
 }
 
 void
 echo_plugin_init (EchoApplication *self)
 {
+  ECHO_ENTRY;
+
   g_autoptr (PeasEngine) engine = peas_engine_get_default ();
   guint n_items;
 
@@ -704,6 +712,8 @@ echo_plugin_init (EchoApplication *self)
     }
 
   g_steal_pointer (&engine);
+
+  ECHO_EXIT;
 }
 
 EchoApplication *

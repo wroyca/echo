@@ -18,6 +18,10 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+#define G_LOG_DOMAIN "ECHO-VERSION"
+
+#include <libecho/config.h>
+
 #include <libecho/version.h>
 
 /**

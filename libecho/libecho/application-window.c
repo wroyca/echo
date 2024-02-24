@@ -18,6 +18,10 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+#define G_LOG_DOMAIN "ECHO-WINDOW-APPLICATION"
+
+#include <libecho/version.h>
+
 #include <libecho/application-window.h>
 #include <libecho/trace.h>
 
