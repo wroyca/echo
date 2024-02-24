@@ -17,3 +17,18 @@
 # Use `binary` to make sure certain files are never auto-detected as text.
 #
 #*.png binary
+
+# Use `linguist-language=C` or `linguist-language=C++` to ensure that Git
+# hosting platforms can properly identify C and C++ files with uncommon
+# extensions.
+#
+*.h.in linguist-language=C
+*.c.in linguist-language=C
+*.hxx linguist-language=C++
+*.ixx linguist-language=C++
+*.txx linguist-language=C++
+*.cxx linguist-language=C++
+*.hxx.in linguist-language=C++
+*.ixx.in linguist-language=C++
+*.txx.in linguist-language=C++
+*.cxx.in linguist-language=C++
