@@ -18,11 +18,11 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+#include <libecho/config.h>
+
 #include <libecho/application.h>
 #include <libecho/application-window.h>
 #include <libecho/trace.h>
-
-#include <libpeas.h>
 
 struct _EchoApplication
 {

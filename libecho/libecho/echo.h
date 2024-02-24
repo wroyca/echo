@@ -1,4 +1,4 @@
-/* libecho/echo.h
+/* echo.h
  *
  * Copyright 2024 William Roy
  *
@@ -22,18 +22,16 @@
 
 #include <adwaita.h>
 
-#include <libecho/export.h>
-
 G_BEGIN_DECLS
 
-#define LIBECHO_INSIDE
+#define ECHO_INSIDE
 
-#include <libecho/application.h>
 #include <libecho/application-window.h>
+#include <libecho/application.h>
+#include <libecho/config.h>
 #include <libecho/trace.h>
-#include <libecho/export.h>
 #include <libecho/version.h>
 
-#undef LIBECHO_INSIDE
+#undef ECHO_INSIDE
 
 G_END_DECLS

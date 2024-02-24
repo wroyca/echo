@@ -4,19 +4,35 @@ intf_libs = # Interface dependencies.
 impl_libs = # Implementation dependencies.
 intf_libs += %lib{adwaita-1 peas-2 panel-1}
 
-./: lib{echo}: {h c}{** -version -resource} h{version} c{resource} $impl_libs $intf_libs
+./: lib{echo}: {h c}{** -echo.resource.c -version} \
+               {h  }{version config}               \
+               {  c}{echo.resource.c}              \
+  $impl_libs $intf_libs
 
-h{version}: in{version} $src_root/manifest
+[rule_hint=version.in] h{version}: in{version} $src_root/manifest
 
-c{resource}: xml{resource} ui{**} css{**}
+# In-based rule for processing config.h.in files.
+#
+h{config}: in{config.h.in}
+{
+  package_name = $project
+  package_version = $version
+  package_devel = $config.libecho.develop
+  package_locale = [path] ($install.root != [null]                   \
+                           ? $install.resolve($install.share)/locale \
+                           : $out_base/share/locale)
+}
+
+# Resource bundle.
+#
+c{echo.resource.c}: xml{echo.resource.xml}
 
 # Build options.
 #
 c.poptions =+ "-I$out_root" "-I$src_root"
-c.poptions =+ "-DLIBECHO_COMPILATION"
-
-obja{*}: c.poptions += -DLIBECHO_STATIC_BUILD
-objs{*}: c.poptions += -DLIBECHO_SHARED_BUILD
+c.poptions =+ "-DECHO_COMPILATION"
+if $config.libecho.trace
+  c.poptions =+ -DECHO_ENABLE_TRACE
 
 # Export options.
 #
@@ -25,9 +41,6 @@ lib{echo}:
   c.export.poptions = "-I$out_root" "-I$src_root"
   c.export.libs = $intf_libs
 }
-
-liba{echo}: c.export.poptions += -DLIBECHO_STATIC
-libs{echo}: c.export.poptions += -DLIBECHO_SHARED
 
 # For pre-releases use the complete version to make sure they cannot
 # be used in place of another pre-release or the final version. See

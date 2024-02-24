@@ -1,0 +1,6 @@
+/* config.h.in */
+
+#define PACKAGE_NAME "@package_name@"
+#define PACKAGE_VERSION "@package_version@"
+#define PACKAGE_DEVEL @package_devel@
+#define PACKAGE_LOCALE "@package_locale@"

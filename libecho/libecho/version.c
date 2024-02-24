@@ -1,4 +1,4 @@
-/* application-window.h
+/* version.c
  *
  * Copyright 2024 William Roy
  *
@@ -18,24 +18,49 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#pragma once
-
-#if !defined (ECHO_INSIDE) && !defined (ECHO_COMPILATION)
-#  error "Only <libecho/echo.h> can be included directly."
-#endif
-
-#include <adwaita.h>
-#include <libpanel.h>
-
-#include <libecho/application.h>
 #include <libecho/version.h>
 
-G_BEGIN_DECLS
+/**
+ * echo_get_major_version:
+ *
+ * Get echo major version component (e.g. 1 if %ECHO_VERSION is 1.2.3)
+ *
+ * Returns: echo major version component.
+ */
+guint
+echo_get_major_version (void)
+{
+  ECHO_ENTRY;
 
-#define ECHO_TYPE_APPLICATION_WINDOW (echo_application_window_get_type ())
-G_DECLARE_FINAL_TYPE                 (EchoApplicationWindow, echo_application_window, ECHO, APPLICATION_WINDOW, AdwApplicationWindow)
+  ECHO_RETURN (ECHO_MAJOR_VERSION);
+}
 
-ECHO_AVAILABLE_IN_ALL
-EchoApplicationWindow *echo_application_window_new (EchoApplication *app);
+/**
+ * echo_get_minor_version:
+ *
+ * Get echo minor version component (e.g. 2 if %ECHO_VERSION is 1.2.3)
+ *
+ * Returns: echo minor version component.
+ */
+guint
+echo_get_minor_version (void)
+{
+  ECHO_ENTRY;
 
-G_END_DECLS
+  ECHO_RETURN (ECHO_MINOR_VERSION);
+}
+
+/**
+ * echo_get_patch_version:
+ *
+ * Get echo patch version component (e.g. 3 if %ECHO_VERSION is 1.2.3)
+ *
+ * Returns: echo minor version component.
+ */
+guint
+echo_get_patch_version (void)
+{
+  ECHO_ENTRY;
+
+  ECHO_RETURN (ECHO_PATCH_VERSION);
+}

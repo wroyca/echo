@@ -1,4 +1,4 @@
-/* libecho/trace.h
+/* echo-log.h
  *
  * Copyright 2024 William Roy
  *
@@ -20,7 +20,7 @@
 
 #pragma once
 
-#if !defined (LIBECHO_INSIDE) && !defined (LIBECHO_COMPILATION)
+#if !defined (ECHO_INSIDE) && !defined (ECHO_COMPILATION)
 #  error "Only <libecho/echo.h> can be included directly."
 #endif
 
@@ -29,7 +29,7 @@
 G_BEGIN_DECLS
 
 /**
- * ECHO_LOG_LEVEL_TRACE: (skip)
+ * ECHO_LOG_LEVEL_TRACE:
  *
  * The [flags@Glib.GLogLevelFlags] log level for trace messages in Echo.
  */
@@ -40,30 +40,30 @@ G_BEGIN_DECLS
 #ifdef ECHO_ENABLE_TRACE
 
 /**
- * ECHO_ENTRY: (skip)
+ * ECHO_ENTRY:
  *
  * Traces the entry into a function. Place this at the beginning of functions,
  * above pre-condition checks.
  */
 
 /**
- * ECHO_EXIT: (skip)
+ * ECHO_EXIT:
  *
  * Traces the exit from a function. Use this instead of `return` to return
  * and log the function exiting.
  */
 
 /**
- * ECHO_RETURN: (skip)
- * @_r: The return value
+ * ECHO_RETURN:
+ * @_r: the return value
  *
  * Traces the exit from a function. Use this instead of `return` to return @_r
  * and log the function exiting.
  */
 
 /**
- * ECHO_GOTO: (skip)
- * @_l: The label to jump to
+ * ECHO_GOTO:
+ * @_l: the label to jump to
  *
  * Traces the jump to a label in a function. Use this instead of `goto` to jump
  * to @_l and log the label.

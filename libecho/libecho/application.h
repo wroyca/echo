@@ -20,13 +20,14 @@
 
 #pragma once
 
-#if !defined (LIBECHO_INSIDE) && !defined (LIBECHO_COMPILATION)
+#if !defined (ECHO_INSIDE) && !defined (ECHO_COMPILATION)
 #  error "Only <libecho/echo.h> can be included directly."
 #endif
 
 #include <adwaita.h>
+#include <libpeas.h>
 
-#include <libecho/export.h>
+#include <libecho/version.h>
 
 G_BEGIN_DECLS
 
@@ -61,33 +62,33 @@ struct _EchoApplicationExtensionInterface
                                     EchoApplication           *application);
 };
 
-LIBECHO_SYMEXPORT
+ECHO_AVAILABLE_IN_ALL
 void             echo_extension_activate             (EchoApplicationExtension  *self,
                                                       EchoApplication           *application);
-LIBECHO_SYMEXPORT
+ECHO_AVAILABLE_IN_ALL
 gint             echo_extension_command_line         (EchoApplicationExtension  *self,
                                                       EchoApplication           *application,
                                                       GApplicationCommandLine   *command_line);
-LIBECHO_SYMEXPORT
+ECHO_AVAILABLE_IN_ALL
 gint             echo_extension_handle_local_options (EchoApplicationExtension  *self,
                                                       EchoApplication           *application,
                                                       GVariantDict              *options);
-LIBECHO_SYMEXPORT
+ECHO_AVAILABLE_IN_ALL
 gboolean         echo_extension_name_lost             (EchoApplicationExtension  *self,
                                                       EchoApplication           *application);
-LIBECHO_SYMEXPORT
+ECHO_AVAILABLE_IN_ALL
 void             echo_extension_open                 (EchoApplicationExtension  *self,
                                                       EchoApplication           *application,
                                                       GFile                    **files,
                                                       gint                       n_files,
                                                       const gchar               *hint);
-LIBECHO_SYMEXPORT
+ECHO_AVAILABLE_IN_ALL
 void             echo_extension_shutdown             (EchoApplicationExtension  *self,
                                                       EchoApplication           *application);
-LIBECHO_SYMEXPORT
+ECHO_AVAILABLE_IN_ALL
 void             echo_extension_startup              (EchoApplicationExtension  *self,
                                                       EchoApplication           *application);
-LIBECHO_SYMEXPORT
+ECHO_AVAILABLE_IN_ALL
 EchoApplication *echo_application_new                ();
 
 G_END_DECLS

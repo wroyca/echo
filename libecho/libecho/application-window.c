@@ -1,4 +1,4 @@
-/* libecho/application-window.c
+/* application-window.c
  *
  * Copyright 2024 William Roy
  *
@@ -97,7 +97,6 @@ echo_application_window_init (EchoApplicationWindow *self)
 
   ECHO_EXIT;
 }
-
 
 EchoApplicationWindow *
 echo_application_window_new (EchoApplication *app)
