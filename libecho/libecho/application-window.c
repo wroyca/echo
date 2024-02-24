@@ -21,10 +21,11 @@
 #define G_LOG_DOMAIN "ECHO-WINDOW-APPLICATION"
 
 #include <libecho/config.h>
-#include <libecho/version.h>
 
 #include <libecho/application-window.h>
+#include <libecho/pages/disassembly.h>
 #include <libecho/trace.h>
+#include <libecho/version.h>
 
 struct _EchoApplicationWindow
 {
@@ -103,6 +104,32 @@ echo_application_window_init (EchoApplicationWindow *self)
 #ifdef PACKAGE_DEVEL
   gtk_widget_add_css_class (GTK_WIDGET (self), "devel");
 #endif
+
+  // XXX: Prototype, move elsewhere later
+  //
+
+  static guint count;
+  PanelWidget *widget;
+  char *title;
+  char *tooltip;
+
+  title = g_strdup_printf ("Untitled Document %u", ++count);
+  tooltip = g_strdup_printf ("Draft: %s", title);
+  widget = g_object_new (ECHO_TYPE_DISASSEMBLY,
+                         "title", title,
+                         "tooltip", tooltip,
+                         "kind", PANEL_WIDGET_KIND_DOCUMENT,
+                         "icon-name", "text-x-generic-symbolic",
+                         "can-maximize", TRUE,
+                         "modified", TRUE,
+                         NULL);
+
+  panel_grid_add (self->grid, widget);
+  panel_widget_raise (widget);
+  panel_widget_focus_default (widget);
+
+  g_free (title);
+  g_free (tooltip);
 
   ECHO_EXIT;
 }
