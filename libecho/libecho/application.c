@@ -24,6 +24,7 @@
 
 #include <libecho/application.h>
 #include <libecho/application-window.h>
+#include <libecho/preferences-dialog.h>
 #include <libecho/trace.h>
 
 struct _EchoApplication
@@ -618,18 +619,112 @@ echo_application_class_init (EchoApplicationClass *self)
 void
 echo_application_extension_init (EchoApplication *self)
 {
+  ECHO_ENTRY;
+
   g_assert (ECHO_IS_APPLICATION (self));
   g_assert (self->extensions == NULL);
 
   self->extensions = peas_extension_set_new (peas_engine_get_default (),
                                              ECHO_TYPE_APPLICATION_EXTENSION,
                                              NULL);
+
+  ECHO_EXIT;
+}
+
+static void
+echo_application_preferences_action (GSimpleAction *action,
+                                     GVariant      *parameter,
+                                     gpointer       user_data)
+{
+  ECHO_ENTRY;
+
+  g_autoptr (EchoApplication) self = ECHO_APPLICATION (user_data);
+  g_autoptr (EchoApplicationWindow) window = NULL;
+  g_autoptr (EchoPreferencesDialog) preferences = NULL;
+
+  g_assert (ECHO_IS_APPLICATION (self));
+
+  window = ECHO_APPLICATION_WINDOW (gtk_application_get_active_window (GTK_APPLICATION (self)));
+  preferences = echo_preferences_dialog_new ();
+  adw_dialog_present (ADW_DIALOG (preferences), GTK_WIDGET (window));
+
+  g_steal_pointer(&self);
+  g_steal_pointer(&window);
+  g_steal_pointer(&preferences);
+
+  ECHO_EXIT;
+}
+
+static void
+echo_application_about_action (GSimpleAction *action,
+                               GVariant      *parameter,
+                               gpointer       user_data)
+{
+  ECHO_ENTRY;
+
+  static const char *developers[] = {
+    "William Roy", NULL
+  };
+
+  g_autoptr (EchoApplication) self = ECHO_APPLICATION (user_data);
+  g_autoptr (EchoApplicationWindow) window = NULL;
+  g_autoptr (AdwDialog) dialog = NULL;
+
+  g_assert (ECHO_IS_APPLICATION (self));
+
+  window = ECHO_APPLICATION_WINDOW (gtk_application_get_active_window (GTK_APPLICATION (self)));
+  dialog = g_object_new (ADW_TYPE_ABOUT_DIALOG,
+                         "application-name", "echo",
+                         "application-icon", "app.drey.Echo",
+                         "developer-name", "William Roy",
+                         "version", "0.1.0",
+                         "developers", developers,
+                         "copyright", "© 2024 William Roy",
+                         NULL);
+
+  adw_dialog_present (dialog, GTK_WIDGET (window));
+
+  g_steal_pointer (&self);
+  g_steal_pointer (&window);
+  g_steal_pointer (&dialog);
+}
+
+static void
+echo_application_quit_action (GSimpleAction *action,
+                              GVariant      *parameter,
+                              gpointer       user_data)
+{
+  ECHO_ENTRY;
+
+  g_autoptr (EchoApplication) self = ECHO_APPLICATION (user_data);
+
+  g_assert (ECHO_IS_APPLICATION (self));
+
+  g_application_quit (G_APPLICATION (self));
+
+  g_steal_pointer (&self);
+
+  ECHO_EXIT;
 }
 
 static void
 echo_application_init (EchoApplication *self)
 {
   ECHO_ENTRY;
+
+  static const GActionEntry app_actions[] = {
+    { "quit", echo_application_quit_action },
+    { "preferences", echo_application_preferences_action },
+    { "about", echo_application_about_action },
+  };
+
+  g_action_map_add_action_entries (G_ACTION_MAP (self),
+                                   app_actions, G_N_ELEMENTS (app_actions),
+                                   self);
+
+  gtk_application_set_accels_for_action (GTK_APPLICATION (self),
+                                         "app.quit",
+                                         (const char *[]){"<primary>q", NULL});
 
   ECHO_EXIT;
 }
