@@ -70,6 +70,8 @@ echo_disassembly_init (EchoDisassembly *self)
   gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (scroller),
                                  GTK_WIDGET (self->text_view));
 
+  g_steal_pointer(&scroller);
+
   ECHO_EXIT;
 }
 
