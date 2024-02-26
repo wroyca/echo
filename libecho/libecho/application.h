@@ -26,7 +26,6 @@
 
 #include <adwaita.h>
 #include <libpeas.h>
-#include <libpanel.h>
 
 #include <libecho/version.h>
 
@@ -35,6 +34,7 @@ G_BEGIN_DECLS
 #define ECHO_TYPE_APPLICATION           (echo_application_get_type ())
 #define ECHO_TYPE_APPLICATION_EXTENSION (echo_application_extension_get_type ())
 #define ECHO_APPLICATION_DEFAULT        (ECHO_APPLICATION (g_application_get_default ()))
+
 G_DECLARE_FINAL_TYPE                    (EchoApplication, echo_application, ECHO, APPLICATION, AdwApplication)
 G_DECLARE_INTERFACE                     (EchoApplicationExtension, echo_application_extension, ECHO, APPLICATION_EXTENSION, GObject)
 
@@ -90,7 +90,7 @@ ECHO_AVAILABLE_IN_ALL
 void             echo_application_extension_startup              (EchoApplicationExtension  *self,
                                                                   EchoApplication           *application);
 ECHO_AVAILABLE_IN_ALL
-EchoApplication *echo_application_new                ();
+EchoApplication *echo_application_new                            ();
 
 G_END_DECLS
 

@@ -1,4 +1,4 @@
-/* echo-version.h
+/* version.h
  *
  * Copyright 2024 William Roy
  *
@@ -21,7 +21,7 @@
 #pragma once
 
 #if !defined(ECHO_INSIDE) && !defined(ECHO_COMPILATION)
-#error "Only <libecho/echo.h> can be included directly."
+#  error "Only <libecho/echo.h> can be included directly."
 #endif
 
 #include <glib.h>
@@ -87,13 +87,11 @@
  * Evaluates to %TRUE if %ECHO_VERSION is greater than the required one; %FALSE
  * otherwise.
  */
-#define ECHO_CHECK_VERSION(major,minor,patch) \
-       (ECHO_MAJOR_VERSION  > (major)  ||     \
-       (ECHO_MAJOR_VERSION == (major)  &&     \
-        ECHO_MINOR_VERSION  > (minor)) ||     \
-       (ECHO_MAJOR_VERSION == (major)  &&     \
-        ECHO_PATCH_VERSION == (minor)  &&     \
-        ECHO_PATCH_VERSION >= (patch)))
+#define ECHO_CHECK_VERSION(major,minor,micro)   \
+        (ECHO_MAJOR_VERSION > (major) || \
+         (ECHO_MAJOR_VERSION == (major) && ECHO_MINOR_VERSION > (minor)) || \
+         (ECHO_MAJOR_VERSION == (major) && ECHO_MINOR_VERSION == (minor) && \
+          ECHO_MICRO_VERSION >= (micro)))
 
 /* XXX: Every new stable minor release bump should add a macro here. */
 
@@ -185,10 +183,10 @@
 #define ECHO_AVAILABLE_IN_ALL _ECHO_EXTERN
 
 ECHO_AVAILABLE_IN_ALL
-guint echo_get_major_version (void) G_GNUC_CONST;
+guint echo_get_major_version () G_GNUC_CONST;
 ECHO_AVAILABLE_IN_ALL
-guint echo_get_minor_version (void) G_GNUC_CONST;
+guint echo_get_minor_version () G_GNUC_CONST;
 ECHO_AVAILABLE_IN_ALL
-guint echo_get_patch_version (void) G_GNUC_CONST;
+guint echo_get_patch_version () G_GNUC_CONST;
 
 G_END_DECLS

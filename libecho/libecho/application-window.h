@@ -33,7 +33,8 @@
 G_BEGIN_DECLS
 
 #define ECHO_TYPE_APPLICATION_WINDOW (echo_application_window_get_type ())
-G_DECLARE_FINAL_TYPE                 (EchoApplicationWindow, echo_application_window, ECHO, APPLICATION_WINDOW, AdwApplicationWindow)
+
+G_DECLARE_FINAL_TYPE (EchoApplicationWindow, echo_application_window, ECHO, APPLICATION_WINDOW, AdwApplicationWindow)
 
 ECHO_AVAILABLE_IN_ALL
 EchoApplicationWindow *echo_application_window_new (EchoApplication *app);

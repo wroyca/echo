@@ -20,7 +20,7 @@
 
 #pragma once
 
-#if !defined (ECHO_INSIDE) && !defined (ECHO_COMPILATION)
+#if !defined(ECHO_INSIDE) && !defined(ECHO_COMPILATION)
 #  error "Only <libecho/echo.h> can be included directly."
 #endif
 
@@ -32,6 +32,6 @@ G_BEGIN_DECLS
 
 G_DECLARE_FINAL_TYPE (EchoPreferencesDialog, echo_preferences_dialog, ECHO, PREFERENCES_DIALOG, AdwPreferencesDialog)
 
-EchoPreferencesDialog *echo_preferences_dialog_new (void);
+EchoPreferencesDialog *echo_preferences_dialog_new ();
 
 G_END_DECLS

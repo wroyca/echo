@@ -32,7 +32,7 @@
  * Returns: echo major version component.
  */
 guint
-echo_get_major_version (void)
+echo_get_major_version ()
 {
   ECHO_ENTRY;
 
@@ -47,7 +47,7 @@ echo_get_major_version (void)
  * Returns: echo minor version component.
  */
 guint
-echo_get_minor_version (void)
+echo_get_minor_version ()
 {
   ECHO_ENTRY;
 
@@ -62,7 +62,7 @@ echo_get_minor_version (void)
  * Returns: echo minor version component.
  */
 guint
-echo_get_patch_version (void)
+echo_get_patch_version ()
 {
   ECHO_ENTRY;
 

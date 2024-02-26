@@ -38,6 +38,7 @@ CompileFlags:
   - -std=gnu23
   - -xc # treat all files as c
 
+  - -Wno-pre-c23-compat
   - -Wno-pre-c11-compat
   - -Wno-declaration-after-statement
   - -Wno-unused-macros

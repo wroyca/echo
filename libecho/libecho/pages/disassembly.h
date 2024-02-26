@@ -29,8 +29,9 @@
 G_BEGIN_DECLS
 
 #define ECHO_TYPE_DISASSEMBLY (echo_disassembly_get_type ())
-G_DECLARE_FINAL_TYPE          (EchoDisassembly, echo_disassembly, ECHO, DISASSEMBLY, PanelWidget)
 
-EchoDisassembly *echo_disassembly_new (void);
+G_DECLARE_FINAL_TYPE (EchoDisassembly, echo_disassembly, ECHO, DISASSEMBLY, PanelWidget)
+
+EchoDisassembly *echo_disassembly_new ();
 
 G_END_DECLS

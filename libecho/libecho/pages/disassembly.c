@@ -43,7 +43,7 @@ echo_disassembly_class_init (EchoDisassemblyClass *klass)
 {
   ECHO_ENTRY;
 
-  PanelWidgetClass *panel_widget_class = PANEL_WIDGET_CLASS (klass);
+  auto panel_widget_class = PANEL_WIDGET_CLASS (klass);
 
   panel_widget_class->get_default_focus = echo_disassembly_get_default_focus;
 
@@ -55,34 +55,23 @@ echo_disassembly_init (EchoDisassembly *self)
 {
   ECHO_ENTRY;
 
-  g_autoptr (GtkWidget) scroller = gtk_scrolled_window_new ();
+  auto scroller = gtk_scrolled_window_new ();
 
   panel_widget_set_child (PANEL_WIDGET (self), scroller);
 
   self->text_view = GTK_TEXT_VIEW (gtk_text_view_new ());
-
-  g_object_set (self->text_view,
-                "monospace", TRUE,
-                "left-margin", 6,
-                "top-margin", 6,
-                NULL);
-
-  gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (scroller),
-                                 GTK_WIDGET (self->text_view));
-
-  g_steal_pointer(&scroller);
+  g_object_set (self->text_view, "monospace", TRUE, "left-margin", 6, "top-margin", 6, NULL);
+  gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (scroller), GTK_WIDGET (self->text_view));
 
   ECHO_EXIT;
 }
 
 EchoDisassembly *
-echo_disassembly_new (void)
+echo_disassembly_new ()
 {
   ECHO_ENTRY;
 
-  g_autoptr (EchoDisassembly) self = NULL;
+  auto self = g_object_new (ECHO_TYPE_DISASSEMBLY, NULL);
 
-  self = g_object_new (ECHO_TYPE_DISASSEMBLY, NULL);
-
-  ECHO_RETURN (g_steal_pointer (&self));
+  ECHO_RETURN (self);
 }

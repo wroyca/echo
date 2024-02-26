@@ -1,3 +1,11 @@
 # Generated version header.
 #
 version.h
+
+# Generated config header.
+#
+config.h
+
+# Generated resource bundle.
+#
+echo.resource.c

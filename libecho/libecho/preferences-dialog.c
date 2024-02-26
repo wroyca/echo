@@ -36,15 +36,13 @@ struct _EchoPreferencesDialog
 G_DEFINE_FINAL_TYPE (EchoPreferencesDialog, echo_preferences_dialog, ADW_TYPE_PREFERENCES_DIALOG)
 
 EchoPreferencesDialog *
-echo_preferences_dialog_new (void)
+echo_preferences_dialog_new ()
 {
   ECHO_ENTRY;
 
-  g_autoptr (EchoPreferencesDialog) self = NULL;
+  auto self = g_object_new (ECHO_TYPE_PREFERENCES_DIALOG, nullptr);
 
-  self = g_object_new (ECHO_TYPE_PREFERENCES_DIALOG, NULL);
-
-  ECHO_RETURN (g_steal_pointer (&self));
+  ECHO_RETURN (self);
 }
 
 static void
@@ -82,14 +80,17 @@ echo_preferences_dialog_class_init (EchoPreferencesDialogClass *klass)
 {
   ECHO_ENTRY;
 
-  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+  auto widget_class = GTK_WIDGET_CLASS (klass);
+  auto resource = "/app/drey/Echo/preferences-dialog.ui";
 
-  gtk_widget_class_set_template_from_resource (widget_class, "/app/drey/Echo/preferences-dialog.ui");
-  gtk_widget_class_bind_template_child (widget_class, EchoPreferencesDialog, subpage1);
-  gtk_widget_class_bind_template_child (widget_class, EchoPreferencesDialog, subpage2);
+  gtk_widget_class_set_template_from_resource (widget_class, resource);
+
+  gtk_widget_class_bind_template_child    (widget_class, EchoPreferencesDialog, subpage1);
+  gtk_widget_class_bind_template_child    (widget_class, EchoPreferencesDialog, subpage2);
   gtk_widget_class_bind_template_callback (widget_class, subpage1_activated_cb);
   gtk_widget_class_bind_template_callback (widget_class, subpage2_activated_cb);
-  gtk_widget_class_install_action (widget_class, "toast.show", NULL, (GtkWidgetActionActivateFunc) toast_show_cb);
+
+  gtk_widget_class_install_action (widget_class, "toast.show", nullptr, (GtkWidgetActionActivateFunc) toast_show_cb);
 
   ECHO_EXIT;
 }

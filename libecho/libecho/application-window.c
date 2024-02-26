@@ -22,6 +22,8 @@
 
 #include <libecho/config.h>
 
+#include <glib/gi18n.h>
+
 #include <libecho/application-window.h>
 #include <libecho/pages/disassembly.h>
 #include <libecho/trace.h>
@@ -42,37 +44,31 @@ static PanelFrame *
 create_frame_cb (PanelGrid             *grid,
                  EchoApplicationWindow *self)
 {
-  PanelFrame       *frame;
-  PanelFrameHeader *header;
-  AdwStatusPage    *status;
-  GtkGrid          *shortcuts;
-  GtkWidget        *child;
+  ECHO_ENTRY;
 
   g_assert (ECHO_IS_APPLICATION_WINDOW (self));
 
-  frame = PANEL_FRAME (panel_frame_new ());
-  status = ADW_STATUS_PAGE (adw_status_page_new ());
+  auto frame = PANEL_FRAME (panel_frame_new ());
+  auto status = ADW_STATUS_PAGE (adw_status_page_new ());
 
   adw_status_page_set_title (status, "Hello");
   adw_status_page_set_icon_name (status, "application-x-executable-symbolic");
   adw_status_page_set_description (status, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut egestas.");
   panel_frame_set_placeholder (frame, GTK_WIDGET (status));
 
-  return frame;
+  ECHO_RETURN (frame);
 }
 
 static void
 echo_application_window_constructed (GObject *object)
 {
-  g_autoptr (EchoApplicationWindow) self = ECHO_APPLICATION_WINDOW (object);
+  auto self = ECHO_APPLICATION_WINDOW (object);
 
   g_assert (ECHO_IS_APPLICATION_WINDOW (self));
 
   G_OBJECT_CLASS (echo_application_window_parent_class)->constructed (object);
 
   panel_grid_column_get_row (panel_grid_get_column (self->grid, 0), 0);
-
-  g_steal_pointer (&self);
 }
 
 static void
@@ -80,12 +76,13 @@ echo_application_window_class_init (EchoApplicationWindowClass *klass)
 {
   ECHO_ENTRY;
 
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+  auto object_class = G_OBJECT_CLASS (klass);
+  auto widget_class = GTK_WIDGET_CLASS (klass);
+  auto resource = "/app/drey/Echo/application-window.ui";
 
   object_class->constructed = echo_application_window_constructed;
 
-  gtk_widget_class_set_template_from_resource (widget_class, "/app/drey/Echo/application-window.ui");
+  gtk_widget_class_set_template_from_resource (widget_class, resource);
   gtk_widget_class_bind_template_child (widget_class, EchoApplicationWindow, header_bar);
   gtk_widget_class_bind_template_child (widget_class, EchoApplicationWindow, dock);
   gtk_widget_class_bind_template_child (widget_class, EchoApplicationWindow, grid);
@@ -105,31 +102,25 @@ echo_application_window_init (EchoApplicationWindow *self)
   gtk_widget_add_css_class (GTK_WIDGET (self), "devel");
 #endif
 
-  // XXX: Prototype, move elsewhere later
-  //
-
   static guint count;
-  PanelWidget *widget;
-  char *title;
-  char *tooltip;
+  g_autofree gchar* title = NULL;
+  g_autofree gchar* tooltip = NULL;
 
   title = g_strdup_printf ("Untitled Document %u", ++count);
   tooltip = g_strdup_printf ("Draft: %s", title);
-  widget = g_object_new (ECHO_TYPE_DISASSEMBLY,
-                         "title", title,
-                         "tooltip", tooltip,
-                         "kind", PANEL_WIDGET_KIND_DOCUMENT,
-                         "icon-name", "text-x-generic-symbolic",
-                         "can-maximize", TRUE,
-                         "modified", TRUE,
-                         NULL);
+
+  auto widget = g_object_new (ECHO_TYPE_DISASSEMBLY,
+                              "title", title,
+                              "tooltip", tooltip,
+                              "kind", PANEL_WIDGET_KIND_DOCUMENT,
+                              "icon-name", "text-x-generic-symbolic",
+                              "can-maximize", TRUE,
+                              "modified", TRUE,
+                              nullptr);
 
   panel_grid_add (self->grid, widget);
   panel_widget_raise (widget);
   panel_widget_focus_default (widget);
-
-  g_free (title);
-  g_free (tooltip);
 
   ECHO_EXIT;
 }
@@ -139,11 +130,9 @@ echo_application_window_new (EchoApplication *app)
 {
   ECHO_ENTRY;
 
-  g_autoptr (EchoApplicationWindow) self = NULL;
+  auto self = g_object_new (ECHO_TYPE_APPLICATION_WINDOW,
+                            "application", app,
+                            nullptr);
 
-  self = g_object_new (ECHO_TYPE_APPLICATION_WINDOW,
-                       "application", app,
-                       NULL);
-
-  ECHO_RETURN (g_steal_pointer (&self));
+  ECHO_RETURN (self);
 }
