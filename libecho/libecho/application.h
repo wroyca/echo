@@ -64,31 +64,31 @@ struct _EchoApplicationExtensionInterface
 };
 
 ECHO_AVAILABLE_IN_ALL
-void             echo_extension_activate             (EchoApplicationExtension  *self,
-                                                      EchoApplication           *application);
+void             echo_application_extension_activate             (EchoApplicationExtension  *self,
+                                                                  EchoApplication           *application);
 ECHO_AVAILABLE_IN_ALL
-gint             echo_extension_command_line         (EchoApplicationExtension  *self,
-                                                      EchoApplication           *application,
-                                                      GApplicationCommandLine   *command_line);
+gint             echo_application_extension_command_line         (EchoApplicationExtension  *self,
+                                                                  EchoApplication           *application,
+                                                                  GApplicationCommandLine   *command_line);
 ECHO_AVAILABLE_IN_ALL
-gint             echo_extension_handle_local_options (EchoApplicationExtension  *self,
-                                                      EchoApplication           *application,
-                                                      GVariantDict              *options);
+gint             echo_application_extension_handle_local_options (EchoApplicationExtension  *self,
+                                                                  EchoApplication           *application,
+                                                                  GVariantDict              *options);
 ECHO_AVAILABLE_IN_ALL
-gboolean         echo_extension_name_lost             (EchoApplicationExtension  *self,
-                                                      EchoApplication           *application);
+gboolean         echo_application_extension_name_lost            (EchoApplicationExtension  *self,
+                                                                  EchoApplication           *application);
 ECHO_AVAILABLE_IN_ALL
-void             echo_extension_open                 (EchoApplicationExtension  *self,
-                                                      EchoApplication           *application,
-                                                      GFile                    **files,
-                                                      gint                       n_files,
-                                                      const gchar               *hint);
+void             echo_application_extension_open                 (EchoApplicationExtension  *self,
+                                                                  EchoApplication           *application,
+                                                                  GFile                    **files,
+                                                                  gint                       n_files,
+                                                                  const gchar               *hint);
 ECHO_AVAILABLE_IN_ALL
-void             echo_extension_shutdown             (EchoApplicationExtension  *self,
-                                                      EchoApplication           *application);
+void             echo_application_extension_shutdown             (EchoApplicationExtension  *self,
+                                                                  EchoApplication           *application);
 ECHO_AVAILABLE_IN_ALL
-void             echo_extension_startup              (EchoApplicationExtension  *self,
-                                                      EchoApplication           *application);
+void             echo_application_extension_startup              (EchoApplicationExtension  *self,
+                                                                  EchoApplication           *application);
 ECHO_AVAILABLE_IN_ALL
 EchoApplication *echo_application_new                ();
 

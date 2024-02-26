@@ -616,7 +616,7 @@ echo_application_class_init (EchoApplicationClass *self)
   ECHO_EXIT;
 }
 
-void
+static void
 echo_application_extension_init (EchoApplication *self)
 {
   ECHO_ENTRY;
