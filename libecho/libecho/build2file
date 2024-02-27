@@ -2,7 +2,7 @@ source $src_root/build2/export/glib-compile-resource.build2
 
 intf_libs = # Interface dependencies.
 impl_libs = # Implementation dependencies.
-intf_libs += %lib{adwaita-1 peas-2 panel-1}
+intf_libs += %lib{adwaita-1 peas-2}
 
 ./: lib{echo}: {h c}{** -echo.resource.c -version} \
                {h  }{version config}               \

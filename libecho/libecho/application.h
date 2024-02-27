@@ -35,8 +35,8 @@ G_BEGIN_DECLS
 #define ECHO_TYPE_APPLICATION_EXTENSION (echo_application_extension_get_type ())
 #define ECHO_APPLICATION_DEFAULT        (ECHO_APPLICATION (g_application_get_default ()))
 
-G_DECLARE_FINAL_TYPE                    (EchoApplication, echo_application, ECHO, APPLICATION, AdwApplication)
-G_DECLARE_INTERFACE                     (EchoApplicationExtension, echo_application_extension, ECHO, APPLICATION_EXTENSION, GObject)
+G_DECLARE_FINAL_TYPE (EchoApplication, echo_application, ECHO, APPLICATION, AdwApplication)
+G_DECLARE_INTERFACE  (EchoApplicationExtension, echo_application_extension, ECHO, APPLICATION_EXTENSION, GObject)
 
 struct _EchoApplicationExtensionInterface
 {
