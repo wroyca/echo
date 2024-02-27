@@ -37,6 +37,8 @@ struct _EchoApplicationWindow
 
 G_DEFINE_FINAL_TYPE (EchoApplicationWindow, echo_application_window, ADW_TYPE_APPLICATION_WINDOW)
 
+void _echo_application_window_class_actions_init (EchoApplicationWindowClass *klass);
+
 static void
 echo_application_window_class_init (EchoApplicationWindowClass *klass)
 {
@@ -48,6 +50,8 @@ echo_application_window_class_init (EchoApplicationWindowClass *klass)
 
   gtk_widget_class_set_template_from_resource (widget_class, resource);
   gtk_widget_class_bind_template_child (widget_class, EchoApplicationWindow, header_bar);
+
+  _echo_application_window_class_actions_init(klass);
 
   ECHO_EXIT;
 }
