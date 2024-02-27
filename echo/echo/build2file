@@ -1,6 +1,6 @@
 libs =
 import libs += libecho%lib{echo}
 
-exe{echo}: {h c}{**} $libs testscript
+exe{echo}: {h c}{**} $libs
 
 c.poptions =+ "-I$out_root" "-I$src_root"
