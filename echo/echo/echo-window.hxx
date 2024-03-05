@@ -1,4 +1,4 @@
-/* main.c
+/* echo-window.h
  *
  * Copyright 2024 William Roy
  *
@@ -18,25 +18,14 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#include <echo/config.hxx>
+#pragma once
 
-#include <glib/gi18n.h>
+#include <adwaita.h>
 
-#include <echo/echo-application.hxx>
+G_BEGIN_DECLS
 
-int
-main (int   argc,
-      char *argv[])
-{
-	g_autoptr(EchoApplication) app = NULL;
-	int ret;
+#define ECHO_TYPE_WINDOW (echo_window_get_type())
 
-	bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
-	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-	textdomain (GETTEXT_PACKAGE);
+G_DECLARE_FINAL_TYPE (EchoWindow, echo_window, ECHO, WINDOW, AdwApplicationWindow)
 
-	app = echo_application_new ("app.drey.Echo", G_APPLICATION_DEFAULT_FLAGS);
-	ret = g_application_run (G_APPLICATION (app), argc, argv);
-
-	return ret;
-}
+G_END_DECLS

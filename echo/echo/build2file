@@ -1,6 +1,27 @@
+source $src_root/build2/export/glib-compile-resources.build2
+
 libs =
+pkgs = %lib{adwaita-1}
 import libs += libecho%lib{echo}
 
-exe{echo}: {hxx ixx txx cxx}{**} $libs testscript
+exe{echo}: {hxx cxx}{** -config -**.gresource...} \
+           {    hxx}{config}                      \
+           {    cxx}{echo.gresource.cxx}          \
+  $libs $pkgs testscript
+
+{cxx}{echo.gresource.cxx}: xml{echo.gresource.xml} ui{**} css{**}
+
+hxx{config}: in{config.hxx.in}
+{
+  gettext_package = $project
+  package_version = $version
+
+  # FIXME: gettext doesn't resolve properly.
+  #
+  localedir = ($install.root != [null]                   \
+               ? $install.resolve($install.share)/locale \
+               : $out_base/share/locale)
+}
 
 cxx.poptions =+ "-I$out_root" "-I$src_root"
+cxx.poptions =+ "-DECHO_DEVELOP=$config.echo.develop"

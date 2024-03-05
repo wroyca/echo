@@ -11,6 +11,18 @@ ixx{*}: extension = ixx
 txx{*}: extension = txx
 cxx{*}: extension = cxx
 
+# The .in (input) file preprocessing build system module.
+#
+using in
+
+# The GNU Autoconf emulation build system module.
+#
+using autoconf
+
+# Built-in semantics to distinguish between development and consumption builds.
+#
+config [bool] config.echo.develop ?= false
+
 # The test target for cross-testing (running tests under Wine, etc).
 #
 test.target = $cxx.target

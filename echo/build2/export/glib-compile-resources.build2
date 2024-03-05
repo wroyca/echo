@@ -1,0 +1,24 @@
+import! glib-compile-resources = glib-compile-resources%exe{glib-compile-resources}
+
+# Resource bundles.
+#
+if ($glib-compile-resources != [null])
+{
+  define xml: file
+  define ui: file
+  define css: file
+
+  xml{*}: extension = xml
+  ui{*}: extension = ui
+  css{*}: extension = css
+
+  cxx{~'/(.+)/'}: xml{~'/\1/'}
+  {{
+    diag glib-compile-resources ($<[0]) -> $>
+
+    r = $path($<[0])
+    b = $out_base/$name($>).cxx
+
+    glib-compile-resources --sourcedir $src_base --generate-source $r --target=$b
+  }}
+}

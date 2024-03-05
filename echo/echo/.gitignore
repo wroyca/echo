@@ -3,3 +3,12 @@ echo
 # Testscript output directory (can be symlink).
 #
 test-echo
+
+# Resource bundles.
+#
+echo.gresource.c
+
+# GNU Autoconf emulation.
+#
+config.h
+
