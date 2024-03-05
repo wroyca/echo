@@ -1,8 +1,12 @@
 source $src_root/build2/export/glib-compile-resources.build2
 
 libs =
-pkgs = %lib{adwaita-1}
 import libs += libecho%lib{echo}
+
+pkgs =
+pkgs += %lib{adwaita-1}
+pkgs += %lib{LIEF}
+pkgs += %lib{Zydis Zycore}
 
 exe{echo}: {hxx cxx}{** -config -**.gresource...} \
            {    hxx}{config}                      \
