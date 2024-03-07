@@ -2,49 +2,31 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <requires lib="Adw" version="1.0"/>
-  <requires lib="Panel" version="1.0"/>
-  <template class="EchoApplicationWindow" parent="AdwApplicationWindow">
-    <property name="default-width">900</property>
-    <property name="default-height">600</property>
+  <template class="EchoxWindow" parent="AdwApplicationWindow">
+    <property name="default-width">600</property>
+    <property name="default-height">300</property>
     <property name="content">
       <object class="AdwToolbarView">
-        <child>
-          <object class="PanelDock" id="dock">
-            <property name="reveal-bottom">false</property>
-            <property name="reveal-end">false</property>
-            <property name="reveal-start">false</property>
-            <child internal-child="center">
-              <object class="PanelDockChild">
-                <property name="child">
-                  <object class="PanelGrid" id="grid">
-                    <signal name="create-frame" handler="create_frame_cb"/>
-                  </object>
-                </property>
-                <property name="top-edge">
-                  <object class="AdwHeaderBar" id="header_bar">
-                    <style>
-                      <class name="flat" />
-                    </style>
-                    <child type="start">
-                      <object class="PanelToggleButton">
-                        <property name="dock">dock</property>
-                        <property name="area">start</property>
-                      </object>
-                    </child>
-                    <child type="end">
-                      <object class="GtkMenuButton">
-                        <property name="primary">True</property>
-                        <property name="icon-name">open-menu-symbolic</property>
-                        <property name="tooltip-text" translatable="yes">Menu</property>
-                        <property name="menu-model">primary_menu</property>
-                      </object>
-                    </child>
-                  </object>
-                </property>
+        <child type="top">
+          <object class="AdwHeaderBar" id="header_bar">
+            <child type="end">
+              <object class="GtkMenuButton">
+                <property name="primary">True</property>
+                <property name="icon-name">open-menu-symbolic</property>
+                <property name="tooltip-text" translatable="yes">Menu</property>
+                <property name="menu-model">primary_menu</property>
               </object>
             </child>
           </object>
         </child>
+        <property name="content">
+          <object class="GtkLabel" id="label">
+            <property name="label">Hello, World!</property>
+            <style>
+              <class name="title-1"/>
+            </style>
+          </object>
+        </property>
       </object>
     </property>
   </template>
@@ -59,7 +41,7 @@
         <attribute name="action">win.show-help-overlay</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">_About Echo</attribute>
+        <attribute name="label" translatable="yes">_About Echox</attribute>
         <attribute name="action">app.about</attribute>
       </item>
     </section>

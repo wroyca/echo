@@ -80,15 +80,17 @@ echo_application_activate_cb (PeasExtensionSet *set,
 {
   ECHO_ENTRY;
 
+  g_autoptr (EchoApplication) self = ECHO_APPLICATION (self);
   g_autoptr (EchoApplicationExtension) extension = ECHO_APPLICATION_EXTENSION (exten);
 
   g_assert (PEAS_IS_EXTENSION_SET (set));
   g_assert (plugin_info != NULL);
   g_assert (ECHO_IS_APPLICATION_EXTENSION (extension));
-  g_assert (ECHO_IS_APPLICATION (user_data));
+  g_assert (ECHO_IS_APPLICATION (self));
 
-  echo_application_extension_activate (extension, user_data);
+  echo_application_extension_activate (extension, self);
 
+  g_steal_pointer (&self);
   g_steal_pointer (&extension);
 
   ECHO_EXIT;
@@ -258,7 +260,7 @@ echo_application_handle_local_options_cb (PeasExtensionSet *set,
 
 static gint
 echo_application_handle_local_options (GApplication *app,
-                                       GVariantDict* options)
+                                       GVariantDict *options)
 {
   ECHO_ENTRY;
 
@@ -823,7 +825,6 @@ echo_application_new ()
                        "flags", G_APPLICATION_DEFAULT_FLAGS,
                        NULL);
 
-  panel_init();
   echo_plugin_init (self);
   echo_application_extension_init (self);
 

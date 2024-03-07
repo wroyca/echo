@@ -26,7 +26,6 @@
 
 #include <adwaita.h>
 #include <libpeas.h>
-#include <libpanel.h>
 
 #include <libecho/version.h>
 
