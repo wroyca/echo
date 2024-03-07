@@ -20,12 +20,12 @@
 
 #define G_LOG_DOMAIN "ECHO-APPLICATION"
 
-#include <libecho/config.h>
+#include <libecho/config.hxx>
 
-#include <libecho/application.h>
-#include <libecho/application-window.h>
-#include <libecho/preferences-dialog.h>
-#include <libecho/trace.h>
+#include <libecho/application.hxx>
+#include <libecho/application-window.hxx>
+#include <libecho/preferences-dialog.hxx>
+#include <libecho/trace.hxx>
 
 struct _EchoApplication
 {
@@ -80,7 +80,7 @@ echo_application_activate_cb (PeasExtensionSet *set,
 {
   ECHO_ENTRY;
 
-  g_autoptr (EchoApplication) self = ECHO_APPLICATION (self);
+  g_autoptr (EchoApplication) self = ECHO_APPLICATION (user_data);
   g_autoptr (EchoApplicationExtension) extension = ECHO_APPLICATION_EXTENSION (exten);
 
   g_assert (PEAS_IS_EXTENSION_SET (set));
@@ -167,15 +167,17 @@ echo_application_command_line_cb (PeasExtensionSet *set,
 {
   ECHO_ENTRY;
 
+  g_autoptr (GApplicationCommandLine) self = G_APPLICATION_COMMAND_LINE (user_data);
   g_autoptr (EchoApplicationExtension) extension = ECHO_APPLICATION_EXTENSION (exten);
 
   g_assert (PEAS_IS_EXTENSION_SET (set));
   g_assert (plugin_info != NULL);
   g_assert (ECHO_IS_APPLICATION_EXTENSION (extension));
-  g_assert (G_IS_APPLICATION_COMMAND_LINE (user_data));
+  g_assert (G_IS_APPLICATION_COMMAND_LINE (self));
 
-  echo_application_extension_command_line (extension, ECHO_APPLICATION_DEFAULT, user_data);
+  echo_application_extension_command_line (extension, ECHO_APPLICATION_DEFAULT, self);
 
+  g_steal_pointer (&self);
   g_steal_pointer (&extension);
 
   ECHO_EXIT;
@@ -251,7 +253,7 @@ echo_application_handle_local_options_cb (PeasExtensionSet *set,
   g_assert (ECHO_IS_APPLICATION_EXTENSION (extension));
   g_assert (user_data != NULL);
 
-  echo_application_extension_handle_local_options (extension, ECHO_APPLICATION_DEFAULT, user_data);
+  echo_application_extension_handle_local_options (extension, ECHO_APPLICATION_DEFAULT, std::bit_cast<GVariantDict*>(user_data));
 
   g_steal_pointer (&extension);
 
@@ -317,15 +319,17 @@ echo_application_name_lost_cb (PeasExtensionSet *set,
 {
   ECHO_ENTRY;
 
+  g_autoptr (EchoApplication) self = ECHO_APPLICATION (user_data);
   g_autoptr (EchoApplicationExtension) extension = ECHO_APPLICATION_EXTENSION (exten);
 
   g_assert (PEAS_IS_EXTENSION_SET (set));
   g_assert (plugin_info != NULL);
   g_assert (ECHO_IS_APPLICATION_EXTENSION (extension));
-  g_assert (ECHO_IS_APPLICATION (user_data));
+  g_assert (ECHO_IS_APPLICATION (self));
 
-  echo_application_extension_name_lost (extension, user_data);
+  echo_application_extension_name_lost (extension, self);
 
+  g_steal_pointer (&self);
   g_steal_pointer (&extension);
 
   ECHO_EXIT;
@@ -398,7 +402,7 @@ echo_application_open_cb (PeasExtensionSet *set,
   ECHO_ENTRY;
 
   g_autoptr (EchoApplicationExtension) extension = ECHO_APPLICATION_EXTENSION (exten);
-  OpenData *data = user_data;
+  OpenData *data = std::bit_cast<OpenData*>(user_data);
 
   g_assert (PEAS_IS_EXTENSION_SET (set));
   g_assert (plugin_info != NULL);
@@ -482,15 +486,17 @@ echo_application_shutdown_cb (PeasExtensionSet *set,
 {
   ECHO_ENTRY;
 
+  g_autoptr (EchoApplication) self = ECHO_APPLICATION (user_data);
   g_autoptr (EchoApplicationExtension) extension = ECHO_APPLICATION_EXTENSION (exten);
 
   g_assert (PEAS_IS_EXTENSION_SET (set));
   g_assert (plugin_info != NULL);
   g_assert (ECHO_IS_APPLICATION_EXTENSION (extension));
-  g_assert (ECHO_IS_APPLICATION (user_data));
+  g_assert (ECHO_IS_APPLICATION (self));
 
-  echo_application_extension_shutdown (extension, user_data);
+  echo_application_extension_shutdown (extension, self);
 
+  g_steal_pointer (&self);
   g_steal_pointer (&extension);
 
   ECHO_EXIT;
@@ -552,15 +558,17 @@ echo_application_startup_cb (PeasExtensionSet *set,
 {
   ECHO_ENTRY;
 
+  g_autoptr (EchoApplication) self = ECHO_APPLICATION (user_data);
   g_autoptr (EchoApplicationExtension) extension = ECHO_APPLICATION_EXTENSION (exten);
 
   g_assert (PEAS_IS_EXTENSION_SET (set));
   g_assert (plugin_info != NULL);
   g_assert (ECHO_IS_APPLICATION_EXTENSION (extension));
-  g_assert (ECHO_IS_APPLICATION (user_data));
+  g_assert (ECHO_IS_APPLICATION (self));
 
-  echo_application_extension_startup (extension, user_data);
+  echo_application_extension_startup (extension, self);
 
+  g_steal_pointer (&self);
   g_steal_pointer (&extension);
 
   ECHO_EXIT;
@@ -634,9 +642,9 @@ echo_application_extension_init (EchoApplication *self)
 }
 
 static void
-echo_application_preferences_action (GSimpleAction *action,
-                                     GVariant      *parameter,
-                                     gpointer       user_data)
+echo_application_preferences_action ([[maybe_unused]] GSimpleAction *action,
+                                     [[maybe_unused]] GVariant      *parameter,
+                                                      gpointer       user_data)
 {
   ECHO_ENTRY;
 
@@ -658,9 +666,9 @@ echo_application_preferences_action (GSimpleAction *action,
 }
 
 static void
-echo_application_about_action (GSimpleAction *action,
-                               GVariant      *parameter,
-                               gpointer       user_data)
+echo_application_about_action ([[maybe_unused]] GSimpleAction *action,
+                               [[maybe_unused]] GVariant      *parameter,
+                                                gpointer       user_data)
 {
   ECHO_ENTRY;
 
@@ -675,14 +683,14 @@ echo_application_about_action (GSimpleAction *action,
   g_assert (ECHO_IS_APPLICATION (self));
 
   window = ECHO_APPLICATION_WINDOW (gtk_application_get_active_window (GTK_APPLICATION (self)));
-  dialog = g_object_new (ADW_TYPE_ABOUT_DIALOG,
-                         "application-name", "echo",
-                         "application-icon", "app.drey.Echo",
-                         "developer-name", "William Roy",
-                         "version", "0.1.0",
-                         "developers", developers,
-                         "copyright", "© 2024 William Roy",
-                         NULL);
+  dialog = ADW_DIALOG (g_object_new (ADW_TYPE_ABOUT_DIALOG,
+                       "application-name", "echo",
+                       "application-icon", "app.drey.Echo",
+                       "developer-name", "William Roy",
+                       "version", "0.1.0",
+                       "developers", developers,
+                       "copyright", "© 2024 William Roy",
+                       NULL));
 
   adw_dialog_present (dialog, GTK_WIDGET (window));
 
@@ -692,9 +700,9 @@ echo_application_about_action (GSimpleAction *action,
 }
 
 static void
-echo_application_quit_action (GSimpleAction *action,
-                              GVariant      *parameter,
-                              gpointer       user_data)
+echo_application_quit_action ([[maybe_unused]] GSimpleAction *action,
+                              [[maybe_unused]] GVariant      *parameter,
+                                               gpointer       user_data)
 {
   ECHO_ENTRY;
 
@@ -715,18 +723,18 @@ echo_application_init (EchoApplication *self)
   ECHO_ENTRY;
 
   static const GActionEntry app_actions[] = {
-    { "quit", echo_application_quit_action },
-    { "preferences", echo_application_preferences_action },
-    { "about", echo_application_about_action },
+    { "quit",        echo_application_quit_action,        nullptr, nullptr, nullptr, {0} },
+    { "preferences", echo_application_preferences_action, nullptr, nullptr, nullptr, {0} },
+    { "about",       echo_application_about_action,       nullptr, nullptr, nullptr, {0} },
   };
 
   g_action_map_add_action_entries (G_ACTION_MAP (self),
                                    app_actions, G_N_ELEMENTS (app_actions),
                                    self);
 
-  gtk_application_set_accels_for_action (GTK_APPLICATION (self),
-                                         "app.quit",
-                                         (const char *[]){"<primary>q", NULL});
+  // gtk_application_set_accels_for_action (GTK_APPLICATION (self),
+  //                                        "app.quit",
+  //                                        (const char *[]){"<primary>q", NULL});
 
   ECHO_EXIT;
 }
@@ -738,15 +746,13 @@ echo_plugin_can_load (PeasEngine      *engine,
 {
   ECHO_ENTRY;
 
-  const char *dir;
-  const char *name;
   const char *const *deps;
 
   g_assert (PEAS_IS_ENGINE (engine));
   g_assert (PEAS_IS_PLUGIN_INFO (plugin_info));
 
-  dir = peas_plugin_info_get_module_dir (plugin_info);
-  name = peas_plugin_info_get_module_name (plugin_info);
+  const char *dir = peas_plugin_info_get_module_dir (plugin_info);
+  const char *name = peas_plugin_info_get_module_name (plugin_info);
 
   if (g_hash_table_contains (plugin_table, name))
     {
@@ -776,7 +782,7 @@ echo_plugin_can_load (PeasEngine      *engine,
   ECHO_RETURN (TRUE);
 }
 
-void
+static void
 echo_plugin_init (EchoApplication *self)
 {
   ECHO_ENTRY;
@@ -795,7 +801,7 @@ echo_plugin_init (EchoApplication *self)
   for (guint i = 0; i < n_items; i++)
     {
       g_autoptr (PeasPluginInfo) plugin_info =
-        g_list_model_get_item (G_LIST_MODEL (engine), i);
+        PEAS_PLUGIN_INFO (g_list_model_get_item (G_LIST_MODEL (engine), i));
 
       if (peas_plugin_info_is_loaded (plugin_info) == 0
           && peas_plugin_info_get_external_data (plugin_info, "At-Startup"))
@@ -820,10 +826,10 @@ echo_application_new ()
 
   g_autoptr (EchoApplication) self = NULL;
 
-  self = g_object_new (ECHO_TYPE_APPLICATION,
-                       "application-id", "app.drey.Echo",
-                       "flags", G_APPLICATION_DEFAULT_FLAGS,
-                       NULL);
+  self = ECHO_APPLICATION (g_object_new (ECHO_TYPE_APPLICATION,
+                                         "application-id", "app.drey.Echo",
+                                         "flags", G_APPLICATION_DEFAULT_FLAGS,
+                                         NULL));
 
   echo_plugin_init (self);
   echo_application_extension_init (self);

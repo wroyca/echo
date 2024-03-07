@@ -1,9 +1,0 @@
-./: file{**}
-
-# Install architecture-independent data
-#
-{file}{*}:
-{
-  install = share/
-  install.subdirs = true
-}

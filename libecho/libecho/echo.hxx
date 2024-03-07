@@ -1,4 +1,4 @@
-/* application-window.h
+/* echo.h
  *
  * Copyright 2024 William Roy
  *
@@ -20,21 +20,18 @@
 
 #pragma once
 
-#if !defined (ECHO_INSIDE) && !defined (ECHO_COMPILATION)
-#  error "Only <libecho/echo.h> can be included directly."
-#endif
-
 #include <adwaita.h>
-
-#include <libecho/application.h>
-#include <libecho/version.h>
 
 G_BEGIN_DECLS
 
-#define ECHO_TYPE_APPLICATION_WINDOW (echo_application_window_get_type ())
-G_DECLARE_FINAL_TYPE                 (EchoApplicationWindow, echo_application_window, ECHO, APPLICATION_WINDOW, AdwApplicationWindow)
+#define ECHO_INSIDE
 
-ECHO_AVAILABLE_IN_ALL
-EchoApplicationWindow *echo_application_window_new (EchoApplication *app);
+#include <libecho/application-window.hxx>
+#include <libecho/application.hxx>
+#include <libecho/config.hxx>
+#include <libecho/trace.hxx>
+#include <libecho/version.hxx>
+
+#undef ECHO_INSIDE
 
 G_END_DECLS

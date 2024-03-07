@@ -26,6 +26,8 @@
 
 #include <glib.h>
 
+G_BEGIN_DECLS
+
 /**
  * ECHO_MAJOR_VERSION:
  *

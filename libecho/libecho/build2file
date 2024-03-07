@@ -1,19 +1,19 @@
-source $src_root/build2/export/glib-compile-resource.build2
+source $src_root/build2/export/glib-compile-resources.build2
 
 intf_libs = # Interface dependencies.
 impl_libs = # Implementation dependencies.
 intf_libs += %lib{adwaita-1 peas-2}
 
-./: lib{echo}: {h c}{** -echo.resource.c -version} \
-               {h  }{version config}               \
-               {  c}{echo.resource.c}              \
+./: lib{echo}: {hxx ixx txx cxx}{** -echo.resource.cxx -config -version} \
+               {hxx            }{version config}                         \
+               {            cxx}{echo.resource.cxx}                      \
   $impl_libs $intf_libs
 
-[rule_hint=version.in] h{version}: in{version} $src_root/manifest
+[rule_hint=version.in] hxx{version}: in{version} $src_root/manifest
 
 # In-based rule for processing config.h.in files.
 #
-h{config}: in{config.h.in}
+hxx{config}: in{config.hxx.in}
 {
   package_name = $project
   package_version = $version
@@ -25,21 +25,21 @@ h{config}: in{config.h.in}
 
 # Resource bundle.
 #
-c{echo.resource.c}: xml{echo.resource.xml} ui{**} css{**}
+cxx{echo.resource.cxx}: xml{echo.resource.xml} ui{**} css{**}
 
 # Build options.
 #
-c.poptions =+ "-I$out_root" "-I$src_root"
-c.poptions =+ "-DECHO_COMPILATION"
+cxx.poptions =+ "-I$out_root" "-I$src_root"
+cxx.poptions =+ "-DECHO_COMPILATION"
 if $config.libecho.trace
-  c.poptions =+ -DECHO_ENABLE_TRACE
+  cxx.poptions =+ -DECHO_ENABLE_TRACE
 
 # Export options.
 #
 lib{echo}:
 {
-  c.export.poptions = "-I$out_root" "-I$src_root"
-  c.export.libs = $intf_libs
+  cxx.export.poptions = "-I$out_root" "-I$src_root"
+  cxx.export.libs = $intf_libs
 }
 
 # For pre-releases use the complete version to make sure they cannot
@@ -54,7 +54,7 @@ else
 # Install into the libecho/ subdirectory of, say, /usr/include/
 # recreating subdirectories.
 #
-h{*}:
+hxx{*}:
 {
   install         = include/libecho/
   install.subdirs = true

@@ -20,9 +20,10 @@
 
 #define G_LOG_DOMAIN "ECHO-VERSION"
 
-#include <libecho/config.h>
+#include <libecho/config.hxx>
 
-#include <libecho/version.h>
+#include <libecho/version.hxx>
+#include <libecho/trace.hxx>
 
 /**
  * echo_get_major_version:

@@ -35,18 +35,18 @@ CompileFlags:
   - -I/usr/lib64/glib-2.0/include
   - -I/usr/lib64/graphene-1.0/include
 
-  - -std=gnu23
-  - -xc # treat all files as c
+  - -std=gnu++23
+  - -xc++ # treat all files as c
 
-  - -Wno-pre-c11-compat
-  - -Wno-declaration-after-statement
+  - -Wno-unsafe-buffer-usage
+  - -Wno-cast-function-type-strict
+  - -Wno-disabled-macro-expansion
+  - -Wno-old-style-cast
+  - -Wno-unused-variable
+  - -Wno-used-but-marked-unused
   - -Wno-unused-macros
   - -Wno-reserved-identifier
-  - -Wno-cast-function-type-strict
   - -Wno-padded
-  - -Wno-disabled-macro-expansion
-  - -Wno-used-but-marked-unused
-
-  # https://discourse.llvm.org/t/rfc-c-buffer-hardening/65734/85
-  #
-  - -Wno-unsafe-buffer-usage
+  - -Wno-shadow
+  - -Wno-cast-function-type
+  - -Wno-dollar-in-identifier-extension

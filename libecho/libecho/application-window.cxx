@@ -20,11 +20,11 @@
 
 #define G_LOG_DOMAIN "ECHO-WINDOW-APPLICATION"
 
-#include <libecho/config.h>
+#include <libecho/config.hxx>
 
-#include <libecho/application-window.h>
-#include <libecho/trace.h>
-#include <libecho/version.h>
+#include <libecho/application-window.hxx>
+#include <libecho/trace.hxx>
+#include <libecho/version.hxx>
 
 struct _EchoApplicationWindow
 {
@@ -72,9 +72,9 @@ echo_application_window_new (EchoApplication *app)
 
   g_autoptr (EchoApplicationWindow) self = NULL;
 
-  self = g_object_new (ECHO_TYPE_APPLICATION_WINDOW,
-                       "application", app,
-                       NULL);
+  self = ECHO_APPLICATION_WINDOW (g_object_new (ECHO_TYPE_APPLICATION_WINDOW,
+                                  "application", app,
+                                  NULL));
 
   ECHO_RETURN (g_steal_pointer (&self));
 }

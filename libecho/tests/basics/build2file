@@ -1,3 +1,0 @@
-import libs = libecho%lib{echo}
-
-exe{driver}: {h c}{**} $libs testscript{**}

@@ -20,10 +20,10 @@
 
 #define G_LOG_DOMAIN "ECHO-PREFERENCES-DIALOG"
 
-#include <libecho/config.h>
+#include <libecho/config.hxx>
 
-#include <libecho/preferences-dialog.h>
-#include <libecho/trace.h>
+#include <libecho/preferences-dialog.hxx>
+#include <libecho/trace.hxx>
 
 struct _EchoPreferencesDialog
 {
@@ -42,7 +42,7 @@ echo_preferences_dialog_new (void)
 
   g_autoptr (EchoPreferencesDialog) self = NULL;
 
-  self = g_object_new (ECHO_TYPE_PREFERENCES_DIALOG, NULL);
+  self = ECHO_PREFERENCES_DIALOG (g_object_new (ECHO_TYPE_PREFERENCES_DIALOG, NULL));
 
   ECHO_RETURN (g_steal_pointer (&self));
 }

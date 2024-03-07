@@ -1,7 +1,7 @@
 : 1
 name: echo
 version: 0.1.0-a.0.z
-language: c
+language: c++
 summary: echo C executable
 license: GPL-3.0-or-later ; GNU General Public License v3.0 or later.
 description-file: README.md

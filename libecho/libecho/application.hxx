@@ -27,7 +27,7 @@
 #include <adwaita.h>
 #include <libpeas.h>
 
-#include <libecho/version.h>
+#include <libecho/version.hxx>
 
 G_BEGIN_DECLS
 
