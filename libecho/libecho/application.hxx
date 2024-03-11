@@ -1,4 +1,4 @@
-/* application.h
+/* application.hxx
  *
  * Copyright 2024 William Roy
  *
@@ -89,7 +89,7 @@ ECHO_AVAILABLE_IN_ALL
 void             echo_application_extension_startup              (EchoApplicationExtension  *self,
                                                                   EchoApplication           *application);
 ECHO_AVAILABLE_IN_ALL
-EchoApplication *echo_application_new                ();
+EchoApplication *echo_application_new                            ();
 
 G_END_DECLS
 

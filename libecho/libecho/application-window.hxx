@@ -1,4 +1,4 @@
-/* application-window.h
+/* application-window.hxx
  *
  * Copyright 2024 William Roy
  *

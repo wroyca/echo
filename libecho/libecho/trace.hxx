@@ -1,4 +1,4 @@
-/* trace.h
+/* trace.hxx
  *
  * Copyright 2024 William Roy
  *

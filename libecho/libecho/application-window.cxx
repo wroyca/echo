@@ -1,4 +1,4 @@
-/* application-window.c
+/* application-window.cxx
  *
  * Copyright 2024 William Roy
  *
@@ -18,7 +18,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#define G_LOG_DOMAIN "ECHO-WINDOW-APPLICATION"
+#define G_LOG_DOMAIN "ECHO-APPLICATION-WINDOW"
 
 #include <libecho/config.hxx>
 
@@ -41,8 +41,8 @@ echo_application_window_class_init (EchoApplicationWindowClass *klass)
 {
   ECHO_ENTRY;
 
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+  const auto object_class = G_OBJECT_CLASS (klass);
+  const auto widget_class = GTK_WIDGET_CLASS (klass);
 
   gtk_widget_class_set_template_from_resource (widget_class, "/app/drey/Echo/application-window.ui");
   gtk_widget_class_bind_template_child (widget_class, EchoApplicationWindow, header_bar);
@@ -58,7 +58,7 @@ echo_application_window_init (EchoApplicationWindow *self)
 
   gtk_widget_init_template (GTK_WIDGET (self));
 
-#ifdef PACKAGE_DEVEL
+#ifdef ECHO_DEVELOP
   gtk_widget_add_css_class (GTK_WIDGET (self), "devel");
 #endif
 
@@ -70,11 +70,11 @@ echo_application_window_new (EchoApplication *app)
 {
   ECHO_ENTRY;
 
-  g_autoptr (EchoApplicationWindow) self = NULL;
+  g_autoptr (EchoApplicationWindow) self = nullptr;
 
   self = ECHO_APPLICATION_WINDOW (g_object_new (ECHO_TYPE_APPLICATION_WINDOW,
                                   "application", app,
-                                  NULL));
+                                  nullptr));
 
   ECHO_RETURN (g_steal_pointer (&self));
 }

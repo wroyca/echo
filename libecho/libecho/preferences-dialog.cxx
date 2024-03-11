@@ -1,4 +1,4 @@
-/* preferences-dialog.c
+/* preferences-dialog.cxx
  *
  * Copyright 2024 William Roy
  *

@@ -1,4 +1,4 @@
-/* version.c
+/* version.cxx
  *
  * Copyright 2024 William Roy
  *

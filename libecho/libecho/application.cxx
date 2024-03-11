@@ -1,4 +1,4 @@
-/* application.c
+/* application.cxx
  *
  * Copyright 2024 William Roy
  *
@@ -84,7 +84,7 @@ echo_application_activate_cb (PeasExtensionSet *set,
   g_autoptr (EchoApplicationExtension) extension = ECHO_APPLICATION_EXTENSION (exten);
 
   g_assert (PEAS_IS_EXTENSION_SET (set));
-  g_assert (plugin_info != NULL);
+  g_assert (plugin_info != nullptr);
   g_assert (ECHO_IS_APPLICATION_EXTENSION (extension));
   g_assert (ECHO_IS_APPLICATION (self));
 
@@ -102,18 +102,18 @@ echo_application_activate (GApplication *app)
   ECHO_ENTRY;
 
   g_autoptr (EchoApplication) self = ECHO_APPLICATION (app);
-  g_autoptr (EchoApplicationWindow) window = NULL;
+  g_autoptr (EchoApplicationWindow) window = nullptr;
 
   g_assert (ECHO_IS_APPLICATION (self));
 
-  if (self->extensions != NULL)
+  if (self->extensions != nullptr)
     peas_extension_set_foreach (self->extensions,
                                 echo_application_activate_cb,
                                 self);
 
   window = ECHO_APPLICATION_WINDOW (gtk_application_get_active_window (GTK_APPLICATION (app)));
 
-  if (window == NULL)
+  if (window == nullptr)
     window = echo_application_window_new (self);
 
   gtk_window_present (GTK_WINDOW (window));
@@ -171,7 +171,7 @@ echo_application_command_line_cb (PeasExtensionSet *set,
   g_autoptr (EchoApplicationExtension) extension = ECHO_APPLICATION_EXTENSION (exten);
 
   g_assert (PEAS_IS_EXTENSION_SET (set));
-  g_assert (plugin_info != NULL);
+  g_assert (plugin_info != nullptr);
   g_assert (ECHO_IS_APPLICATION_EXTENSION (extension));
   g_assert (G_IS_APPLICATION_COMMAND_LINE (self));
 
@@ -184,8 +184,8 @@ echo_application_command_line_cb (PeasExtensionSet *set,
 }
 
 static gint
-echo_application_command_line (GApplication *app,
-                               GApplicationCommandLine* command_line)
+echo_application_command_line (GApplication            *app,
+                               GApplicationCommandLine *command_line)
 {
   ECHO_ENTRY;
 
@@ -193,7 +193,7 @@ echo_application_command_line (GApplication *app,
 
   g_assert (ECHO_IS_APPLICATION (self));
 
-  if (self->extensions != NULL)
+  if (self->extensions != nullptr)
     peas_extension_set_foreach (self->extensions,
                                 echo_application_command_line_cb,
                                 command_line);
@@ -212,7 +212,7 @@ echo_application_extension_real_handle_local_options (EchoApplicationExtension *
 
   g_assert (ECHO_IS_APPLICATION_EXTENSION (self));
   g_assert (ECHO_IS_APPLICATION (application));
-  g_assert (options != NULL);
+  g_assert (options != nullptr);
 
   ECHO_RETURN (0);
 }
@@ -228,7 +228,7 @@ echo_application_extension_handle_local_options (EchoApplicationExtension *self,
 
   g_return_val_if_fail (ECHO_IS_APPLICATION_EXTENSION (self), 1);
   g_return_val_if_fail (ECHO_IS_APPLICATION (application), 1);
-  g_return_val_if_fail (options != NULL, 1);
+  g_return_val_if_fail (options != nullptr, 1);
 
   ret = 1;
 
@@ -249,9 +249,9 @@ echo_application_handle_local_options_cb (PeasExtensionSet *set,
   g_autoptr (EchoApplicationExtension) extension = ECHO_APPLICATION_EXTENSION (exten);
 
   g_assert (PEAS_IS_EXTENSION_SET (set));
-  g_assert (plugin_info != NULL);
+  g_assert (plugin_info != nullptr);
   g_assert (ECHO_IS_APPLICATION_EXTENSION (extension));
-  g_assert (user_data != NULL);
+  g_assert (user_data != nullptr);
 
   echo_application_extension_handle_local_options (extension, ECHO_APPLICATION_DEFAULT, std::bit_cast<GVariantDict*>(user_data));
 
@@ -270,7 +270,7 @@ echo_application_handle_local_options (GApplication *app,
 
   g_assert (ECHO_IS_APPLICATION (self));
 
-  if (self->extensions != NULL)
+  if (self->extensions != nullptr)
     peas_extension_set_foreach (self->extensions,
                                 echo_application_handle_local_options_cb,
                                 options);
@@ -323,7 +323,7 @@ echo_application_name_lost_cb (PeasExtensionSet *set,
   g_autoptr (EchoApplicationExtension) extension = ECHO_APPLICATION_EXTENSION (exten);
 
   g_assert (PEAS_IS_EXTENSION_SET (set));
-  g_assert (plugin_info != NULL);
+  g_assert (plugin_info != nullptr);
   g_assert (ECHO_IS_APPLICATION_EXTENSION (extension));
   g_assert (ECHO_IS_APPLICATION (self));
 
@@ -344,7 +344,7 @@ echo_application_name_lost (GApplication *app)
 
   g_assert (ECHO_IS_APPLICATION (self));
 
-  if (self->extensions != NULL)
+  if (self->extensions != nullptr)
     peas_extension_set_foreach (self->extensions,
                                 echo_application_name_lost_cb,
                                 self);
@@ -365,9 +365,9 @@ echo_application_extension_real_open (EchoApplicationExtension  *self,
 
   g_assert (ECHO_IS_APPLICATION_EXTENSION (self));
   g_assert (ECHO_IS_APPLICATION (application));
-  g_assert (files != NULL);
+  g_assert (files != nullptr);
   g_assert (n_files > 0);
-  g_assert (hint != NULL);
+  g_assert (hint != nullptr);
 
   ECHO_EXIT;
 }
@@ -383,9 +383,9 @@ echo_application_extension_open (EchoApplicationExtension *self,
 
   g_return_if_fail (ECHO_IS_APPLICATION_EXTENSION (self));
   g_return_if_fail (ECHO_IS_APPLICATION (application));
-  g_return_if_fail (files != NULL);
+  g_return_if_fail (files != nullptr);
   g_return_if_fail (n_files > 0);
-  g_return_if_fail (hint != NULL);
+  g_return_if_fail (hint != nullptr);
 
   if (ECHO_APPLICATION_EXTENSION_GET_IFACE (self)->open)
     ECHO_APPLICATION_EXTENSION_GET_IFACE (self)->open (self, application, files, n_files, hint);
@@ -405,11 +405,11 @@ echo_application_open_cb (PeasExtensionSet *set,
   OpenData *data = std::bit_cast<OpenData*>(user_data);
 
   g_assert (PEAS_IS_EXTENSION_SET (set));
-  g_assert (plugin_info != NULL);
+  g_assert (plugin_info != nullptr);
   g_assert (ECHO_IS_APPLICATION_EXTENSION (extension));
-  g_assert (data != NULL);
+  g_assert (data != nullptr);
   g_assert (ECHO_IS_APPLICATION (data->self));
-  g_assert (data->files != NULL);
+  g_assert (data->files != nullptr);
 
   echo_application_extension_open (extension, data->self, data->files, data->n_files, data->hint);
 
@@ -439,7 +439,7 @@ echo_application_open (GApplication  *app,
   data.n_files = n_files;
   data.hint = hint;
 
-  if (self->extensions != NULL)
+  if (self->extensions != nullptr)
     peas_extension_set_foreach (self->extensions,
                                 echo_application_open_cb,
                                 &data);
@@ -490,7 +490,7 @@ echo_application_shutdown_cb (PeasExtensionSet *set,
   g_autoptr (EchoApplicationExtension) extension = ECHO_APPLICATION_EXTENSION (exten);
 
   g_assert (PEAS_IS_EXTENSION_SET (set));
-  g_assert (plugin_info != NULL);
+  g_assert (plugin_info != nullptr);
   g_assert (ECHO_IS_APPLICATION_EXTENSION (extension));
   g_assert (ECHO_IS_APPLICATION (self));
 
@@ -511,7 +511,7 @@ echo_application_shutdown (GApplication *app)
 
   g_assert (ECHO_IS_APPLICATION (self));
 
-  if (self->extensions != NULL)
+  if (self->extensions != nullptr)
     peas_extension_set_foreach (self->extensions,
                                 echo_application_shutdown_cb,
                                 self);
@@ -562,7 +562,7 @@ echo_application_startup_cb (PeasExtensionSet *set,
   g_autoptr (EchoApplicationExtension) extension = ECHO_APPLICATION_EXTENSION (exten);
 
   g_assert (PEAS_IS_EXTENSION_SET (set));
-  g_assert (plugin_info != NULL);
+  g_assert (plugin_info != nullptr);
   g_assert (ECHO_IS_APPLICATION_EXTENSION (extension));
   g_assert (ECHO_IS_APPLICATION (self));
 
@@ -583,7 +583,7 @@ echo_application_startup (GApplication *app)
 
   g_assert (ECHO_IS_APPLICATION (self));
 
-  if (self->extensions != NULL)
+  if (self->extensions != nullptr)
     peas_extension_set_foreach (self->extensions,
                                 echo_application_startup_cb,
                                 self);
@@ -632,11 +632,11 @@ echo_application_extension_init (EchoApplication *self)
   ECHO_ENTRY;
 
   g_assert (ECHO_IS_APPLICATION (self));
-  g_assert (self->extensions == NULL);
+  g_assert (self->extensions == nullptr);
 
   self->extensions = peas_extension_set_new (peas_engine_get_default (),
                                              ECHO_TYPE_APPLICATION_EXTENSION,
-                                             NULL);
+                                             nullptr);
 
   ECHO_EXIT;
 }
@@ -649,8 +649,8 @@ echo_application_preferences_action ([[maybe_unused]] GSimpleAction *action,
   ECHO_ENTRY;
 
   g_autoptr (EchoApplication) self = ECHO_APPLICATION (user_data);
-  g_autoptr (EchoApplicationWindow) window = NULL;
-  g_autoptr (EchoPreferencesDialog) preferences = NULL;
+  g_autoptr (EchoApplicationWindow) window = nullptr;
+  g_autoptr (EchoPreferencesDialog) preferences = nullptr;
 
   g_assert (ECHO_IS_APPLICATION (self));
 
@@ -673,12 +673,12 @@ echo_application_about_action ([[maybe_unused]] GSimpleAction *action,
   ECHO_ENTRY;
 
   static const char *developers[] = {
-    "William Roy", NULL
+    "William Roy", nullptr
   };
 
   g_autoptr (EchoApplication) self = ECHO_APPLICATION (user_data);
-  g_autoptr (EchoApplicationWindow) window = NULL;
-  g_autoptr (AdwDialog) dialog = NULL;
+  g_autoptr (EchoApplicationWindow) window = nullptr;
+  g_autoptr (AdwDialog) dialog = nullptr;
 
   g_assert (ECHO_IS_APPLICATION (self));
 
@@ -690,7 +690,7 @@ echo_application_about_action ([[maybe_unused]] GSimpleAction *action,
                        "version", "0.1.0",
                        "developers", developers,
                        "copyright", "© 2024 William Roy",
-                       NULL));
+                       nullptr));
 
   adw_dialog_present (dialog, GTK_WIDGET (window));
 
@@ -734,15 +734,15 @@ echo_application_init (EchoApplication *self)
 
   // gtk_application_set_accels_for_action (GTK_APPLICATION (self),
   //                                        "app.quit",
-  //                                        (const char *[]){"<primary>q", NULL});
+  //                                        (const char *[]){"<primary>q", nullptr});
 
   ECHO_EXIT;
 }
 
 static gboolean
-echo_plugin_can_load (PeasEngine      *engine,
-                      PeasPluginInfo  *plugin_info,
-                      GHashTable      *plugin_table)
+echo_plugin_can_load (PeasEngine     *engine,
+                      PeasPluginInfo *plugin_info,
+                      GHashTable     *plugin_table)
 {
   ECHO_ENTRY;
 
@@ -788,15 +788,14 @@ echo_plugin_init (EchoApplication *self)
   ECHO_ENTRY;
 
   g_autoptr (PeasEngine) engine = peas_engine_get_default ();
-  guint n_items;
 
   g_assert (ECHO_IS_APPLICATION (self));
 
   peas_engine_add_search_path (engine,
                                "resource:///app/drey/Echo/extension",
-                               NULL);
+                               nullptr);
 
-  n_items = g_list_model_get_n_items (G_LIST_MODEL (engine));
+  const auto n_items = g_list_model_get_n_items (G_LIST_MODEL (engine));
 
   for (guint i = 0; i < n_items; i++)
     {
@@ -824,12 +823,12 @@ echo_application_new ()
 {
   ECHO_ENTRY;
 
-  g_autoptr (EchoApplication) self = NULL;
+  g_autoptr (EchoApplication) self = nullptr;
 
   self = ECHO_APPLICATION (g_object_new (ECHO_TYPE_APPLICATION,
                                          "application-id", "app.drey.Echo",
                                          "flags", G_APPLICATION_DEFAULT_FLAGS,
-                                         NULL));
+                                         nullptr));
 
   echo_plugin_init (self);
   echo_application_extension_init (self);

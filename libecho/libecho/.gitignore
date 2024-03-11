@@ -1,3 +1,11 @@
 # Generated version header.
 #
-version.h
+version.hxx
+
+# Generated autoconf header.
+#
+config.hxx
+
+# Generated resource bundle.
+#
+echo.resource.xml

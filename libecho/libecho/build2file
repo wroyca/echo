@@ -2,12 +2,15 @@ source $src_root/build2/export/glib-compile-resources.build2
 
 intf_libs = # Interface dependencies.
 impl_libs = # Implementation dependencies.
-intf_libs += %lib{adwaita-1 peas-2}
+pkgs_libs = # System-installed dependencies.
 
-./: lib{echo}: {hxx ixx txx cxx}{** -echo.resource.cxx -config -version} \
-               {hxx            }{version config}                         \
-               {            cxx}{echo.resource.cxx}                      \
-  $impl_libs $intf_libs
+pkgs_libs += libadwaita%lib{adwaita-1}
+pkgs_libs += libpeas%lib{peas-2}
+
+./: lib{echo}: {hxx ixx txx cxx}{** -version -config -**.resource...} \
+               {hxx            }{version config}                      \
+               {            cxx}{echo.resource.cxx}                   \
+  $impl_libs $intf_libs $pkgs_libs
 
 [rule_hint=version.in] hxx{version}: in{version} $src_root/manifest
 
@@ -15,12 +18,14 @@ intf_libs += %lib{adwaita-1 peas-2}
 #
 hxx{config}: in{config.hxx.in}
 {
-  package_name = $project
+  gettext_package = $project
   package_version = $version
-  package_devel = $config.libecho.develop
-  package_locale = [path] ($install.root != [null]                   \
-                           ? $install.resolve($install.share)/locale \
-                           : $out_base/share/locale)
+
+  # FIXME: gettext doesn't resolve properly.
+  #
+  localedir = ($install.root != [null]                   \
+               ? $install.resolve($install.share)/locale \
+               : $out_base/share/locale)
 }
 
 # Resource bundle.
@@ -31,15 +36,15 @@ cxx{echo.resource.cxx}: xml{echo.resource.xml} ui{**} css{**}
 #
 cxx.poptions =+ "-I$out_root" "-I$src_root"
 cxx.poptions =+ "-DECHO_COMPILATION"
-if $config.libecho.trace
-  cxx.poptions =+ -DECHO_ENABLE_TRACE
+cxx.poptions =+ "-DECHO_DEVELOP=$config.libecho.develop"
+cxx.poptions =+ "-DECHO_ENABLE_TRACE=$config.libecho.trace"
 
 # Export options.
 #
 lib{echo}:
 {
   cxx.export.poptions = "-I$out_root" "-I$src_root"
-  cxx.export.libs = $intf_libs
+  cxx.export.libs = $intf_libs $pkgs_libs
 }
 
 # For pre-releases use the complete version to make sure they cannot
