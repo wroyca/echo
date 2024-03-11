@@ -58,7 +58,7 @@ echo_application_window_init (EchoApplicationWindow *self)
 
   gtk_widget_init_template (GTK_WIDGET (self));
 
-#ifdef ECHO_DEVELOP
+#if ECHO_DEVELOP
   gtk_widget_add_css_class (GTK_WIDGET (self), "devel");
 #endif
 

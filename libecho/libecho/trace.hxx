@@ -37,7 +37,7 @@ G_BEGIN_DECLS
 #  define ECHO_LOG_LEVEL_TRACE ((GLogLevelFlags)(1 << G_LOG_LEVEL_USER_SHIFT))
 #endif
 
-#ifdef ECHO_ENABLE_TRACE
+#if ECHO_ENABLE_TRACE
 
 /**
  * ECHO_ENTRY:
