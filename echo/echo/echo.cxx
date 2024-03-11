@@ -1,4 +1,4 @@
-#include <libecho/echo.hxx>
+#include <libecho/echo.h>
 
 int
 main (int   argc,

@@ -1,4 +1,4 @@
-/* echo.hxx
+/* echo.h
  *
  * Copyright 2024 William Roy
  *
