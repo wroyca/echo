@@ -59,7 +59,7 @@ else
 # Install into the libecho/ subdirectory of, say, /usr/include/
 # recreating subdirectories.
 #
-hxx{*}:
+{h hxx}{*}:
 {
   install         = include/libecho/
   install.subdirs = true
