@@ -8,4 +8,4 @@ config.hxx
 
 # Generated resource bundle.
 #
-echo.resource.xml
+echo.resource.cxx

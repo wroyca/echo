@@ -1,1 +1,8 @@
-./: {*/ -build2/} doc{README.md} legal{LICENSE.md} manifest
+./: {*/ -build2/} file{.clangd} doc{README.md} legal{LICENSE.md} manifest
+
+# Shared project-level settings.
+#
+[rule_hint=in] file{.clangd}: in{.clangd.in}
+{
+  backlink = symbolic
+}

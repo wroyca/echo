@@ -1,8 +1,17 @@
 # Uncomment to suppress warnings coming from external libraries.
 #
-#c.internal.scope = current
+#cxx.internal.scope = current
 
 using cxx
+
+hxx{*}: extension = hxx
+ixx{*}: extension = ixx
+txx{*}: extension = txx
+cxx{*}: extension = cxx
+
+# The .in (input) file preprocessing build system module.
+#
+using in
 
 # The test target for cross-testing (running tests under Wine, etc).
 #

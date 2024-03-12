@@ -4,6 +4,8 @@ CompileFlags:
   Add:
   - -I$src_base$
   - -I$out_base$
+  - -I$src_base$/../libecho
+  - -I$out_base$/../libecho
 
   - -DECHO_COMPILATION
   - -DLIBGDK_PIXBUF_2_0_SHARED
