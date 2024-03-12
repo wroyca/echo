@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk" version="4.0"/>
-  <requires lib="Adw" version="1.0"/>
+  <requires lib="gtk" version="4.0" />
+  <requires lib="Adw" version="1.0" />
   <template class="EchoApplicationWindow" parent="AdwApplicationWindow">
     <property name="default-width">900</property>
     <property name="default-height">600</property>
@@ -20,11 +20,14 @@
           </object>
         </child>
         <property name="content">
-          <object class="GtkLabel" id="label">
-            <property name="label">Hello, World!</property>
-            <style>
-              <class name="title-1"/>
-            </style>
+          <object class="GtkScrolledWindow">
+            <property name="hexpand">true</property>
+            <property name="vexpand">true</property>
+            <child>
+              <object class="GtkTextView" id="text_view">
+                <property name="buffer">text_buffer</property>
+              </object>
+            </child>
           </object>
         </property>
       </object>
@@ -46,4 +49,5 @@
       </item>
     </section>
   </menu>
+  <object class="GtkTextBuffer" id="text_buffer" />
 </interface>

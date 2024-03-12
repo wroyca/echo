@@ -4,12 +4,14 @@ intf_libs = # Interface dependencies.
 impl_libs = # Implementation dependencies.
 pkgs_libs = # System-installed dependencies.
 
-pkgs_libs += libadwaita%lib{adwaita-1}
-pkgs_libs += libpeas%lib{peas-2}
+pkgs_libs += %lib{adwaita-1}
+pkgs_libs += %lib{peas-2}
+pkgs_libs += %lib{LIEF}
+pkgs_libs += %lib{Zydis Zycore}
 
 ./: lib{echo}: {hxx ixx txx cxx}{** -version -config -**.resource...} \
                {hxx            }{version config}                      \
-               {            cxx}{echo.gresource.cxx}                   \
+               {            cxx}{echo.gresource.cxx}                  \
   $impl_libs $intf_libs $pkgs_libs
 
 [rule_hint=version.in] hxx{version}: in{version} $src_root/manifest
@@ -38,6 +40,7 @@ cxx.poptions =+ "-I$out_root" "-I$src_root"
 cxx.poptions =+ "-DECHO_COMPILATION"
 cxx.poptions =+ "-DECHO_DEVELOP=$config.libecho.develop"
 cxx.poptions =+ "-DECHO_ENABLE_TRACE=$config.libecho.trace"
+cxx.poptions =+ "-fPIC"
 
 # Export options.
 #

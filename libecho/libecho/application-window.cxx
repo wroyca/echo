@@ -31,7 +31,8 @@ struct _EchoApplicationWindow
   AdwApplicationWindow  parent_instance;
 
   AdwHeaderBar         *header_bar;
-  GtkLabel             *label;
+  GtkTextView          *text_view;
+  GtkTextBuffer        *text_buffer;
 };
 
 G_DEFINE_FINAL_TYPE (EchoApplicationWindow, echo_application_window, ADW_TYPE_APPLICATION_WINDOW)
@@ -46,7 +47,8 @@ echo_application_window_class_init (EchoApplicationWindowClass *klass)
 
   gtk_widget_class_set_template_from_resource (widget_class, "/app/drey/Echo/application-window.ui");
   gtk_widget_class_bind_template_child (widget_class, EchoApplicationWindow, header_bar);
-  gtk_widget_class_bind_template_child (widget_class, EchoApplicationWindow, label);
+  gtk_widget_class_bind_template_child (widget_class, EchoApplicationWindow, text_view);
+  gtk_widget_class_bind_template_child (widget_class, EchoApplicationWindow, text_buffer);
 
   ECHO_EXIT;
 }
@@ -61,6 +63,12 @@ echo_application_window_init (EchoApplicationWindow *self)
 #if ECHO_DEVELOP
   gtk_widget_add_css_class (GTK_WIDGET (self), "devel");
 #endif
+
+  // XXX: This is a sample for visual feedback, it will be removed.
+  //
+  void
+  sample (EchoApplicationWindow *self);
+  sample (self);
 
   ECHO_EXIT;
 }
@@ -77,4 +85,61 @@ echo_application_window_new (EchoApplication *app)
                                   nullptr));
 
   ECHO_RETURN (g_steal_pointer (&self));
+}
+
+#include <LIEF/LIEF.hpp>
+#include <Zydis/Zydis.h>
+#include <Zycore/Format.h>
+
+void
+sample (EchoApplicationWindow *self)
+{
+  using namespace std;
+  using namespace LIEF::ELF;
+
+  ZydisDecoder decoder;
+  ZydisDecoderInit(&decoder, ZYDIS_MACHINE_MODE_LONG_64, ZYDIS_STACK_WIDTH_64);
+  ZydisFormatter fmt;
+  ZydisFormatterInit(&fmt, ZYDIS_FORMATTER_STYLE_INTEL);
+  ZydisDecodedInstruction instr;
+  ZydisDecodedOperand operands[ZYDIS_MAX_OPERAND_COUNT];
+
+  auto elf = Parser::parse ("/home/wroy/Projects/echo/etc/sample");
+  auto elf_text_section (elf->get_section (".text"));
+  auto elf_text_section_content (elf_text_section->content());
+  auto elf_text_section_content_data (elf_text_section_content.data());
+  auto elf_text_section_content_size (elf_text_section_content.size());
+  auto elf_text_section_content_instruction (vector <string>{});
+
+  ZyanU64 addr (0x007FFFFFFF400000);
+  ZyanUSize offset (elf_text_section->virtual_address());
+
+  while (ZYAN_SUCCESS(ZydisDecoderDecodeFull(&decoder,
+                                             elf_text_section_content_data,
+                                             elf_text_section_content_size,
+                                             &instr,
+                                             operands)))
+  {
+    char buffer[256];
+    ZydisFormatterFormatInstruction (&fmt,
+                                     &instr,
+                                     operands,
+                                     instr.operand_count_visible,
+                                     buffer,
+                                     sizeof (buffer),
+                                     addr,
+                                     nullptr);
+
+    elf_text_section_content_instruction.push_back(buffer);
+    elf_text_section_content_data += instr.length;
+    elf_text_section_content_size -= instr.length;
+  }
+
+  GtkTextIter iter;
+  for (auto &instruction : elf_text_section_content_instruction)
+  {
+    gtk_text_buffer_get_end_iter(self->text_buffer, &iter);
+    gtk_text_buffer_insert(self->text_buffer, &iter, instruction.c_str(), -1);
+    gtk_text_buffer_insert(self->text_buffer, &iter, "\n", -1);
+  }
 }
