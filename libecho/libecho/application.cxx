@@ -32,6 +32,7 @@ struct _EchoApplication
   AdwApplication    parent_instance;
 
   PeasExtensionSet *extensions;
+  GSettings        *settings;
 };
 
 typedef struct
@@ -588,9 +589,11 @@ echo_application_startup (GApplication *app)
                                 echo_application_startup_cb,
                                 self);
 
-  g_steal_pointer (&self);
-
   G_APPLICATION_CLASS (echo_application_parent_class)->startup (app);
+
+  self->settings = g_settings_new ("app.drey.Echo");
+
+  g_steal_pointer(&self);
 
   ECHO_EXIT;
 }
@@ -598,6 +601,8 @@ echo_application_startup (GApplication *app)
 static void
 echo_application_extension_default_init (EchoApplicationExtensionInterface *iface)
 {
+  ECHO_ENTRY;
+
   iface->activate             = echo_application_extension_real_activate;
   iface->command_line         = echo_application_extension_real_command_line;
   iface->handle_local_options = echo_application_extension_real_handle_local_options;
@@ -605,6 +610,26 @@ echo_application_extension_default_init (EchoApplicationExtensionInterface *ifac
   iface->open                 = echo_application_extension_real_open;
   iface->shutdown             = echo_application_extension_real_shutdown;
   iface->startup              = echo_application_extension_real_startup;
+
+  ECHO_EXIT;
+}
+
+static void
+echo_application_finalize (GObject* obj)
+{
+  ECHO_ENTRY;
+
+  g_autoptr (EchoApplication) self = ECHO_APPLICATION (obj);
+
+  g_assert (ECHO_IS_APPLICATION (self));
+
+  g_clear_object (&self->settings);
+
+  G_OBJECT_CLASS (echo_application_parent_class)->finalize (obj);
+
+  g_steal_pointer (&self);
+
+  ECHO_EXIT;
 }
 
 static void
@@ -622,6 +647,8 @@ echo_application_class_init (EchoApplicationClass *self)
   app_class->open                 = echo_application_open;
   app_class->shutdown             = echo_application_shutdown;
   app_class->startup              = echo_application_startup;
+
+  obj_class->finalize = echo_application_finalize;
 
   ECHO_EXIT;
 }

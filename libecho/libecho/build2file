@@ -9,7 +9,7 @@ pkgs_libs += libpeas%lib{peas-2}
 
 ./: lib{echo}: {hxx ixx txx cxx}{** -version -config -**.resource...} \
                {hxx            }{version config}                      \
-               {            cxx}{echo.resource.cxx}                   \
+               {            cxx}{echo.gresource.cxx}                   \
   $impl_libs $intf_libs $pkgs_libs
 
 [rule_hint=version.in] hxx{version}: in{version} $src_root/manifest
@@ -30,7 +30,7 @@ hxx{config}: in{config.hxx.in}
 
 # Resource bundle.
 #
-cxx{echo.resource.cxx}: xml{echo.resource.xml} ui{**} css{**}
+cxx{echo.gresource.cxx}: xml{echo.gresource.xml} ui{**} css{**}
 
 # Build options.
 #

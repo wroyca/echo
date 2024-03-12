@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="echo">
+  <schema id="app.drey.Echo" path="/app/drey/Echo/" />
+</schemalist>
