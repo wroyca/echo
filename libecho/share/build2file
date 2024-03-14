@@ -1,12 +1,12 @@
 define gir: file
 gir{*}: extension = gir
 
-if $config.libecho.introspection
+if $config.libecho.gir
   import! g-ir-scanner = g-ir-scanner%exe{g-ir-scanner}
 
-./: gir{libecho}: include = $config.libecho.introspection
+./: gir{Echo}: include = $config.libecho.gir
 
-gir{libecho}: $src_root/libecho/{cxx ixx txx hxx h}{*}
+gir{Echo}: $src_root/libecho/{cxx ixx txx hxx h}{*}
 {{
   diag g-ir-scanner $>
 
@@ -27,7 +27,6 @@ gir{libecho}: $src_root/libecho/{cxx ixx txx hxx h}{*}
   cat  $src_root/manifest | sed -n -e 's/^project: (.+)/\1/p'                           | set n
   echo $n                 | awk '{ $1 = toupper (substr ($1, 0, 1)) substr ($1, 2) } 1' | set N
 
-
   t = $o/lib($n)/lib($n).a
   v = $version
 
@@ -35,8 +34,8 @@ gir{libecho}: $src_root/libecho/{cxx ixx txx hxx h}{*}
   # as a step to indicate sources to scan. We also don't manage modifications,
   # filelist will be regenerated with each run.
   #
-  f = $b/lib($n).filelist
-  g = $b/lib($n).gir
+  f = $b/($N).filelist
+  g = $b/($N).gir
 
   # First, we store the library headers in filelist. Touch will ensure that we
   # delete the previous filelist.

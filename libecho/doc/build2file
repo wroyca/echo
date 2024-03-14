@@ -1,0 +1,19 @@
+./:
+
+alias{gi-docgen}: $src_root/libecho/{cxx hxx}{*}
+{{
+  diag gen $>
+
+  r = $src_root/share
+  b = $src_base
+
+  g = $r/Echo.gir
+  l = $b/Echo.typelib
+  t = $b/Echo.toml
+
+  g-ir-compiler $g \
+    --output $l --includedir=/usr/share/gir-1.0
+
+  gi-docgen generate $g \
+    --config=$t --output-dir=($b[0]) --content-dir=($b[0])
+}}

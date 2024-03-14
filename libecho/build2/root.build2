@@ -24,6 +24,7 @@ using autoconf
 #
 config [bool] config.libecho.develop ?= false
 config [bool] config.libecho.trace ?= false
+config [bool] config.libecho.gir ?= false
 
 # The test target for cross-testing (running tests under Wine, etc).
 #
