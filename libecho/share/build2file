@@ -1,0 +1,77 @@
+define gir: file
+gir{*}: extension = gir
+
+if $config.libecho.introspection
+  import! g-ir-scanner = g-ir-scanner%exe{g-ir-scanner}
+
+./: gir{libecho}: include = $config.libecho.introspection
+
+gir{libecho}: $src_root/libecho/{cxx ixx txx hxx h}{*}
+{{
+  diag g-ir-scanner $>
+
+  r = $src_root
+  b = $src_base
+  o = $out_root
+
+  # g-ir-scanner is case-sensitive. The project name must be capitalized for
+  # both the namespace and identifier prefix, while it must be lowercase for
+  # the symbol prefix.
+  #
+  # The strategy here is to set both n/N to the project name, but where the
+  # former is lowercase and the latter is capitalized. Note that there appear
+  # to be no built-in functions to handle this in build2, and since the bash
+  # subset is fairly limited, we have to resort to a somewhat complex pipe
+  # route. (Yes, no "${foo^}" possible here.)
+  #
+  cat  $src_root/manifest | sed -n -e 's/^project: (.+)/\1/p'                           | set n
+  echo $n                 | awk '{ $1 = toupper (substr ($1, 0, 1)) substr ($1, 2) } 1' | set N
+
+
+  t = $o/lib($n)/lib($n).a
+  v = $version
+
+  # These are the generated targets. Our focus lies on Gir, where filelist acts
+  # as a step to indicate sources to scan. We also don't manage modifications,
+  # filelist will be regenerated with each run.
+  #
+  f = $b/lib($n).filelist
+  g = $b/lib($n).gir
+
+  # First, we store the library headers in filelist. Touch will ensure that we
+  # delete the previous filelist.
+  #
+  touch $f && rm $f && echo $path($<) | tr ' ' '\n' >> $f
+
+  # And then, generate introspection. Note that we can't determine how our
+  # library was built. For instance, g-ir-scanner cannot directly consume
+  # compiledb. The only way forward is to manually make adjustments whenever
+  # our build configuration changes. Still, it's fairly rare for it to change,
+  # and we only need the bare minimum (skipping the more complex pieces).
+  #
+  g-ir-scanner --quiet                                          \
+               --header-only                                    \
+               --symbol-prefix=$n                               \
+               --identifier-prefix=$N                           \
+               --namespace=$N                                   \
+               --nsversion=$v                                   \
+                                                                \
+               --library=$s                                     \
+               --output=$g                                      \
+               --filelist=$f                                    \
+                                                                \
+               --include=Gtk-4.0                                \
+               --include=Adw-1                                  \
+               --include=Peas-2                                 \
+                                                                \
+               --library=gtk-4                                  \
+               --library=adwaita-1                              \
+               --library=peas-2                                 \
+                                                                \
+               --cflags-begin                                   \
+                 --include-directory=($r[0]) -DECHO_COMPILATION \
+               --cflags-end
+}}
+
+gir{*}: install = share/
+gir{*}: install.subdirs = true # Recreate subdirectories.
