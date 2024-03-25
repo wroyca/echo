@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0" />
+  <requires lib="Adw" version="1.0" />
+  <template class="EchoApplicationWindow" parent="AdwApplicationWindow">
+    <property name="width_request">900</property>
+    <property name="height_request">600</property>
+    <child>
+      <object class="AdwBreakpoint">
+        <condition>max-width: 720</condition>
+        <setter object="split_view" property="collapsed">True</setter>
+      </object>
+    </child>
+    <property name="content">
+      <object class="AdwNavigationSplitView" id="split_view">
+        <property name="max-sidebar-width">360</property>
+        <property name="sidebar-width-fraction">0.33</property>
+        <property name="sidebar">
+          <object class="AdwNavigationPage">
+            <property name="title" translatable="no">Echo</property>
+            <property name="child">
+              <object class="AdwToolbarView">
+                <child type="top">
+                  <object class="GtkStack" id="headerbar_stack">
+                    <child>
+                      <object class="AdwHeaderBar" id="header_bar">
+                        <property name="show-title">false</property>
+                        <property name="show_end_title_buttons">False</property>
+                        <property name="show_start_title_buttons">False</property>
+                        <child type="end">
+                          <object class="GtkMenuButton">
+                            <property name="primary">True</property>
+                            <property name="icon-name">open-menu-symbolic</property>
+                            <property name="tooltip-text" translatable="yes">Menu</property>
+                            <property name="menu-model">primary_menu</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <property name="content">
+                  <object class="GtkScrolledWindow" id="_scrolled_window">
+                    <property name="hscrollbar_policy">never</property>
+                    <child>
+                      <object class="GtkListView" id="list_view">
+                        <style>
+                          <class name="navigation-sidebar" />
+                        </style>
+                      </object>
+                    </child>
+                  </object>
+                </property>
+              </object>
+            </property>
+          </object>
+        </property>
+        <property name="content">
+          <object class="AdwNavigationPage">
+            <property name="title" translatable="no">Echo</property>
+            <property name="child">
+              <object class="AdwToolbarView">
+                <child type="top">
+                  <object class="AdwHeaderBar">
+                    <property name="show_title">False</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwStatusPage" />
+                </child>
+              </object>
+            </property>
+          </object>
+        </property>
+      </object>
+    </property>
+  </template>
+  <menu id="primary_menu">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">_Preferences</attribute>
+        <attribute name="action">app.preferences</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">_Keyboard Shortcuts</attribute>
+        <attribute name="action">win.show-help-overlay</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">_About Echo</attribute>
+        <attribute name="action">app.about</attribute>
+      </item>
+    </section>
+  </menu>
+</interface>

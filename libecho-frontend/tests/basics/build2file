@@ -1,0 +1,3 @@
+import libs = libecho-frontend%lib{echo-frontend}
+
+exe{driver}: {hxx ixx txx cxx}{**} $libs testscript{**}

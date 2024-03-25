@@ -1,0 +1,49 @@
+# glib-compile-resources - GLib resource compiler
+#
+# Reads the resource description from FILE and the files that it references and
+# creates a binary resource bundle that is suitable for use with the GResource
+# API. The resulting bundle is then written out as-is, or as C source for
+# linking into an application.
+
+import? rc = glib-compile-resources%exe{glib-compile-resources}
+define xml: file
+xml{*}: extension = xml
+
+# Generate our resource bundle, but only if the resource compiler is available.
+# This way a distribution that includes pre-generated files can be built
+# without installing GLib development tools.
+#
+if ($rc != [null])
+{
+  cxx{~'/(.+)/'}: xml{~'/\1/'} $rc
+  {
+    # Include the generated bundle into the distribution and don't remove it
+    # when cleaning in src (so that clean results in a state identical to
+    # distributed).
+    #
+    dist = true
+    clean = ($src_root != $out_root)
+
+    # We keep the generated bundle in the repository so copy it back to src in
+    # case of a forwarded configuration.
+    #
+    backlink = overwrite
+  }
+  \
+  {{
+    i = $path($<[0])
+    d = $(i).dd
+    s = $src_base
+    t = $out_base/$name($>)
+
+    # Extracts dependencies and track them.
+    #
+    depdb dyndep --format lines --file $d -- \
+      $rc --sourcedir $s --generate-dependencies $i | \
+        sed -e "s/;/\n/g" > $d
+
+    diag rc ($<[0]) -> $>
+
+    $rc --sourcedir $s --generate-source $i --target=$(t).cxx
+  }}
+}

@@ -1,0 +1,6 @@
+$out_root/
+{
+  include libecho/frontend/
+}
+
+export $out_root/libecho/frontend/$import.target

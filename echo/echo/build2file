@@ -1,0 +1,7 @@
+libs =
+import libs += libecho%lib{echo}
+import libs += libecho-frontend%lib{echo-frontend}
+
+exe{echo}: {hxx ixx txx cxx}{**} $libs testscript
+
+cxx.poptions =+ "-I$out_root" "-I$src_root"
